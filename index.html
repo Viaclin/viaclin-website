@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viaclin | Supply Chain Consultancy</title>
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for Strict Branding */
+        :root {
+            --forest-green: #1A472A;
+            --brushed-gold: #D4AF37;
+            --bg-dark: #0a0c0b;
+            --bg-panel: #141715;
+            --text-light: #f4f4f4;
+            --text-muted: #a0a5a2;
+        }
+
+        /* Global Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, .brand-name {
+            font-weight: 700; /* Montserrat Bold */
+            letter-spacing: 1px;
+        }
+
+        h5, h6, .brand-desc, .nav-link, th {
+            font-weight: 600; /* Montserrat Semi-Bold */
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        a {
+            color: var(--brushed-gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #fff;
+        }
+
+        /* Image Handling: NEVER stretch */
+        img {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* Container Formatting */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+
+        /* Background Parallax Elements */
+        .bg-element {
+            position: fixed;
+            top: 20%;
+            right: -10%;
+            opacity: 0.05;
+            z-index: -1;
+            transform: scale(1.5);
+            pointer-events: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .hero-logo {
+            width: 250px;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1.2s ease forwards;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            color: var(--forest-green);
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h2 {
+            font-size: 1.2rem;
+            color: var(--brushed-gold);
+            margin-bottom: 2rem;
+        }
+
+        .hero p {
+            max-width: 800px;
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-top: 1.5rem;
+            font-weight: 600;
+        }
+
+        /* Grid Layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        /* Interactive Panels */
+        .panel {
+            background-color: var(--bg-panel);
+            padding: 2.5rem;
+            border-top: 4px solid var(--forest-green);
+            border-radius: 4px;
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+            cursor: default;
+        }
+
+        .panel:hover {
+            transform: translateY(-10px);
+            border-color: var(--brushed-gold);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
+        }
+
+        .panel h3 {
+            color: var(--brushed-gold);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        /* Section Styling */
+        section {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--brushed-gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 3rem;
+        }
+
+        /* Capabilities List Formatting */
+        .cap-list {
+            list-style: none;
+            margin-top: 1.5rem;
+        }
+
+        .cap-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        /* Custom White Chain Link Icon using SVG */
+        .cap-list.bespoke li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        /* Gold Checkmark for Standard List */
+        .cap-list.standard li::before {
+            content: '✔';
+            position: absolute;
+            left: 0;
+            color: var(--brushed-gold);
+            font-weight: 700;
+        }
+
+        /* Footer & Contact */
+        footer {
+            background-color: #050605;
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .contact-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2.5rem;
+            background-color: transparent;
+            color: var(--brushed-gold);
+            border: 2px solid var(--brushed-gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background-color: var(--brushed-gold);
+            color: var(--bg-dark);
+        }
+
+        .deck-download {
+            margin-top: 3rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Simple Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Verbatim Asset Use: Background Element -->
+    <img src="Gemini_Generated_Image_ykdvz2ykdvz2ykdv (1).png" alt="Viaclin Background Pattern" class="bg-element" id="parallax-bg">
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <!-- Verbatim Asset Use: Logo -->
+        <img src="Logo 3 Higher Res Isolated.jpg" alt="Viaclin Logo" class="hero-logo">
+        <h1 class="brand-name">VIACLIN</h1>
+        <h2 class="brand-desc">SUPPLY CHAIN CONSULTANCY</h2>
+        <h3 style="color: #fff; font-size: 1.5rem; margin-top: 1rem;">Life Sciences & AI-Integrated Supply Chain Excellence</h3>
+        
+        <p class="reveal">A specialist life sciences supply chain consultancy with embedded AI capability built in. Viaclin was built to solve the problems that generalist consultancies cannot. We operate at the intersection of deep supply chain expertise and practical AI integration, providing both hands-on execution and strategic oversight across the full life sciences supply chain.</p>
+    </section>
+
+    <!-- The Challenge Section -->
+    <section class="container">
+        <h2 class="section-title reveal">Navigating Complexity</h2>
+        <h3 class="section-subtitle reveal">The Challenge</h3>
+        
+        <div class="grid-3">
+            <div class="panel reveal">
+                <h3>Fragmented Operations</h3>
+                <p>Clinical and commercial supply chains are managed across siloed teams, resulting in no unified ownership, constant handoff gaps, and compounding risk.</p>
+            </div>
+            <div class="panel reveal">
+                <h3>Reactive Decision Making</h3>
+                <p>Delayed responses to demand signals, regulatory changes, and manufacturing disruptions. Leaders are forced to act on stale data with limited AI support.</p>
+            </div>
+            <div class="panel reveal">
+                <h3>Regulatory & Compliance Exposure</h3>
+                <p>Increasingly complex GMP, FDA, EMA, and ICH requirements demand specialist expertise that most internal teams cannot sustain alone.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Pillars Section -->
+    <section class="container" style="background-color: var(--bg-dark);">
+        <h2 class="section-title reveal">Three Pillars of Viaclin Excellence</h2>
+        <h3 class="section-subtitle reveal">Our Core Focus</h3>
+
+        <div class="grid-3">
+            <div class="panel reveal" style="border-top-color: var(--brushed-gold);">
+                <h3>01. Predictive Planning</h3>
+                <h4 style="color: #fff; margin-bottom: 1rem;">Proactive Management</h4>
+                <p>We take full enterprise ownership of S&OP.</p>
+                <p style="margin-top: 0.5rem;">We deploy advanced forecasting via SAP and planning tools to align clinical demand, commercial rollout, and manufacturing capacity.</p>
+                <p style="margin-top: 0.5rem; color: var(--text-muted);">The result is optimized buffer stock, eliminated overproduction, and capital that stays where it belongs.</p>
+            </div>
+            
+            <div class="panel reveal">
+                <h3>02. Complete Oversight</h3>
+                <h4 style="color: #fff; margin-bottom: 1rem;">End-to-End Execution</h4>
+                <p>Total ownership from high-tech packaging and strict cross-border logistics to CDMO tech transfers and rigorous global site readiness.</p>
+                <p style="margin-top: 0.5rem; color: var(--text-muted);">There are no handoffs between siloed teams. We ensure there are no gaps between functions.</p>
+            </div>
+
+            <div class="panel reveal" style="border-top-color: var(--brushed-gold);">
+                <h3>03. AI Integration</h3>
+                <h4 style="color: #fff; margin-bottom: 1rem;">Guided Decision Making</h4>
+                <p>We provide our own, out-of-the-box AI agents that act as navigators for both supply professionals and leaders.</p>
+                <p style="margin-top: 0.5rem;">Our agents bridge the gap between manual activity and full, risky autonomy.</p>
+                <p style="margin-top: 0.5rem; color: var(--text-muted);">They provide guidance and insights to improve decision-making, de-risking your supply chain.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities Section -->
+    <section class="container">
+        <h2 class="section-title reveal">Comprehensive Supply Chain Mastery</h2>
+        <h3 class="section-subtitle reveal">Our Capabilities</h3>
+
+        <div class="grid-2">
+            <div class="reveal">
+                <h3 style="color: var(--brushed-gold); font-size: 1.4rem; border-bottom: 1px solid var(--forest-green); padding-bottom: 0.5rem;">SCM Support Activity</h3>
+                <ul class="cap-list standard">
+                    <!-- Split into two separate offerings -->
+                    <li>Greenfield buildout</li>
+                    <li>End-to-end project management</li>
+                    <li>SOP creation and implementation</li>
+                    <li>Clinical supply operations (IRT, pharmacy manuals)</li>
+                    <li>CRO performance ownership</li>
+                    <li>Tech transfer, scale-up, and PPQ</li>
+                    <li>CMO / CDMO management</li>
+                    <li>Packaging & labelling (serialisation)</li>
+                    <li>Global logistics management</li>
+                    <li>Predictive planning & S&OP</li>
+                    <li>Full commercial supply support</li>
+                </ul>
+            </div>
+
+            <div class="reveal">
+                <h3 style="color: var(--brushed-gold); font-size: 1.4rem; border-bottom: 1px solid var(--forest-green); padding-bottom: 0.5rem;">Bespoke Services</h3>
+                <!-- Uses white chain link via CSS pseudo-element -->
+                <ul class="cap-list bespoke">
+                    <li>AI Agent Implementation</li>
+                    <li>AI Training & Upskilling</li>
+                    <li>Supply Transformation</li>
+                    <li>Interim Senior Support</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Global Reach Section -->
+    <section class="container">
+        <h2 class="section-title reveal">Global Reach</h2>
+        <h3 class="section-subtitle reveal">Delivered by Senior Practitioners</h3>
+        
+        <p class="reveal" style="text-align: center; max-width: 900px; margin: 0 auto 3rem auto; font-size: 1.1rem;">Our consultants are senior practitioners with direct experience in pharmaceutical, biotech, and MedTech supply operations, not analysts learning on your time. We are a diverse team located across Europe, the US, and the UK, fully remote and integrated.</p>
+
+        <div class="grid-3">
+            <div class="panel reveal" style="text-align: center;">
+                <h3 style="color: var(--forest-green);">Europe</h3>
+                <p>Regulatory expertise across EMA, HPRA, and MHRA markets. Clinical supply hubs in Ireland, UK, Germany, and Netherlands.</p>
+            </div>
+            <div class="panel reveal" style="text-align: center;">
+                <h3 style="color: var(--forest-green);">United States</h3>
+                <p>FDA regulatory fluency. Commercial supply and strategic sourcing coverage across major US pharma clusters.</p>
+            </div>
+            <div class="panel reveal" style="text-align: center;">
+                <h3 style="color: var(--forest-green);">United Kingdom</h3>
+                <p>Post-Brexit import/export specialisms. MHRA-experienced quality and supply chain consultants.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer>
+        <div class="container" style="padding: 2rem 0;">
+            <h2 class="section-title reveal">Let's build your supply chain capability together.</h2>
+            <p class="reveal" style="color: var(--text-muted); font-size: 1.1rem; margin-bottom: 1rem;">Schedule a discovery conversation today.</p>
+            
+            <div class="reveal">
+                <a href="mailto:contact@viaclin.com" class="contact-btn">contact@viaclin.com</a>
+            </div>
+
+            <div class="deck-download reveal">
+                <p>For more detailed information, please review our executive presentation:</p>
+                <!-- Verbatim Asset Use: PowerPoint Presentation -->
+                <a href="Viaclin_Pitch_Deck.pptx" download style="display: inline-block; margin-top: 0.5rem; text-decoration: underline;">Download Viaclin_Pitch_Deck.pptx</a>
+            </div>
+
+            <p style="margin-top: 4rem; font-size: 0.8rem; color: #444;">&copy; 2026 Viaclin Supply Chain Consultancy. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive JavaScript -->
+    <script>
+        // Scroll Reveal Logic for engaging law-firm style entry animations
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+
+        // Subtle Parallax logic for background elements
+        window.addEventListener('scroll', function() {
+            const parallaxElement = document.getElementById('parallax-bg');
+            let scrollPosition = window.pageYOffset;
+            // Move the background element slowly based on scroll
+            parallaxElement.style.transform = 'translateY(' + scrollPosition * 0.15 + 'px) scale(1.5)';
+        });
+    </script>
+</body>
+</html>
