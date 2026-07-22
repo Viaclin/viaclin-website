@@ -315,16 +315,6 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   .step h3 { font-size: var(--text-subheading); line-height: var(--leading-subheading); letter-spacing: var(--tracking-subheading); color: var(--ink); margin-bottom: .7rem; }
   .step p { font-size: 16px; line-height: 1.3; color: var(--graphite); }
 
-  /* ── CLOSE-OUT (light) ── */
-  .trace { background: var(--paper); border: 1px solid var(--lichen); border-radius: var(--radius-2xl-2); padding: var(--card-padding); display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: end; margin-bottom: 20px; }
-  .trace svg { width: 100%; height: auto; overflow: visible; display: block; }
-  .trace-cap { font-size: 16px; letter-spacing: -0.001em; line-height: 1.3; color: var(--graphite); max-width: 34ch; }
-  .close-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  .cstep { background: var(--paper); border: 1px solid var(--lichen); border-radius: var(--radius-2xl); padding: 1.8rem 1.7rem; }
-  .cstep-n { font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--ink); background: var(--lime); border: 1px solid var(--lime); border-radius: var(--radius-tags); padding: 4px 11px; display: inline-block; margin-bottom: 1rem; }
-  .cstep h3 { font-size: 19px; line-height: 1.3; letter-spacing: -0.001em; color: var(--ink); margin-bottom: .5rem; } /* lg-2 token: 19px/1.3 */
-  .cstep p { font-size: 16px; line-height: 1.3; color: var(--graphite); }
-
   /* ── COVERAGE (dark) ── */
   .regions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: clamp(3rem, 6vw, 5rem); }
   .region { position: relative; overflow: hidden; border: 1px solid var(--graphite); border-radius: var(--radius-2xl-2); padding: var(--card-padding); transition: border-color .3s; }
@@ -420,7 +410,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   @media (max-width: 1024px) {
     .hero-lower { grid-template-columns: 1fr; align-items: start; }
     .hero-actions { justify-content: flex-start; }
-    .services, .method, .close-grid, .regions, .gbrands { grid-template-columns: 1fr 1fr; }
+    .services, .method, .regions, .gbrands { grid-template-columns: 1fr 1fr; }
     .net-grid { grid-template-columns: 1fr; }
     .net-visual { max-width: 440px; }
     .cred-inner { grid-template-columns: 1fr 1fr; row-gap: 2rem; }
@@ -446,9 +436,8 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   @media (max-width: 720px) {
     body { font-size: 16px; }
     .hero-lower { padding-top: clamp(4.5rem, 14vh, 8rem); }
-    .services, .method, .close-grid, .regions, .gbrands { grid-template-columns: 1fr; }
-    .svc, .step, .region, .gbrand, .trace { padding: 28px 24px; }
-    .trace { grid-template-columns: 1fr; }
+    .services, .method, .regions, .gbrands { grid-template-columns: 1fr; }
+    .svc, .step, .region, .gbrand { padding: 28px 24px; }
     .cred-inner { grid-template-columns: 1fr; }
     .foot { flex-direction: column; align-items: flex-start; }
     .foot > * { max-width: 100%; }
@@ -457,7 +446,6 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
     .hero-route text:first-of-type { text-anchor: start; }
     .hero-route text:last-of-type { text-anchor: end; }
     .net-visual .route-lbl { font-size: 16px; }
-    .trace svg text { font-size: 12px; }
   }
   @media (max-width: 480px) {
     .hero-route .route-lbl { font-size: 40px; }
@@ -489,8 +477,8 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
     <ul class="nav-links" id="navlinks">
       <li><a href="#services">Services</a></li>
       <li><a href="#network">Network</a></li>
+      <li><a href="#ai">AI</a></li>
       <li><a href="#method">Method</a></li>
-      <li><a href="#closeout">Close-out</a></li>
       <li><a href="#coverage">Coverage</a></li>
       <li><a href="#contact" class="nav-cta">Start a conversation</a></li>
     </ul>
@@ -515,7 +503,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
     </h1>
     <p class="visually-hidden">Your supply chain, better, stronger, faster, cheaper, safer.</p>
     <p class="hero-cycle" aria-hidden="true">Your supply chain, <span class="cycle-word" id="cycleword">better</span><span class="lp">.</span></p>
-    <p class="hero-desc">Expert life sciences supply, led by senior industry operators. We plan, protect and deliver clinical and commercial supply chains, accountable from first GMP batch to final patient dose.</p>
+    <p class="hero-desc">Expert Life Sciences Supply Chain Consultants. Bespoke solutions to optimize and strengthen your operations.</p>
   </div>
   <div class="hero-sphere" aria-hidden="true"><canvas id="spherecv" width="520" height="520"></canvas></div>
   <div class="wrap hero-lower">
@@ -556,7 +544,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <div class="cred">
   <div class="wrap cred-inner">
     <div class="rv"><div class="cred-n">Phase <b>I–IV</b></div><div class="cred-l">Trial coverage</div></div>
-    <div class="rv rv-d1"><div class="cred-n"><b>9</b>-step</div><div class="cred-l">Trial close-out</div></div>
+    <div class="rv rv-d1"><div class="cred-n">End-to-end</div><div class="cred-l">GMP to patient</div></div>
     <div class="rv rv-d2"><div class="cred-n">EU · US · UK</div><div class="cred-l">Regulatory reach</div></div>
     <div class="rv rv-d3"><div class="cred-n">Remote-first</div><div class="cred-l">Global senior network</div></div>
   </div>
@@ -566,7 +554,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="services" class="band-dark">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">01 / 07</span><span class="sec-tag"><span class="dot6"></span>Services</span>
+      <span class="counter">01 / 06</span><span class="sec-tag"><span class="dot6"></span>Services</span>
       <h2 class="title">Four services. One senior team<span class="lp">.</span></h2>
       <p class="lead">Every engagement is led and delivered by people who have held the roles they advise on. We work inside your quality system, your tools and your timelines.</p>
     </div>
@@ -609,7 +597,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
           <li>Clinical packaging, labelling and booklet design</li>
           <li>Cold chain and GDP distribution with excursion response</li>
           <li>QP release, QPPV networks and import licences</li>
-          <li>The nine-step trial close-out</li>
+          <li>Structured trial close-out, from reconciliation to destruction</li>
         </ul>
       </article>
       <article class="svc rv rv-d2">
@@ -660,7 +648,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="network" class="band-dark">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">02 / 07</span><span class="sec-tag"><span class="dot6"></span>Network</span>
+      <span class="counter">02 / 06</span><span class="sec-tag"><span class="dot6"></span>Network</span>
       <h2 class="title">One lead operator. A network behind them<span class="lp">.</span></h2>
       <p class="lead">Viaclin draws on a bank of senior consultants across the EU, US and UK, each with a distinct specialism and their own industry history. Your engagement gets one accountable lead, and the lead gets the whole bench.</p>
     </div>
@@ -712,110 +700,11 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   </div>
 </section>
 
-<!-- METHOD -->
-<section id="method" class="band-light">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="counter">03 / 07</span><span class="sec-tag"><span class="dot6"></span>Method</span>
-      <h2 class="title">Bespoke Consultancy<span class="lp">.</span></h2>
-      <p class="lead">Comprehensive supply chain execution, expertly managed from GMP to patient.</p>
-    </div>
-    <div class="method">
-      <div class="step rv">
-        <span class="step-n">01</span>
-        <h3>Diagnose.</h3>
-        <p>A short assessment of your supply chain, systems and risks. You get a written plan with priorities, owners and timelines, in plain language.</p>
-      </div>
-      <div class="step rv rv-d1">
-        <span class="step-n">02</span>
-        <h3>Embed.</h3>
-        <p>A senior operator joins your team, inside your quality system and your tools. Specialist questions route across the network and come back answered. No handover layers between advice and action.</p>
-      </div>
-      <div class="step rv rv-d2">
-        <span class="step-n">03</span>
-        <h3>Deliver.</h3>
-        <p>Agreed outcomes, tracked in the open. Documentation and knowledge transfer come as standard, so the capability stays with you.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CLOSE-OUT -->
-<section id="closeout" class="band-light">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="counter">04 / 07</span><span class="sec-tag"><span class="dot6"></span>Close-out</span>
-      <h2 class="title">The nine-step close-out no one plans for<span class="lp">.</span></h2>
-      <p class="lead">Trial close-out is the most under-resourced phase in clinical supply. Our structured programme leaves no financial, regulatory or compliance liability open.</p>
-    </div>
-    <div class="trace rv">
-      <svg viewBox="0 0 520 78" aria-hidden="true">
-        <line x1="0" y1="18" x2="520" y2="18" stroke="#c9cbbe" stroke-width="1"/>
-        <line x1="0" y1="58" x2="520" y2="58" stroke="#c9cbbe" stroke-width="1"/>
-        <text x="0" y="12" font-family="'Roboto Mono',monospace" font-size="9" letter-spacing="-0.02em" fill="#4d5757">8°C</text>
-        <text x="0" y="72" font-family="'Roboto Mono',monospace" font-size="9" letter-spacing="-0.02em" fill="#4d5757">2°C</text>
-        <path d="M20 40 L70 36 L120 42 L170 38 L220 44 L250 24 L280 44 L330 40 L380 37 L430 42 L500 39 L500 58 L20 58 Z"
-              fill="#cef79e" opacity=".22"/>
-        <path d="M20 40 L70 36 L120 42 L170 38 L220 44 L250 24 L280 44 L330 40 L380 37 L430 42 L500 39"
-              fill="none" stroke="#222f30" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <line x1="250" y1="24" x2="250" y2="10" stroke="#cef79e" stroke-width="1.5"/>
-        <circle cx="250" cy="24" r="4" fill="#cef79e" stroke="#222f30" stroke-width="1.5"/>
-        <text x="260" y="12" font-family="'Roboto Mono',monospace" font-size="9" letter-spacing="-0.02em" fill="#4d5757">EXCURSION LOGGED</text>
-      </svg>
-      <p class="trace-cap">Every fluctuation recorded. Every excursion investigated, documented and closed. The same rigour runs through all nine steps.</p>
-    </div>
-    <div class="close-grid">
-      <div class="cstep rv"><span class="cstep-n">01</span><h3>Global inventory reconciliation.</h3><p>DS, DP, reference standards, raw materials and Master Cell Banks, with a final disposition strategy.</p></div>
-      <div class="cstep rv"><span class="cstep-n">02</span><h3>IRT decommissioning.</h3><p>Buffer stock calculated before depot shipments cease. Audit trail archived in full.</p></div>
-      <div class="cstep rv"><span class="cstep-n">03</span><h3>CMO close-out.</h3><p>Slot cancellations, batch record archiving, IP security and final settlement.</p></div>
-      <div class="cstep rv"><span class="cstep-n">04</span><h3>Label destruction.</h3><p>Reconciliation and controlled destruction of unused labels, closing the fraud risk.</p></div>
-      <div class="cstep rv"><span class="cstep-n">05</span><h3>Cold chain decommission.</h3><p>Temperature data archived, loggers closed, leased containers returned.</p></div>
-      <div class="cstep rv"><span class="cstep-n">06</span><h3>Customs and trade close.</h3><p>Licence closure, bond settlement and cross-border IMP returns.</p></div>
-      <div class="cstep rv"><span class="cstep-n">07</span><h3>ERP extraction and archive.</h3><p>Inventory ledgers extracted, 21 CFR Part 11 compliant, moved to legal archive.</p></div>
-      <div class="cstep rv"><span class="cstep-n">08</span><h3>Asset recovery.</h3><p>Salvageable actives and equipment valued, documented and returned.</p></div>
-      <div class="cstep rv"><span class="cstep-n">09</span><h3>Compliant destruction.</h3><p>Biohazardous waste destroyed under control, with full documentation.</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- COVERAGE -->
-<section id="coverage" class="band-dark" style="padding-bottom: 0;">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <span class="counter">05 / 07</span><span class="sec-tag"><span class="dot6"></span>Coverage</span>
-      <h2 class="title">Three regulatory jurisdictions<span class="lp">.</span></h2>
-    </div>
-    <div class="regions">
-      <div class="region rv">
-        <div class="region-code">EU</div>
-        <h3><span class="dot6"></span>Europe</h3>
-        <p>EMA, HPRA and national competent authorities. Clinical supply hubs in Ireland, Germany and the Netherlands. QP-led batch release and QPPV networks.</p>
-      </div>
-      <div class="region rv rv-d1">
-        <div class="region-code">US</div>
-        <h3><span class="dot6"></span>United States</h3>
-        <p>FDA fluency across INDs, 21 CFR Part 11 and import controls. IRT operations and IOR services across major trial clusters.</p>
-      </div>
-      <div class="region rv rv-d2">
-        <div class="region-code">UK</div>
-        <h3><span class="dot6"></span>United Kingdom</h3>
-        <p>Post-Brexit import and export specialism. MHRA-experienced quality and supply consultants for Great Britain and Northern Ireland.</p>
-      </div>
-    </div>
-  </div>
-  <div class="marquee rv" aria-hidden="true">
-    <div class="marquee-track">
-      <span class="mq">GMP</span><span class="mq">GDP</span><span class="mq">21 CFR PART 11</span><span class="mq">ANNEX 11</span><span class="mq">ICH E6</span><span class="mq">EMA</span><span class="mq">FDA</span><span class="mq">HPRA</span><span class="mq">MHRA</span><span class="mq">QP RELEASE</span><span class="mq">QPPV</span><span class="mq">IRT</span><span class="mq">SERIALISATION</span><span class="mq">SAP</span><span class="mq">ANAPLAN</span><span class="mq">ENVIROTAINER</span>
-      <span class="mq">GMP</span><span class="mq">GDP</span><span class="mq">21 CFR PART 11</span><span class="mq">ANNEX 11</span><span class="mq">ICH E6</span><span class="mq">EMA</span><span class="mq">FDA</span><span class="mq">HPRA</span><span class="mq">MHRA</span><span class="mq">QP RELEASE</span><span class="mq">QPPV</span><span class="mq">IRT</span><span class="mq">SERIALISATION</span><span class="mq">SAP</span><span class="mq">ANAPLAN</span><span class="mq">ENVIROTAINER</span>
-    </div>
-  </div>
-</section>
-
 <!-- AI -->
 <section id="ai" class="band-dark">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">06 / 07</span><span class="sec-tag"><span class="dot6"></span>AI</span>
+      <span class="counter">03 / 06</span><span class="sec-tag"><span class="dot6"></span>AI</span>
       <h2 class="title">We build the bridge between now and next<span class="lp">.</span></h2>
       <p class="lead">Industry-leading AI consultancy through our partner SupplyAI. Practical, validated AI for life sciences supply chains, adopted at the pace your quality system allows.</p>
     </div>
@@ -864,11 +753,72 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   </div>
 </section>
 
+<!-- METHOD -->
+<section id="method" class="band-light">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">04 / 06</span><span class="sec-tag"><span class="dot6"></span>Method</span>
+      <h2 class="title">Bespoke Consultancy<span class="lp">.</span></h2>
+      <p class="lead">Comprehensive supply chain execution, expertly managed from GMP to patient.</p>
+    </div>
+    <div class="method">
+      <div class="step rv">
+        <span class="step-n">01</span>
+        <h3>Diagnose.</h3>
+        <p>A short assessment of your supply chain, systems and risks. You get a written plan with priorities, owners and timelines, in plain language.</p>
+      </div>
+      <div class="step rv rv-d1">
+        <span class="step-n">02</span>
+        <h3>Embed.</h3>
+        <p>A senior operator joins your team, inside your quality system and your tools. Specialist questions route across the network and come back answered. No handover layers between advice and action.</p>
+      </div>
+      <div class="step rv rv-d2">
+        <span class="step-n">03</span>
+        <h3>Deliver.</h3>
+        <p>Agreed outcomes, tracked in the open. Documentation and knowledge transfer come as standard, so the capability stays with you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section id="coverage" class="band-dark" style="padding-bottom: 0;">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">05 / 06</span><span class="sec-tag"><span class="dot6"></span>Coverage</span>
+      <h2 class="title">Three regulatory jurisdictions<span class="lp">.</span></h2>
+    </div>
+    <div class="regions">
+      <div class="region rv">
+        <div class="region-code">EU</div>
+        <h3><span class="dot6"></span>Europe</h3>
+        <p>EMA, HPRA and national competent authorities. Clinical supply hubs in Ireland, Germany and the Netherlands. QP-led batch release and QPPV networks.</p>
+      </div>
+      <div class="region rv rv-d1">
+        <div class="region-code">US</div>
+        <h3><span class="dot6"></span>United States</h3>
+        <p>FDA fluency across INDs, 21 CFR Part 11 and import controls. IRT operations and IOR services across major trial clusters.</p>
+      </div>
+      <div class="region rv rv-d2">
+        <div class="region-code">UK</div>
+        <h3><span class="dot6"></span>United Kingdom</h3>
+        <p>Post-Brexit import and export specialism. MHRA-experienced quality and supply consultants for Great Britain and Northern Ireland.</p>
+      </div>
+    </div>
+  </div>
+  <div class="marquee rv" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="mq">GMP</span><span class="mq">GDP</span><span class="mq">21 CFR PART 11</span><span class="mq">ANNEX 11</span><span class="mq">ICH E6</span><span class="mq">EMA</span><span class="mq">FDA</span><span class="mq">HPRA</span><span class="mq">MHRA</span><span class="mq">QP RELEASE</span><span class="mq">QPPV</span><span class="mq">IRT</span><span class="mq">SERIALISATION</span><span class="mq">SAP</span><span class="mq">ANAPLAN</span><span class="mq">ENVIROTAINER</span>
+      <span class="mq">GMP</span><span class="mq">GDP</span><span class="mq">21 CFR PART 11</span><span class="mq">ANNEX 11</span><span class="mq">ICH E6</span><span class="mq">EMA</span><span class="mq">FDA</span><span class="mq">HPRA</span><span class="mq">MHRA</span><span class="mq">QP RELEASE</span><span class="mq">QPPV</span><span class="mq">IRT</span><span class="mq">SERIALISATION</span><span class="mq">SAP</span><span class="mq">ANAPLAN</span><span class="mq">ENVIROTAINER</span>
+    </div>
+  </div>
+</section>
+
 <!-- GROUP -->
 <section id="group" class="band-light">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">07 / 07</span><span class="sec-tag"><span class="dot6"></span>The group</span>
+      <span class="counter">06 / 06</span><span class="sec-tag"><span class="dot6"></span>The group</span>
       <h2 class="title">Three brands. One umbrella group<span class="lp">.</span></h2>
       <p class="lead">Viaclin shares an umbrella group with SupplyAI and Geoclin, and draws on their expertise and resources. When your programme needs AI tooling or commercial-scale ownership, the answer sits inside the group, one conversation away.</p>
     </div>
@@ -945,7 +895,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
       <span class="foot-word">viaclin<span class="lp">.</span></span>
     </div>
     <div class="foot-links">
-      <a href="#services">Services</a><a href="#method">Method</a><a href="#closeout">Close-out</a><a href="#coverage">Coverage</a><a href="#ai">AI</a><a href="#contact">Contact</a>
+      <a href="#services">Services</a><a href="#network">Network</a><a href="#ai">AI</a><a href="#method">Method</a><a href="#coverage">Coverage</a><a href="#contact">Contact</a>
     </div>
     <div class="foot-meta">© 2026 Viaclin · One group with <a href="https://supplyai.eu">SupplyAI</a> and <a href="https://geoclin.com">Geoclin</a> · EU · US · UK</div>
   </div>
@@ -1020,7 +970,7 @@ const spy = new IntersectionObserver(es => {
     }
   });
 }, { rootMargin: '-40% 0px -55% 0px' });
-['services', 'network', 'method', 'closeout', 'coverage', 'group', 'contact'].forEach(id => {
+['services', 'network', 'ai', 'method', 'coverage', 'group', 'contact'].forEach(id => {
   const el = document.getElementById(id);
   if (el) spy.observe(el);
 });
