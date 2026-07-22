@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Viaclin — Life Sciences Supply Chain Consultancy</title>
+<title>Viaclin | Life Sciences Supply Chain Consultancy</title>
 <meta name="description" content="Specialist supply chain support, clinical trial supply expertise, greenfield operations setup and forecasting for life sciences companies across the EU, US and UK.">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23222f30'/%3E%3Cpath d='M14 20 L32 46 L50 20' stroke='%23ffffff' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='46' r='6' fill='%23cef79e'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,7 +23,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
      style reference. One weight. One accent.
      ───────────────────────────────────────────── */
   :root {
-    /* ── Canonical tokens — Refero extraction of integratedbiosciences.com (tokens/variables.css) ── */
+    /* ── Canonical tokens:Refero extraction of integratedbiosciences.com (tokens/variables.css) ── */
     --color-bioluminescent-lime: #cef79e;
     --color-abyssal-ink: #222f30;
     --color-bone-white: #f7f7f5;
@@ -34,7 +34,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
     --color-frost: #eeeeee;
     --color-void: #000000;
 
-    /* 'Inter Tight' inserted after Aspekta — Aspekta is not web-hosted, Inter Tight is its documented substitute */
+    /* 'Inter Tight' inserted after Aspekta:Aspekta is not web-hosted, Inter Tight is its documented substitute */
     --font-aspekta: 'Aspekta', 'Inter Tight', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --font-roboto-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
@@ -107,13 +107,13 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
     line-height: 1.23;
   }
 
-  /* lime period — the brand's terminal signal */
+  /* lime period:the brand's terminal signal */
   .lp { color: var(--lime); }
 
   /* ── PROGRESS INDICATOR (sanctioned lime) ── */
   .progress { position: fixed; top: 0; left: 0; height: 2px; width: 100%; background: var(--lime); transform: scaleX(0); transform-origin: 0 0; z-index: 300; }
 
-  /* ── NAV — persistent banner ── */
+  /* ── NAV:persistent banner ── */
   .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 200;
     border-bottom: 1px solid transparent;
@@ -180,25 +180,29 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   .hero-sphere::after { content: ''; position: absolute; inset: -6%; border: 1px solid rgba(206,247,158,.16); border-radius: 50%; }
   .tagline { display: inline-flex; align-items: center; gap: .7rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); }
   .tagline .dot, .dot6 { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
-  .hero h1 {
-    margin-top: 2.2rem;
-    font-size: clamp(3.1rem, 10.8vw, 9.875rem); /* caps at the 158px hero token */
+  .hero h1 { margin-top: 2.2rem; display: flex; align-items: center; gap: clamp(1.1rem, 2.6vw, 2.2rem); }
+  .lockup-mark { width: clamp(64px, 9.5vw, 128px); height: auto; flex-shrink: 0; display: block; }
+  .lockup-word {
+    font-size: clamp(3.2rem, 10.4vw, 9.875rem); /* caps at the 158px hero token */
     line-height: var(--leading-hero);
-    letter-spacing: -0.03em; /* = -4.74px at 158px, per --tracking-hero */
+    letter-spacing: -0.03em; /* -4.74px at 158px, per --tracking-hero */
     color: var(--paper);
-    max-width: 12ch;
   }
-  .hero-lower { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: end; padding-top: clamp(400px, 44vh, 480px); padding-bottom: clamp(3rem, 7vh, 5rem); }
+  .hero-cycle { margin-top: clamp(1.6rem, 3.4vh, 2.8rem); font-size: clamp(1.9rem, 4.6vw, 3.625rem); line-height: 1.1; letter-spacing: -0.012em; color: var(--paper); }
+  .cycle-word { color: var(--lime); display: inline-block; transition: opacity .26s ease, transform .26s ease; }
+  .cycle-word.out { opacity: 0; transform: translateY(.35em); }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .hero-lower { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: end; padding-top: clamp(220px, 26vh, 340px); padding-bottom: clamp(3rem, 7vh, 5rem); }
   .hero-state {
     font-size: clamp(1.45rem, 2.6vw, 2.25rem);
     line-height: 1.2;
     letter-spacing: -0.006em;
-    color: var(--paper); opacity: .62; /* spec asks graphite, but that's 1.9:1 on ink — muted paper keeps it readable */
+    color: var(--paper); opacity: .62; /* spec asks graphite, but that's 1.9:1 on ink:muted paper keeps it readable */
     max-width: 24ch;
   }
   .hero-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
 
-  /* buttons — restrained, mono, radius 8 */
+  /* buttons:restrained, mono, radius 8 */
   .btn {
     display: inline-flex; align-items: center; gap: .55rem;
     font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase;
@@ -214,7 +218,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   .btn-ghost-light { background: transparent; color: var(--ink); border: 1px solid var(--graphite); }
   .btn-ghost-light:hover { border-color: var(--ink); }
 
-  /* arrow CTA — the only lime fill, 40×40 exactly */
+  /* arrow CTA:the only lime fill, 40×40 exactly */
   .arrow-btn {
     width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--radius-buttons);
     background: var(--lime); border: none; cursor: pointer;
@@ -374,7 +378,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   .cta-mail { display: inline-flex; align-items: center; gap: .7rem; margin-top: 2.4rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--lime); text-decoration: none; text-transform: uppercase; }
   .cta-mail:hover { text-decoration: underline; }
 
-  /* ── FOOTER — pure black ground ── */
+  /* ── FOOTER:pure black ground ── */
   footer { background: var(--void); padding: 3.4rem 0 3.8rem; }
   .foot { display: flex; justify-content: space-between; align-items: center; gap: 1.6rem; flex-wrap: wrap; }
   .foot-brand { display: inline-flex; align-items: center; gap: .6rem; }
@@ -386,7 +390,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   .foot-meta { font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--paper); }
   .foot-meta a { color: inherit; }
 
-  /* reveal on scroll — hidden state only when JS is actually running */
+  /* reveal on scroll:hidden state only when JS is actually running */
   .js .rv { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
   .rv.in { opacity: 1; transform: none; }
   .rv-d1 { transition-delay: .08s; } .rv-d2 { transition-delay: .16s; } .rv-d3 { transition-delay: .24s; }
@@ -500,12 +504,22 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <header class="hero">
   <div class="wrap">
     <span class="tagline" id="herotag"><span class="dot"></span>Life sciences supply chain consultancy</span>
-    <h1>From molecule to last patient<span class="lp">.</span></h1>
-    <p class="hero-desc">We plan, protect and deliver life sciences supply — clinical trial logistics, greenfield operations and demand forecasting, run by senior operators accountable from first GMP batch to final patient dose.</p>
+    <h1>
+      <svg class="lockup-mark" viewBox="0 0 64 52" fill="none" aria-hidden="true">
+        <path d="M8 12 L32 42 L56 12" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="8" cy="12" r="5" fill="#222f30" stroke="#ffffff" stroke-width="3"/>
+        <circle cx="32" cy="42" r="5.5" fill="#cef79e"/>
+        <circle cx="56" cy="12" r="5" fill="#222f30" stroke="#ffffff" stroke-width="3"/>
+      </svg>
+      <span class="lockup-word">viaclin<span class="lp">.</span></span>
+    </h1>
+    <p class="visually-hidden">Your supply chain, better, stronger, faster, cheaper, safer.</p>
+    <p class="hero-cycle" aria-hidden="true">Your supply chain, <span class="cycle-word" id="cycleword">better</span><span class="lp">.</span></p>
+    <p class="hero-desc">Expert life sciences supply, led by senior industry operators. We plan, protect and deliver clinical and commercial supply chains, accountable from first GMP batch to final patient dose.</p>
   </div>
   <div class="hero-sphere" aria-hidden="true"><canvas id="spherecv" width="520" height="520"></canvas></div>
   <div class="wrap hero-lower">
-    <p class="hero-state">One unbroken route — specialist supply chain support, clinical trial supply, greenfield operations and forecasting, delivered by senior operators.</p>
+    <p class="hero-state">Full oversight, without the overhead.</p>
     <div class="hero-actions">
       <a href="#contact" class="btn btn-fill-light">Start a conversation</a>
       <a href="#services" class="btn btn-ghost">See the services</a>
@@ -552,7 +566,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="services" class="band-dark">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">01 / 06</span><span class="sec-tag"><span class="dot6"></span>Services</span>
+      <span class="counter">01 / 07</span><span class="sec-tag"><span class="dot6"></span>Services</span>
       <h2 class="title">Four services. One senior team<span class="lp">.</span></h2>
       <p class="lead">Every engagement is led and delivered by people who have held the roles they advise on. We work inside your quality system, your tools and your timelines.</p>
     </div>
@@ -570,9 +584,10 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
         <h3>Specialist supply chain support.</h3>
         <p class="svc-b">Senior operators embedded in your supply chain. We take ownership of planning, procurement and manufacturing oversight, and we answer for the outcome.</p>
         <ul class="svc-list">
-          <li>Inventory strategy, depot network and FIFO control</li>
+          <li>Inventory strategy, supply network and risk control</li>
           <li>CMO and CDMO sourcing, contracts and oversight</li>
-          <li>Technical transfer, scale-up and PPQ</li>
+          <li>Tech transfer planning and seamless transition</li>
+          <li>Project and program management: budgets, Gantt plans, risk registers, action tracking</li>
           <li>Procurement, RFQs and supplier due diligence</li>
           <li>Interim senior support inside your team</li>
         </ul>
@@ -592,7 +607,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
         <ul class="svc-list">
           <li>IRT and IXRS setup, management and decommissioning</li>
           <li>Clinical packaging, labelling and booklet design</li>
-          <li>Cold chain and GDP logistics with excursion response</li>
+          <li>Cold chain and GDP distribution with excursion response</li>
           <li>QP release, QPPV networks and import licences</li>
           <li>The nine-step trial close-out</li>
         </ul>
@@ -611,7 +626,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
         <p class="svc-b">New market, new facility or new function. We build life sciences supply operations from a blank page to a licensed, running capability.</p>
         <ul class="svc-list">
           <li>Licensing pathways with HPRA, MHRA, FDA and EMA</li>
-          <li>Quality systems, SOPs and GMP readiness</li>
+          <li>SOP development, quality systems and GMP readiness</li>
           <li>ERP selection and implementation</li>
           <li>CMO network design and backup site qualification</li>
           <li>Serialisation and packaging line adoption</li>
@@ -628,7 +643,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
           <svg viewBox="0 0 40 40" fill="none"><path d="M7 7 v26 h26" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/><path d="M12 27 L19 20 L24 23 L32 12" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="12" r="2.8" fill="#cef79e"/></svg>
         </div>
         <h3>Demand Forecasting.</h3>
-        <p class="svc-b">No crystal ball. A working model of what is needed, where, and when, built on your programme's own signals.</p>
+        <p class="svc-b">Precision forecasting, engineered by senior supply chain operators. A working model of what is needed, where, and when, built on your programme's own signals.</p>
         <ul class="svc-list">
           <li>S&amp;OP ownership and demand planning on SAP and Anaplan</li>
           <li>Patient-level modelling: recruitment, dosing intervals, dropout</li>
@@ -645,7 +660,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="network" class="band-dark">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">02 / 06</span><span class="sec-tag"><span class="dot6"></span>Network</span>
+      <span class="counter">02 / 07</span><span class="sec-tag"><span class="dot6"></span>Network</span>
       <h2 class="title">One lead operator. A network behind them<span class="lp">.</span></h2>
       <p class="lead">Viaclin draws on a bank of senior consultants across the EU, US and UK, each with a distinct specialism and their own industry history. Your engagement gets one accountable lead, and the lead gets the whole bench.</p>
     </div>
@@ -701,8 +716,9 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="method" class="band-light">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">03 / 06</span><span class="sec-tag"><span class="dot6"></span>Method</span>
+      <span class="counter">03 / 07</span><span class="sec-tag"><span class="dot6"></span>Method</span>
       <h2 class="title">Bespoke Consultancy<span class="lp">.</span></h2>
+      <p class="lead">Comprehensive supply chain execution, expertly managed from GMP to patient.</p>
     </div>
     <div class="method">
       <div class="step rv">
@@ -728,7 +744,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="closeout" class="band-light">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">04 / 06</span><span class="sec-tag"><span class="dot6"></span>Close-out</span>
+      <span class="counter">04 / 07</span><span class="sec-tag"><span class="dot6"></span>Close-out</span>
       <h2 class="title">The nine-step close-out no one plans for<span class="lp">.</span></h2>
       <p class="lead">Trial close-out is the most under-resourced phase in clinical supply. Our structured programme leaves no financial, regulatory or compliance liability open.</p>
     </div>
@@ -766,7 +782,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="coverage" class="band-dark" style="padding-bottom: 0;">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">05 / 06</span><span class="sec-tag"><span class="dot6"></span>Coverage</span>
+      <span class="counter">05 / 07</span><span class="sec-tag"><span class="dot6"></span>Coverage</span>
       <h2 class="title">Three regulatory jurisdictions<span class="lp">.</span></h2>
     </div>
     <div class="regions">
@@ -795,11 +811,64 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   </div>
 </section>
 
+<!-- AI -->
+<section id="ai" class="band-dark">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">06 / 07</span><span class="sec-tag"><span class="dot6"></span>AI</span>
+      <h2 class="title">We build the bridge between now and next<span class="lp">.</span></h2>
+      <p class="lead">Industry-leading AI consultancy through our partner SupplyAI. Practical, validated AI for life sciences supply chains, adopted at the pace your quality system allows.</p>
+    </div>
+    <div class="services">
+      <article class="svc rv">
+        <div class="svc-top">
+          <span class="svc-tag"><span class="dot6"></span>Consultancy</span>
+          <a href="#contact" class="arrow-btn" aria-label="Discuss AI consultancy">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="svc-ico" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><path d="M7 30 L17 30 M23 30 L33 30 M17 30 C 19 30, 19 12, 21 12 L23 12" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/><circle cx="7" cy="30" r="2.6" stroke="#ffffff" stroke-width="1.8"/><circle cx="33" cy="30" r="2.6" stroke="#ffffff" stroke-width="1.8"/><circle cx="23" cy="12" r="2.8" fill="#cef79e"/></svg>
+        </div>
+        <h3>AI consultancy, with a partner who ships.</h3>
+        <p class="svc-b">We find where AI genuinely earns a place in your operation and carry it from idea to validated, working practice. One accountable programme, run with your supply chain leads and delivered with SupplyAI.</p>
+        <ul class="svc-list">
+          <li>AI use-case discovery mapped to your real pain points</li>
+          <li>Data readiness and systems assessment</li>
+          <li>Validation strategy for AI in GxP workflows</li>
+          <li>Pilot to production: adoption, training and change management</li>
+          <li>Ongoing oversight through the Viaclin and SupplyAI partnership</li>
+        </ul>
+      </article>
+      <article class="svc rv rv-d1">
+        <div class="svc-top">
+          <span class="svc-tag"><span class="dot6"></span>Platform</span>
+          <a href="https://supplyai.eu" target="_blank" rel="noopener" class="arrow-btn" aria-label="Visit SupplyAI">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="svc-ico" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" rx="4" stroke="#ffffff" stroke-width="1.8"/><path d="M14 20 L18 24 L26 15" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="8" r="3" fill="#cef79e"/></svg>
+        </div>
+        <h3>QAI. Expert AI advisors, on your machine.</h3>
+        <p class="svc-b">QAI is SupplyAI's platform of specialist, live AI advisors. They read, listen and check beside your team as it works, turning what they see into constant, expert advice. Every piece of the work stays on your machine, inside your network.</p>
+        <ul class="svc-list">
+          <li>QAI for Supply Chain, Quality, Regulatory and Project Management</li>
+          <li>Runs entirely on your own hardware: no data leaves the building</li>
+          <li>Learns your procedures once, then quotes them back on demand</li>
+          <li>Tamper-evident record of every step, ready for audit</li>
+          <li>Deployed and supported through our partnership</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
 <!-- GROUP -->
 <section id="group" class="band-light">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">06 / 06</span><span class="sec-tag"><span class="dot6"></span>The group</span>
+      <span class="counter">07 / 07</span><span class="sec-tag"><span class="dot6"></span>The group</span>
       <h2 class="title">Three brands. One umbrella group<span class="lp">.</span></h2>
       <p class="lead">Viaclin shares an umbrella group with SupplyAI and Geoclin, and draws on their expertise and resources. When your programme needs AI tooling or commercial-scale ownership, the answer sits inside the group, one conversation away.</p>
     </div>
@@ -816,7 +885,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
       </a>
       <a class="gbrand rv rv-d2" href="https://geoclin.com" target="_blank" rel="noopener">
         <div class="gb-top"><span class="gb-name">Geoclin<span class="lp">.</span></span></div>
-        <p class="gb-b">Total supply chain ownership at commercial scale, from CDMO management to global logistics.</p>
+        <p class="gb-b">Total supply chain ownership at commercial scale, from CDMO management to global distribution.</p>
         <span class="gb-url"><span class="dot6"></span>geoclin.com</span>
       </a>
     </div>
@@ -876,7 +945,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
       <span class="foot-word">viaclin<span class="lp">.</span></span>
     </div>
     <div class="foot-links">
-      <a href="#services">Services</a><a href="#method">Method</a><a href="#closeout">Close-out</a><a href="#coverage">Coverage</a><a href="#contact">Contact</a>
+      <a href="#services">Services</a><a href="#method">Method</a><a href="#closeout">Close-out</a><a href="#coverage">Coverage</a><a href="#ai">AI</a><a href="#contact">Contact</a>
     </div>
     <div class="foot-meta">© 2026 Viaclin · One group with <a href="https://supplyai.eu">SupplyAI</a> and <a href="https://geoclin.com">Geoclin</a> · EU · US · UK</div>
   </div>
@@ -900,7 +969,7 @@ function updateFly() {
   const e = tagslot.getBoundingClientRect();
   const D = Math.max(60, tagStart.docY - e.top);
   let p = Math.min(1, Math.max(0, scrollY / D));
-  p = p * p * (3 - 2 * p); // smoothstep — eases the glide at both ends
+  p = p * p * (3 - 2 * p); // smoothstep:eases the glide at both ends
   const naturalY = tagStart.docY - scrollY;
   const x = tagStart.x + (e.left - tagStart.x) * p;
   const y = naturalY + (e.top - naturalY) * p;
@@ -938,7 +1007,7 @@ const io = new IntersectionObserver(es => {
 }, { threshold: .12 });
 document.querySelectorAll('.rv').forEach(el => io.observe(el));
 
-// nav pill scrollspy — active pill tracks the section in view
+// nav pill scrollspy:active pill tracks the section in view
 const spy = new IntersectionObserver(es => {
   es.forEach(e => {
     const link = document.querySelector('.nav-links a[href="#' + e.target.id + '"]:not(.nav-cta)');
@@ -1003,6 +1072,21 @@ if (cv) {
     new IntersectionObserver(es => { vis = es[0].isIntersecting; sync(); }).observe(cv.closest('.hero-sphere'));
     rm.addEventListener('change', sync);
   }
+}
+
+// hero word cycle
+const cycleWord = document.getElementById('cycleword');
+if (cycleWord && !rmq.matches && !document.documentElement.classList.contains('static')) {
+  const cycleWords = ['better', 'stronger', 'faster', 'cheaper', 'safer'];
+  let wi = 0;
+  setInterval(() => {
+    cycleWord.classList.add('out');
+    setTimeout(() => {
+      wi = (wi + 1) % cycleWords.length;
+      cycleWord.textContent = cycleWords[wi];
+      cycleWord.classList.remove('out');
+    }, 260);
+  }, 2600);
 }
 
 // reduced motion or static capture: remove the travelling dot and SMIL cycles
