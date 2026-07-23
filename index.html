@@ -188,9 +188,14 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
     letter-spacing: -0.03em; /* -4.74px at 158px, per --tracking-hero */
     color: var(--paper);
   }
-  .hero-cycle { margin-top: clamp(1.6rem, 3.4vh, 2.8rem); font-size: clamp(1.9rem, 4.6vw, 3.625rem); line-height: 1.1; letter-spacing: -0.012em; color: var(--paper); }
+  .hero-cycle { margin-top: clamp(1.6rem, 3.4vh, 2.8rem); font-size: clamp(1.3rem, 6.1vw, 3.625rem); line-height: 1.1; letter-spacing: -0.012em; color: var(--paper); }
   .cycle-word { color: var(--lime); display: inline-block; transition: opacity .26s ease, transform .26s ease; }
   .cycle-word.out { opacity: 0; transform: translateY(.35em); }
+  /* invisible copy of the longest word reserves the span's width so swapping words never rewraps the line;
+     the live word overlays it absolutely, sharing the sizer's natural baseline */
+  .cycle-word { position: relative; }
+  .cycle-sizer { visibility: hidden; }
+  .cycle-live { position: absolute; left: 0; top: 0; white-space: nowrap; }
   .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
   .hero-lower { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: end; padding-top: clamp(220px, 26vh, 340px); padding-bottom: clamp(3rem, 7vh, 5rem); }
   .hero-state {
@@ -200,7 +205,6 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
     color: var(--paper); opacity: .62; /* spec asks graphite, but that's 1.9:1 on ink:muted paper keeps it readable */
     max-width: 24ch;
   }
-  .hero-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
 
   /* buttons:restrained, mono, radius 8 */
   .btn {
@@ -300,6 +304,15 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   .svc-list li { display: flex; align-items: flex-start; gap: .7rem; font-size: 16px; line-height: 1.3; color: var(--paper); }
   .svc-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); margin-top: .5rem; flex-shrink: 0; }
 
+  /* ── CAPABILITIES (light) ── */
+  .capgroup { margin-bottom: clamp(2.6rem, 5vw, 4rem); }
+  .capgroup:last-child { margin-bottom: 0; }
+  .capgroup-h { display: flex; align-items: center; gap: .8rem; font-size: var(--text-subheading); line-height: var(--leading-subheading); letter-spacing: var(--tracking-subheading); color: var(--ink); margin-bottom: 1.4rem; }
+  .caps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .cap { background: var(--paper); border: 1px solid var(--lichen); border-radius: var(--radius-2xl); padding: 1.8rem 1.7rem; }
+  .cap h4 { font-size: 19px; line-height: 1.3; letter-spacing: -0.001em; color: var(--ink); margin-bottom: .5rem; }
+  .cap p { font-size: 16px; line-height: 1.3; color: var(--graphite); }
+
   /* ── NETWORK (dark) ── */
   .net-grid { display: grid; grid-template-columns: 1fr .9fr; gap: clamp(2rem, 4vw, 4rem); align-items: center; }
   .npt { border-top: 1px solid var(--graphite); padding: 1.8rem 0; }
@@ -368,6 +381,34 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   .cta-mail { display: inline-flex; align-items: center; gap: .7rem; margin-top: 2.4rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--lime); text-decoration: none; text-transform: uppercase; }
   .cta-mail:hover { text-decoration: underline; }
 
+  /* ── CONTACT POPUP ── */
+  .modal-backdrop { position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,.6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1rem; }
+  .modal-backdrop[hidden] { display: none; }
+  .modal { position: relative; background: var(--ink); border: 1px solid var(--graphite); border-radius: var(--radius-2xl-2); padding: clamp(1.8rem, 4vw, 2.5rem); width: min(520px, 100%); max-height: min(92vh, 760px); overflow-y: auto; }
+  .modal h3 { font-size: var(--text-subheading); line-height: var(--leading-subheading); letter-spacing: var(--tracking-subheading); color: var(--paper); margin: 1rem 0 .4rem; }
+  .modal-close { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; background: none; border: 1px solid var(--graphite); border-radius: var(--radius-buttons); color: var(--paper); cursor: pointer; font-size: 18px; line-height: 1; transition: border-color .25s; }
+  .modal-close:hover { border-color: var(--paper); }
+  .f-label { display: block; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); margin: 1.1rem 0 .45rem; }
+  .f-input, .f-select { width: 100%; background: transparent; border: 1px solid var(--graphite); border-radius: var(--radius-buttons); color: var(--paper); font-family: var(--font-sans); font-size: 16px; padding: 11px 14px; transition: border-color .25s; }
+  .f-input:hover, .f-select:hover { border-color: var(--lichen); }
+  .f-input::placeholder { color: var(--graphite); }
+  .f-select { -webkit-appearance: none; appearance: none; padding-right: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 L6 6.5 L11 1.5' fill='none' stroke='%23c9cbbe' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; }
+  .f-select option { color: var(--ink); background: var(--paper); }
+  .f-or { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0 .2rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); }
+  .f-or::before, .f-or::after { content: ''; height: 1px; background: var(--graphite); flex: 1; }
+  .f-phone { display: flex; gap: 10px; }
+  .f-phone .f-select { width: auto; flex-shrink: 0; max-width: 150px; }
+  .f-err { margin-top: 1.1rem; font-size: 16px; line-height: 1.3; color: var(--lime); }
+  .modal .btn { margin-top: 1.6rem; border: none; width: 100%; justify-content: center; }
+  .f-note { margin-top: .9rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); display: flex; align-items: center; gap: .7rem; }
+
+  .hero-desc-cta { margin-top: 1.8rem; }
+  @media (min-width: 721px) {
+    /* clinical card bullets start level with the card to its left */
+    #services .svc-b { min-height: 63px; }
+    #services .svc-list { margin-top: 0; }
+  }
+
   /* ── FOOTER:pure black ground ── */
   footer { background: var(--void); padding: 3.4rem 0 3.8rem; }
   .foot { display: flex; justify-content: space-between; align-items: center; gap: 1.6rem; flex-wrap: wrap; }
@@ -409,7 +450,6 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   }
   @media (max-width: 1024px) {
     .hero-lower { grid-template-columns: 1fr; align-items: start; }
-    .hero-actions { justify-content: flex-start; }
     .services, .method, .regions, .gbrands { grid-template-columns: 1fr 1fr; }
     .net-grid { grid-template-columns: 1fr; }
     .net-visual { max-width: 440px; }
@@ -436,7 +476,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   @media (max-width: 720px) {
     body { font-size: 16px; }
     .hero-lower { padding-top: clamp(4.5rem, 14vh, 8rem); }
-    .services, .method, .regions, .gbrands { grid-template-columns: 1fr; }
+    .services, .method, .regions, .gbrands, .caps { grid-template-columns: 1fr; }
     .svc, .step, .region, .gbrand { padding: 28px 24px; }
     .cred-inner { grid-template-columns: 1fr; }
     .foot { flex-direction: column; align-items: flex-start; }
@@ -480,7 +520,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
       <li><a href="#ai">AI</a></li>
       <li><a href="#method">Method</a></li>
       <li><a href="#coverage">Coverage</a></li>
-      <li><a href="#contact" class="nav-cta">Start a conversation</a></li>
+      <li><a href="#contact" class="nav-cta contact-open">Start a conversation</a></li>
     </ul>
     <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks"><span></span><span></span><span></span></button>
   </div>
@@ -501,20 +541,14 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
       </svg>
       <span class="lockup-word">viaclin<span class="lp">.</span></span>
     </h1>
-    <p class="visually-hidden">Your supply chain, better, stronger, faster, cheaper, safer.</p>
-    <p class="hero-cycle" aria-hidden="true">Your supply chain, <span class="cycle-word" id="cycleword">better</span><span class="lp">.</span></p>
-    <p class="hero-desc">Expert Life Sciences Supply Chain Consultants. Bespoke solutions to optimize and strengthen your operations.</p>
+    <p class="visually-hidden">Your supply chain, stronger, faster, cheaper, simpler, safer, better.</p>
+    <p class="hero-cycle" aria-hidden="true">Your supply chain, <span class="cycle-word" id="cycleword"><span class="cycle-sizer">stronger.</span><span class="cycle-live"><span id="cycletext">stronger</span><span class="lp">.</span></span></span></p>
+    <p class="hero-desc">Strengthen your Supply Operations with the Viaclin network of Expert Consultants. Plan, Protect and Deliver real results.</p>
+    <div class="hero-desc-cta"><a href="#contact" class="btn btn-fill-light contact-open">Start the conversation</a></div>
   </div>
   <div class="hero-sphere" aria-hidden="true"><canvas id="spherecv" width="520" height="520"></canvas></div>
   <div class="wrap hero-lower">
     <p class="hero-state">Full oversight, without the overhead.</p>
-    <div class="hero-actions">
-      <a href="#contact" class="btn btn-fill-light">Start a conversation</a>
-      <a href="#services" class="btn btn-ghost">See the services</a>
-      <a href="#services" class="arrow-btn" aria-label="Go to services">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </a>
-    </div>
   </div>
 </header>
 
@@ -544,7 +578,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <div class="cred">
   <div class="wrap cred-inner">
     <div class="rv"><div class="cred-n">Phase <b>I–IV</b></div><div class="cred-l">Trial coverage</div></div>
-    <div class="rv rv-d1"><div class="cred-n">End-to-end</div><div class="cred-l">GMP to patient</div></div>
+    <div class="rv rv-d1"><div class="cred-n">GXP</div><div class="cred-l">Rigorous compliance</div></div>
     <div class="rv rv-d2"><div class="cred-n">EU · US · UK</div><div class="cred-l">Regulatory reach</div></div>
     <div class="rv rv-d3"><div class="cred-n">Remote-first</div><div class="cred-l">Global senior network</div></div>
   </div>
@@ -554,9 +588,9 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="services" class="band-dark">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">01 / 06</span><span class="sec-tag"><span class="dot6"></span>Services</span>
+      <span class="counter">01 / 07</span><span class="sec-tag"><span class="dot6"></span>Services</span>
       <h2 class="title">Four services. One senior team<span class="lp">.</span></h2>
-      <p class="lead">Every engagement is led and delivered by people who have held the roles they advise on. We work inside your quality system, your tools and your timelines.</p>
+      <p class="lead">Every engagement is led and delivered by a dedicated lead. We work inside your quality system, your tools and your timelines.</p>
     </div>
     <div class="services">
       <article class="svc rv">
@@ -644,11 +678,61 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
   </div>
 </section>
 
+<!-- CAPABILITIES -->
+<section id="capabilities" class="band-light">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">02 / 07</span><span class="sec-tag"><span class="dot6"></span>Capabilities</span>
+      <h2 class="title">Deep capability, across the entire chain<span class="lp">.</span></h2>
+    </div>
+
+    <div class="capgroup rv">
+      <h3 class="capgroup-h"><span class="dot6"></span>Clinical &amp; Commercial Supply Chain Strategy</h3>
+      <div class="caps">
+        <div class="cap"><h4>End-to-End (E2E) Planning Transformation.</h4><p>Transform your supply chain from a cost center into a strategic asset. We design and optimize end-to-end operating models that perfectly align your demand, supply, and inventory planning for maximum efficiency.</p></div>
+        <div class="cap"><h4>Clinical Trial Supply Management.</h4><p>Ensure your life-saving trials never miss a beat. We optimize your clinical supply chain infrastructure, mastering complexities from patient demand to ultra-cold chain logistics.</p></div>
+        <div class="cap"><h4>Phase Scaling.</h4><p>Scale your operations with confidence and speed. We guide your organization through the critical, high-stakes transition from early clinical phases to a resilient, full-scale commercial distribution network.</p></div>
+        <div class="cap"><h4>Network Collaboration &amp; Visibility.</h4><p>Eliminate blind spots across your global ecosystem. We build multi-tier orchestration and utilize digital twin modeling to give you unprecedented, real-time visibility into your supplier network.</p></div>
+      </div>
+    </div>
+
+    <div class="capgroup rv">
+      <h3 class="capgroup-h"><span class="dot6"></span>Quality Assurance &amp; Regulatory Compliance</h3>
+      <div class="caps">
+        <div class="cap"><h4>Outsourced QP and RP Services.</h4><p>Safeguard your product and your reputation with our trusted experts. We provide highly experienced, contract Qualified Persons (QP) and Responsible Persons (RP) to ensure absolute regulatory compliance.</p></div>
+        <div class="cap"><h4>Batch Release &amp; Certification.</h4><p>Navigate European regulatory complexities with ease. We manage the stringent batch release and certification processes to get your clinical and commercial products to market without delay.</p></div>
+        <div class="cap"><h4>License Management.</h4><p>Streamline your path to operational readiness. We expertly handle your MIA and WDA license applications and management so you can focus on your core business.</p></div>
+        <div class="cap"><h4>GMP/GDP Consulting.</h4><p>Build quality into every link of your supply chain. Our expert consulting ensures your manufacturing, storage, and transport processes maintain flawless GMP and GDP compliance.</p></div>
+        <div class="cap"><h4>Validation &amp; Auditing.</h4><p>Mitigate risk before it impacts your bottom line. We provide rigorous validation and auditing to ensure your systems, processes, and external vendors consistently meet elite pharmaceutical standards.</p></div>
+        <div class="cap"><h4>CMC &amp; Tech Transfer.</h4><p>Accelerate your path to market readiness. We expertly manage your CMC requirements and seamlessly guide your tech transfers through the industry's most complex regulatory hurdles.</p></div>
+      </div>
+    </div>
+
+    <div class="capgroup rv">
+      <h3 class="capgroup-h"><span class="dot6"></span>Digital Transformation &amp; Technology Integration</h3>
+      <div class="caps">
+        <div class="cap"><h4>Advanced System Integration.</h4><p>Unlock the full potential of your operations with the right technology. We guide the strategic selection, design, and seamless rollout of top-tier enterprise supply chain platforms like SAP, Kinaxis, and Anaplan.</p></div>
+        <div class="cap"><h4>Serialization &amp; Traceability.</h4><p>Protect your patients and your brand. We implement robust, global track-and-trace systems that ensure perfect traceability and immediate compliance with EU FMD and US DSCSA mandates.</p></div>
+        <div class="cap"><h4>Proprietary Platform Deployment.</h4><p>Power your decision-making with cutting-edge digital tools. We deploy bespoke platforms for advanced scenario planning and complex lab resource scheduling to keep your operations incredibly agile.</p></div>
+        <div class="cap"><h4>Data Architecture.</h4><p>Turn your fragmented data into a single source of truth. We build the clean architectures, master data management, and robust data governance required to power your digital factory transformation.</p></div>
+      </div>
+    </div>
+
+    <div class="capgroup rv">
+      <h3 class="capgroup-h"><span class="dot6"></span>Market Access &amp; Enterprise Change Management</h3>
+      <div class="caps">
+        <div class="cap"><h4>European Market Entry.</h4><p>Cross borders with absolute confidence. We build the essential operational infrastructure and navigate the complex regulatory pathways required for a successful, compliant European market launch.</p></div>
+        <div class="cap"><h4>Organizational Change Management.</h4><p>Technology only works if your people are ready to use it. We drive organizational change management and training to seamlessly embed new operating models and digital tools into your company's DNA.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- NETWORK -->
 <section id="network" class="band-dark">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">02 / 06</span><span class="sec-tag"><span class="dot6"></span>Network</span>
+      <span class="counter">03 / 07</span><span class="sec-tag"><span class="dot6"></span>Network</span>
       <h2 class="title">One lead operator. A network behind them<span class="lp">.</span></h2>
       <p class="lead">Viaclin draws on a bank of senior consultants across the EU, US and UK, each with a distinct specialism and their own industry history. Your engagement gets one accountable lead, and the lead gets the whole bench.</p>
     </div>
@@ -704,7 +788,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="ai" class="band-dark">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">03 / 06</span><span class="sec-tag"><span class="dot6"></span>AI</span>
+      <span class="counter">04 / 07</span><span class="sec-tag"><span class="dot6"></span>AI</span>
       <h2 class="title">We build the bridge between now and next<span class="lp">.</span></h2>
       <p class="lead">Industry-leading AI consultancy through our partner SupplyAI. Practical, validated AI for life sciences supply chains, adopted at the pace your quality system allows.</p>
     </div>
@@ -757,7 +841,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="method" class="band-light">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">04 / 06</span><span class="sec-tag"><span class="dot6"></span>Method</span>
+      <span class="counter">05 / 07</span><span class="sec-tag"><span class="dot6"></span>Method</span>
       <h2 class="title">Bespoke Consultancy<span class="lp">.</span></h2>
       <p class="lead">Comprehensive supply chain execution, expertly managed from GMP to patient.</p>
     </div>
@@ -785,7 +869,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="coverage" class="band-dark" style="padding-bottom: 0;">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">05 / 06</span><span class="sec-tag"><span class="dot6"></span>Coverage</span>
+      <span class="counter">06 / 07</span><span class="sec-tag"><span class="dot6"></span>Coverage</span>
       <h2 class="title">Three regulatory jurisdictions<span class="lp">.</span></h2>
     </div>
     <div class="regions">
@@ -818,7 +902,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
 <section id="group" class="band-light">
   <div class="wrap">
     <div class="sec-head rv">
-      <span class="counter">06 / 06</span><span class="sec-tag"><span class="dot6"></span>The group</span>
+      <span class="counter">07 / 07</span><span class="sec-tag"><span class="dot6"></span>The group</span>
       <h2 class="title">Three brands. One umbrella group<span class="lp">.</span></h2>
       <p class="lead">Viaclin shares an umbrella group with SupplyAI and Geoclin, and draws on their expertise and resources. When your programme needs AI tooling or commercial-scale ownership, the answer sits inside the group, one conversation away.</p>
     </div>
@@ -868,7 +952,7 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
       <p>A senior operator reads every enquiry and answers within one working day. No sales layer between you and the person who does the work.</p>
       <div>
         <div class="cta-actions">
-          <a href="mailto:contact@viaclin.com" class="btn btn-fill-light">Start a conversation</a>
+          <a href="mailto:contact@viaclin.com" class="btn btn-fill-light contact-open">Start a conversation</a>
           <a href="mailto:contact@viaclin.com" class="arrow-btn" aria-label="Email Viaclin">
             <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </a>
@@ -895,11 +979,74 @@ if (__q.get('fit')) document.documentElement.classList.add('fit');
       <span class="foot-word">viaclin<span class="lp">.</span></span>
     </div>
     <div class="foot-links">
-      <a href="#services">Services</a><a href="#network">Network</a><a href="#ai">AI</a><a href="#method">Method</a><a href="#coverage">Coverage</a><a href="#contact">Contact</a>
+      <a href="#services">Services</a><a href="#capabilities">Capabilities</a><a href="#network">Network</a><a href="#ai">AI</a><a href="#method">Method</a><a href="#coverage">Coverage</a><a href="#contact">Contact</a>
     </div>
     <div class="foot-meta">© 2026 Viaclin · One group with <a href="https://supplyai.eu">SupplyAI</a> and <a href="https://geoclin.com">Geoclin</a> · EU · US · UK</div>
   </div>
 </footer>
+
+<!-- CONTACT POPUP -->
+<div class="modal-backdrop" id="contactmodal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modaltitle">
+    <button class="modal-close" id="modalclose" aria-label="Close" type="button">&#10005;</button>
+    <span class="sec-tag" style="margin-left: 0;"><span class="dot6"></span>Contact</span>
+    <h3 id="modaltitle">Let us know how to contact you<span class="lp">.</span></h3>
+    <form id="contactform" novalidate>
+      <label class="f-label" for="cf-email">Email address</label>
+      <input class="f-input" id="cf-email" name="email" type="email" placeholder="you@company.com" autocomplete="email">
+      <div class="f-or">or</div>
+      <label class="f-label" for="cf-name">Name</label>
+      <input class="f-input" id="cf-name" name="name" type="text" autocomplete="name">
+      <label class="f-label" for="cf-org">Organisation</label>
+      <input class="f-input" id="cf-org" name="organisation" type="text" autocomplete="organization">
+      <label class="f-label" for="cf-phone">Phone number</label>
+      <div class="f-phone">
+        <select class="f-select" id="cf-code" aria-label="International dial code">
+          <option value="+353" selected>IE +353</option>
+          <option value="+44">UK +44</option>
+          <option value="+1">US / CA +1</option>
+          <option value="+49">DE +49</option>
+          <option value="+31">NL +31</option>
+          <option value="+33">FR +33</option>
+          <option value="+32">BE +32</option>
+          <option value="+34">ES +34</option>
+          <option value="+39">IT +39</option>
+          <option value="+351">PT +351</option>
+          <option value="+352">LU +352</option>
+          <option value="+41">CH +41</option>
+          <option value="+43">AT +43</option>
+          <option value="+45">DK +45</option>
+          <option value="+46">SE +46</option>
+          <option value="+47">NO +47</option>
+          <option value="+358">FI +358</option>
+          <option value="+48">PL +48</option>
+          <option value="+420">CZ +420</option>
+          <option value="+36">HU +36</option>
+          <option value="+30">GR +30</option>
+          <option value="+90">TR +90</option>
+          <option value="+972">IL +972</option>
+          <option value="+971">AE +971</option>
+          <option value="+966">SA +966</option>
+          <option value="+91">IN +91</option>
+          <option value="+65">SG +65</option>
+          <option value="+852">HK +852</option>
+          <option value="+86">CN +86</option>
+          <option value="+81">JP +81</option>
+          <option value="+82">KR +82</option>
+          <option value="+61">AU +61</option>
+          <option value="+64">NZ +64</option>
+          <option value="+55">BR +55</option>
+          <option value="+52">MX +52</option>
+          <option value="+27">ZA +27</option>
+        </select>
+        <input class="f-input" id="cf-phone" name="phone" type="tel" autocomplete="tel-national" placeholder="86 123 4567">
+      </div>
+      <p class="f-err" id="cf-err" hidden>Please give us an email address, or a name, organisation and phone number.</p>
+      <button type="submit" class="btn btn-fill-light">Send</button>
+      <p class="f-note"><span class="dot6"></span>Goes to contact@viaclin.com</p>
+    </form>
+  </div>
+</div>
 
 <script>
 // progress indicator + persistent banner + tagline docking
@@ -1026,18 +1173,64 @@ if (cv) {
 
 // hero word cycle
 const cycleWord = document.getElementById('cycleword');
-if (cycleWord && !rmq.matches && !document.documentElement.classList.contains('static')) {
-  const cycleWords = ['better', 'stronger', 'faster', 'cheaper', 'safer'];
+const cycleText = document.getElementById('cycletext');
+if (cycleWord && cycleText && !rmq.matches && !document.documentElement.classList.contains('static')) {
+  const cycleWords = ['stronger', 'faster', 'cheaper', 'simpler', 'safer', 'better'];
   let wi = 0;
   setInterval(() => {
     cycleWord.classList.add('out');
     setTimeout(() => {
       wi = (wi + 1) % cycleWords.length;
-      cycleWord.textContent = cycleWords[wi];
+      cycleText.textContent = cycleWords[wi];
       cycleWord.classList.remove('out');
     }, 260);
   }, 2600);
 }
+
+// contact popup: opens from every "start a conversation" trigger, sends via a
+// pre-filled email to contact@viaclin.com (static site, no backend)
+const modal = document.getElementById('contactmodal');
+let lastFocus = null;
+function openModal(e) {
+  e.preventDefault();
+  lastFocus = document.activeElement;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  document.getElementById('cf-email').focus();
+}
+function closeModal() {
+  modal.hidden = true;
+  document.body.style.overflow = '';
+  if (lastFocus) lastFocus.focus();
+}
+document.querySelectorAll('.contact-open').forEach(el => el.addEventListener('click', openModal));
+document.getElementById('modalclose').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+modal.addEventListener('keydown', e => {
+  if (e.key !== 'Tab') return;
+  const f = modal.querySelectorAll('button, input, select');
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+  else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+});
+document.getElementById('contactform').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = id => document.getElementById(id).value.trim();
+  const email = v('cf-email'), name = v('cf-name'), org = v('cf-org'), phone = v('cf-phone');
+  const err = document.getElementById('cf-err');
+  if (!email && !(name && org && phone)) { err.hidden = false; return; }
+  err.hidden = true;
+  const lines = [];
+  if (email) lines.push('Email: ' + email);
+  if (name) lines.push('Name: ' + name);
+  if (org) lines.push('Organisation: ' + org);
+  if (phone) lines.push('Phone: ' + document.getElementById('cf-code').value + ' ' + phone);
+  location.href = 'mailto:contact@viaclin.com?subject=' +
+    encodeURIComponent('New enquiry from viaclin.com') +
+    '&body=' + encodeURIComponent(lines.join('\n'));
+  closeModal();
+});
 
 // reduced motion or static capture: remove the travelling dot and SMIL cycles
 if (matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('static')) {
