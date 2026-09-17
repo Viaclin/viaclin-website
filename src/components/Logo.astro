@@ -1,0 +1,43 @@
+---
+// The Viaclin logo as inline SVG. Colours come from --logo-ink and --logo-green,
+// so the same artwork serves light grounds, dark grounds and the reversed footer.
+import { logo } from '../data/logo';
+
+interface Props {
+  variant?: 'lockup' | 'compact' | 'mark';
+  /** Accessible name. Pass an empty string when a parent link already names the logo. */
+  label?: string;
+  class?: string;
+}
+
+const { variant = 'compact', label = 'Viaclin', class: className = '' } = Astro.props;
+const art = logo[variant];
+const decorative = label === '';
+---
+
+<svg
+  class:list={['logo', `logo--${variant}`, className]}
+  viewBox={art.viewBox}
+  xmlns="http://www.w3.org/2000/svg"
+  role={decorative ? undefined : 'img'}
+  aria-label={decorative ? undefined : label}
+  aria-hidden={decorative ? 'true' : undefined}
+  focusable="false"
+>
+  <path class="logo__ink" d={art.navy}></path>
+  <path class="logo__green" d={art.green}></path>
+  {'word' in art && <path class="logo__ink" d={art.word} />}
+  {'desc' in art && <path class="logo__ink" d={art.desc} />}
+</svg>
+
+<style>
+  .logo__ink {
+    fill: var(--logo-ink);
+    transition: fill var(--dur-2) var(--ease);
+  }
+
+  .logo__green {
+    fill: var(--logo-green);
+    transition: fill var(--dur-2) var(--ease);
+  }
+</style>

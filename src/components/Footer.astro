@@ -1,0 +1,72 @@
+---
+// Footer: reversed lockup, service and company links, legal set, company details, last update.
+import Logo from './Logo.astro';
+import { services, company, legal } from '../data/nav';
+import { site, builtOn, formatDate } from '../data/site';
+
+const year = builtOn.slice(0, 4);
+---
+
+<footer class="site-footer" data-pagefind-ignore>
+  <div class="container">
+    <div class="site-footer__grid">
+      <div>
+        <Logo variant="lockup" label="Viaclin, life science consultancy" />
+        <p class="site-footer__line">
+          Life sciences supply chain consultancy. Remote-first across the EU, US and UK.
+        </p>
+        <p class="site-footer__strap">{site.strapline}</p>
+      </div>
+
+      <nav aria-label="Services">
+        <h2>Services</h2>
+        <ul>
+          {services.map((item) => <li><a href={item.href}>{item.title}</a></li>)}
+        </ul>
+      </nav>
+
+      <nav aria-label="Company">
+        <h2>Company</h2>
+        <ul>
+          {company.map((item) => <li><a href={item.href}>{item.title}</a></li>)}
+          {site.linkedin && (
+            <li><a href={site.linkedin} rel="noopener noreferrer" target="_blank">LinkedIn<span class="sr-only"> (opens in a new tab)</span></a></li>
+          )}
+          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Legal">
+        <h2>Legal</h2>
+        <ul>
+          {legal.map((item) => <li><a href={item.href}>{item.title}</a></li>)}
+          <li><button type="button" data-consent-open>Cookie settings</button></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="site-footer__legal">
+      <p>
+        {site.legalName}, registered in {site.country}{site.croNumber && `, company number ${site.croNumber}`}.
+        {site.registeredOffice && ` Registered office: ${site.registeredOffice}.`}
+        {` VAT number ${site.vat}.`}
+      </p>
+      <p>
+        Copyright {year} {site.legalName}. All rights reserved. Site last updated {formatDate(builtOn)}.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer__line {
+    margin-top: var(--space-5);
+    max-width: 34ch;
+  }
+
+  .site-footer__strap {
+    margin-top: var(--space-3);
+    font-weight: 600;
+    color: var(--white);
+  }
+</style>

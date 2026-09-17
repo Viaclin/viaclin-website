@@ -1,0 +1,57 @@
+---
+// Full-bleed footage band. The slot sits over the film; give text surfaces `.glass glass--film`.
+import Icon from './Icon.astro';
+import { videos, type VideoKey } from '../data/videos';
+
+interface Props {
+  video: VideoKey;
+  id?: string;
+  height?: 'tall' | 'mid';
+  /** id of the heading inside the slot, so the band is a named region. */
+  labelledby?: string;
+}
+
+const { video, id, height = 'tall', labelledby } = Astro.props;
+const film = videos[video];
+---
+
+<section
+  id={id}
+  class:list={['vband', height === 'mid' && 'vband--mid']}
+  aria-labelledby={labelledby}
+  data-film
+>
+  <div class="vband__media" aria-hidden="true">
+    <img src={`${film.base}.jpg`} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+    <video
+      muted
+      loop
+      playsinline
+      preload="none"
+      tabindex="-1"
+      disablepictureinpicture
+      data-src-lg={`${film.base}-1280.mp4`}
+      data-src-sm={`${film.base}-720.mp4`}
+    ></video>
+  </div>
+  <div class="vband__shade" aria-hidden="true"></div>
+
+  <div class="container">
+    <slot />
+  </div>
+
+  <div class="vband__meta">
+    <span class="chip glass glass--clear">{film.chip}</span>
+    <button
+      class="vtoggle glass glass--clear"
+      type="button"
+      aria-pressed="false"
+      aria-label={`Pause background film: ${film.chip}`}
+      data-film-toggle
+      data-film-name={film.chip}
+    >
+      <Icon name="pause" class="icon-pause" />
+      <Icon name="play" class="icon-play" />
+    </button>
+  </div>
+</section>

@@ -1,0 +1,93 @@
+---
+// Head metadata: title, description, canonical, Open Graph, Twitter card, icons, JSON-LD.
+import { site } from '../data/site';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { title, description, path, noindex = false, schema } = Astro.props;
+const canonical = new URL(path === '/' ? '/' : path.replace(/\/$/, ''), site.url).href;
+const ogImage = new URL('/og/viaclin-og.png', site.url).href;
+
+// Empty company values are left out so search engines never see a blank field.
+const organisation: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': `${site.url}/#organisation`,
+  name: site.name,
+  legalName: site.legalName,
+  url: site.url,
+  logo: new URL('/icon-512.png', site.url).href,
+  image: ogImage,
+  email: site.email,
+  slogan: site.strapline,
+  description: site.summary,
+  vatID: site.vat,
+  areaServed: ['IE', 'EU', 'US', 'GB'],
+  knowsAbout: [
+    'Clinical trial supply',
+    'Life sciences supply chain',
+    'Pharmaceutical project management',
+    'Operations excellence',
+    'Clinical trial close-out',
+  ],
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'IE',
+    ...(site.registeredOffice ? { streetAddress: site.registeredOffice } : {}),
+  },
+  ...(site.linkedin ? { sameAs: [site.linkedin] } : {}),
+};
+
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${site.url}/#website`,
+  url: site.url,
+  name: site.name,
+  inLanguage: 'en-IE',
+  publisher: { '@id': `${site.url}/#organisation` },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${site.url}/search?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+
+const graphs = [organisation, website, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+{site.gsc && <meta name="google-site-verification" content={site.gsc} />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:locale" content="en_IE" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Viaclin. Supply chain ownership for life sciences." />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#061A2E" media="(prefers-color-scheme: dark)" />
+
+{graphs.map((graph) => <script type="application/ld+json" is:inline set:html={JSON.stringify(graph)} />)}

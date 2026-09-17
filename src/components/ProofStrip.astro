@@ -1,0 +1,22 @@
+---
+// Four short facts under the hero.
+const facts = [
+  { bold: 'Phase I to commercial', small: 'Clinical and launch supply' },
+  { bold: 'EU, US and UK', small: 'Three regulatory jurisdictions' },
+  { bold: 'Remote-first', small: 'On your programme within days' },
+  { bold: 'Nine-step close-out', small: 'Fixed-fee entry product' },
+];
+---
+
+<div class="proof">
+  <div class="container">
+    <ul class="proof__grid" role="list">
+      {facts.map((fact, index) => (
+        <li class="proof__item" data-reveal style={`--d:${index * 80}ms`}>
+          <strong>{fact.bold}</strong>
+          <span>{fact.small}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</div>

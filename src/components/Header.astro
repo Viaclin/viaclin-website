@@ -1,0 +1,116 @@
+---
+// Sticky header: logo, docking descriptor, navigation, search, theme toggle, primary action.
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { services, primary, legal } from '../data/nav';
+import { site } from '../data/site';
+
+interface Props {
+  path: string;
+}
+
+const { path } = Astro.props;
+const current = (href: string) => (path === href ? 'page' : undefined);
+const inServices = path.startsWith('/services');
+---
+
+<span class="dock-fly" id="dock-fly" aria-hidden="true">
+  <span class="descriptor__dot"></span>{site.descriptor}
+</span>
+
+<header class="site-header" id="site-header">
+  <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+  <div class="container site-header__inner">
+    <a class="site-header__brand" href="/" aria-label="Viaclin home">
+      <Logo variant="compact" label="" />
+    </a>
+    <span class="dock-slot" id="dock-slot" aria-hidden="true">
+      <span class="descriptor__dot"></span><span>{site.descriptor}</span>
+    </span>
+
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li class="has-menu">
+          <button
+            class="site-nav__link"
+            type="button"
+            id="services-btn"
+            aria-expanded="false"
+            aria-controls="services-menu"
+            data-current={inServices ? 'true' : undefined}
+          >
+            Services <Icon name="chevron" />
+          </button>
+          <div class="menu" id="services-menu">
+            {services.map((item) => (
+              <a href={item.href} aria-current={current(item.href)}>
+                <strong>{item.title}</strong>
+                <span>{item.summary}</span>
+              </a>
+            ))}
+          </div>
+        </li>
+        {primary.map((item) => (
+          <li>
+            <a class="site-nav__link" href={item.href} aria-current={current(item.href)}>{item.title}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="site-header__tools">
+      <button class="icon-btn" type="button" data-search-open aria-label="Search the site">
+        <Icon name="search" />
+      </button>
+      <button class="icon-btn" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false">
+        <Icon name="moon" class="theme-icon--moon" />
+        <Icon name="sun" class="theme-icon--sun" />
+      </button>
+      <a class="btn btn--primary btn--sm js-convo" href="/contact" data-track="cta_click" data-track-place="header">
+        Start a conversation
+      </a>
+      <button class="icon-btn menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="mobile-menu">
+        <Icon name="menu" class="menu-btn__open" />
+        <Icon name="close" class="menu-btn__close" />
+        <span>Menu</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" aria-label="Menu" role="region">
+  <nav aria-label="Mobile">
+    <h2>Services</h2>
+    <ul>
+      {services.map((item) => (
+        <li><a href={item.href} aria-current={current(item.href)}>{item.title}</a></li>
+      ))}
+    </ul>
+    <h2>Company</h2>
+    <ul>
+      {primary.map((item) => (
+        <li><a href={item.href} aria-current={current(item.href)}>{item.title}</a></li>
+      ))}
+      <li><a href="/search">Search</a></li>
+    </ul>
+    <h2>Legal</h2>
+    <ul>
+      {legal.slice(0, 3).map((item) => (
+        <li><a href={item.href} aria-current={current(item.href)}>{item.title}</a></li>
+      ))}
+    </ul>
+  </nav>
+  <a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="mobile-menu">
+    Start a conversation
+  </a>
+</div>
+
+<style>
+  #services-btn[data-current='true'] {
+    color: var(--link);
+  }
+
+  .mobile-menu li a[aria-current='page'] {
+    color: var(--link);
+  }
+</style>

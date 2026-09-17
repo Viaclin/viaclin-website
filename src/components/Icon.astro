@@ -1,0 +1,43 @@
+---
+// Small stroke icons drawn for this site. Decorative by default.
+interface Props {
+  name:
+    | 'search' | 'sun' | 'moon' | 'menu' | 'close' | 'chevron' | 'arrow-up'
+    | 'pause' | 'play' | 'copy' | 'check' | 'print' | 'mail';
+  class?: string;
+}
+
+const { name, class: className = '' } = Astro.props;
+
+const paths: Record<Props['name'], string> = {
+  search: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14ZM20 20l-4.1-4.1',
+  sun: 'M12 7.5a4.5 4.5 0 1 0 0 9 4.5 4.5 0 0 0 0-9ZM12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8',
+  moon: 'M20 14.2A8 8 0 0 1 9.8 4a8 8 0 1 0 10.2 10.2Z',
+  menu: 'M4 7h16M4 12h16M4 17h16',
+  close: 'M6 6l12 12M18 6 6 18',
+  chevron: 'm6 9 6 6 6-6',
+  'arrow-up': 'M12 19V5M6 11l6-6 6 6',
+  pause: 'M8 5v14M16 5v14',
+  play: 'M7 5v14l12-7Z',
+  copy: 'M9 9h10v11H9zM5 15V4h10',
+  check: 'm5 12.5 4.5 4.5L19 7.5',
+  print: 'M7 9V4h10v5M7 17H4v-7h16v7h-3M7 14h10v6H7z',
+  mail: 'M3 6h18v12H3zM3 7l9 6.5L21 7',
+};
+---
+
+<svg
+  class:list={['icon', `icon-${name}`, className]}
+  viewBox="0 0 24 24"
+  width="20"
+  height="20"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  <path d={paths[name]}></path>
+</svg>

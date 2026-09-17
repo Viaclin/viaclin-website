@@ -1,0 +1,145 @@
+/* Viaclin design tokens. Components use role tokens; brand tokens stay fixed across themes. */
+:root {
+  color-scheme: light;
+
+  /* brand */
+  --navy: #0A2948;
+  --green: #258253;
+  --green-deep: #1B6B43;
+  --green-light: #6ECB93;
+  --slate: #3D5166;
+  --mist: #F2F6F9;
+  --line: #D3DCE5;
+  --green-tint: #E4F2EA;
+  --navy-tint: #DCE6F0;
+  --white: #FFFFFF;
+  --night: #061A2E;
+  --night-raised: #0B2540;
+  --night-deep: #041322;
+
+  /* roles, light theme */
+  --bg: var(--white);
+  --bg-alt: var(--mist);
+  --bg-raised: var(--white);
+  --fg: var(--navy);
+  --fg-2: var(--slate);
+  --fg-3: #5A6E83;
+  --rule: var(--line);
+  --link: var(--green-deep);
+  --link-hover: var(--navy);
+  --accent: var(--green);
+  --accent-soft: var(--green-tint);
+  --diagram-fill: var(--navy-tint);
+  --action: var(--green);
+  --action-hover: var(--green-deep);
+  --action-fg: var(--white);
+  --logo-ink: var(--navy);
+  --logo-green: var(--green);
+  --sphere-a: 37 130 83;
+  --sphere-b: 10 41 72;
+  --hero-glow-a: rgba(37, 130, 83, 0.10);
+  --hero-glow-b: rgba(10, 41, 72, 0.07);
+  --grid-dot: rgba(10, 41, 72, 0.075);
+  --shadow-card: 0 1px 2px rgba(10, 41, 72, 0.04), 0 12px 32px -12px rgba(10, 41, 72, 0.16);
+  --shadow-float: 0 8px 24px -6px rgba(10, 41, 72, 0.22), 0 28px 64px -24px rgba(10, 41, 72, 0.30);
+
+  /* liquid glass, surface flavour (header, banner, dialogs) */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-blur: 16px;
+  --glass-ring-hi: rgba(10, 41, 72, 0.22);
+  --glass-ring-lo: rgba(10, 41, 72, 0.05);
+  --glass-inset: rgba(255, 255, 255, 0.7);
+  --backdrop: rgba(6, 26, 46, 0.48);
+
+  /* footage surfaces are dark in both themes */
+  --on-film: #FFFFFF;
+  --on-film-2: rgba(255, 255, 255, 0.82);
+  --film-shade: 6, 26, 46;
+
+  /* type */
+  --font-sans: "Noto Sans", "Segoe UI", "Nirmala UI", system-ui, sans-serif;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.75rem, 3.2vw, 2.375rem);
+  --text-3xl: clamp(2.25rem, 4.6vw, 3.5rem);
+  --text-hero: clamp(2.5rem, 6vw, 4.625rem);
+  --leading-tight: 1.04;
+  --leading-heading: 1.15;
+  --leading-body: 1.6;
+  --tracking-tight: -0.025em;
+  --tracking-heading: -0.015em;
+
+  /* space */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 80px;
+  --space-10: 112px;
+
+  /* layout */
+  --container: 1200px;
+  --gutter: clamp(20px, 4vw, 40px);
+  --measure: 66ch;
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 18px;
+  --radius-xl: 28px;
+  --radius-pill: 999px;
+  --header-h: 76px;
+  --section-y: clamp(64px, 9vw, 120px);
+
+  /* motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 160ms;
+  --dur-2: 320ms;
+  --dur-3: 700ms;
+
+  --focus-ring: 0 0 0 3px var(--bg), 0 0 0 6px var(--accent);
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: var(--night);
+  --bg-alt: var(--night-raised);
+  --bg-raised: #0F2E4D;
+  --fg: #F2F6F9;
+  --fg-2: #B9C7D6;
+  --fg-3: #8FA3B8;
+  --rule: #1E3A57;
+  --link: var(--green-light);
+  --link-hover: var(--white);
+  --accent: var(--green-light);
+  --accent-soft: rgba(110, 203, 147, 0.12);
+  --diagram-fill: #12334F;
+  --action: var(--green);
+  --action-hover: var(--green-deep);
+  --logo-ink: var(--white);
+  --logo-green: #2E9A64;
+  --sphere-a: 110 203 147;
+  --sphere-b: 242 246 249;
+  --hero-glow-a: rgba(110, 203, 147, 0.10);
+  --hero-glow-b: rgba(37, 130, 83, 0.10);
+  --grid-dot: rgba(255, 255, 255, 0.05);
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3), 0 16px 40px -16px rgba(0, 0, 0, 0.6);
+  --shadow-float: 0 8px 24px -6px rgba(0, 0, 0, 0.5), 0 28px 64px -24px rgba(0, 0, 0, 0.7);
+  --glass-bg: rgba(8, 30, 52, 0.70);
+  --glass-ring-hi: rgba(110, 203, 147, 0.38);
+  --glass-ring-lo: rgba(255, 255, 255, 0.06);
+  --glass-inset: rgba(255, 255, 255, 0.08);
+  --backdrop: rgba(2, 10, 20, 0.66);
+}
+
+@media (max-width: 900px) {
+  :root {
+    --header-h: 64px;
+  }
+}

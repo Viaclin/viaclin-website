@@ -1,0 +1,82 @@
+---
+// Page shell: head, skip link, header, main, footer, global dialogs and client scripts.
+import '@fontsource/noto-sans/latin-400.css';
+import '@fontsource/noto-sans/latin-600.css';
+import '@fontsource/noto-sans/latin-700.css';
+import '../styles/global.css';
+import Seo from '../components/Seo.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import ContactModal from '../components/ContactModal.astro';
+import SearchModal from '../components/SearchModal.astro';
+import ConsentBanner from '../components/ConsentBanner.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+  /** Home page sets this so the header leaves room for the docking descriptor. */
+  docks?: boolean;
+}
+
+const { title, description, path, noindex = false, schema, docks = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en-IE" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="format-detection" content="telephone=no" />
+    <script is:inline>
+      // Runs before first paint: mark JS as present, pick the theme, honour capture flags.
+      (function () {
+        var root = document.documentElement;
+        root.classList.remove('no-js');
+        root.classList.add('js');
+        var stored = null;
+        try { stored = localStorage.getItem('viaclin-theme'); } catch (e) {}
+        var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+        root.setAttribute('data-theme', dark ? 'dark' : 'light');
+        var query = new URLSearchParams(location.search);
+        if (query.get('static')) root.classList.add('static');
+        if (query.get('theme') === 'dark' || query.get('theme') === 'light') root.setAttribute('data-theme', query.get('theme'));
+      })();
+    </script>
+    <Seo title={title} description={description} path={path} noindex={noindex} schema={schema} />
+  </head>
+  <body data-docks={docks ? 'true' : undefined}>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <Header path={path} />
+
+    <div class="print-brand" aria-hidden="true"><Logo variant="lockup" label="" /></div>
+
+    <main id="main" tabindex="-1" data-pagefind-body>
+      <slot />
+    </main>
+
+    <Footer />
+
+    <button class="to-top glass" type="button" id="to-top" aria-label="Back to top">
+      <Icon name="arrow-up" />
+    </button>
+
+    <div class="mobile-cta glass" id="mobile-cta">
+      <a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="mobile-bar">Start a conversation</a>
+    </div>
+
+    <ContactModal />
+    <SearchModal />
+    <ConsentBanner />
+
+    <div class="sr-only" aria-live="polite" id="live-region"></div>
+
+    <script>
+      import '../scripts/main.ts';
+    </script>
+  </body>
+</html>

@@ -1,0 +1,153 @@
+/* Print: ink on white, no chrome, no footage, links written out. */
+@media print {
+  :root,
+  :root[data-theme='dark'] {
+    color-scheme: light;
+    --bg: #fff;
+    --bg-alt: #fff;
+    --bg-raised: #fff;
+    --fg: #000;
+    --fg-2: #1a1a1a;
+    --fg-3: #333;
+    --rule: #999;
+    --link: #000;
+    --accent: #000;
+    --logo-ink: #0A2948;
+    --logo-green: #258253;
+  }
+
+  @page {
+    margin: 18mm 16mm;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  .site-header,
+  .mobile-menu,
+  .mobile-cta,
+  .to-top,
+  .skip-link,
+  .progress,
+  .dock-fly,
+  .hero__sphere,
+  .hero__bg,
+  .vband__media,
+  .vband__shade,
+  .vband__meta,
+  .vframe-wrap,
+  .marquee,
+  .consent,
+  dialog,
+  .actions,
+  .btn,
+  .copy-btn,
+  .no-print {
+    display: none !important;
+  }
+
+  .hero,
+  .page-hero {
+    padding-top: 0 !important;
+  }
+
+  .print-brand {
+    display: block !important;
+    margin-bottom: 10mm;
+  }
+
+  .print-brand svg {
+    height: 12mm;
+    width: auto;
+  }
+
+  .section,
+  .vband,
+  .cband,
+  .site-footer,
+  .proof {
+    padding-block: 6mm !important;
+    min-height: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .vband *,
+  .cband *,
+  .site-footer *,
+  .glass,
+  .glass--film {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .glass::before {
+    display: none !important;
+  }
+
+  .js [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .grid,
+  .split,
+  .steps--row {
+    display: block !important;
+  }
+
+  .grid > *,
+  .steps--row > * {
+    margin-bottom: 5mm;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+    color: #000 !important;
+  }
+
+  p,
+  li,
+  .block,
+  .step,
+  .card {
+    break-inside: avoid;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+
+  main a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
+    word-break: break-all;
+  }
+
+  main a[href^='/']::after {
+    content: ' (viaclin.com' attr(href) ')';
+    font-size: 9pt;
+  }
+
+  .site-footer__grid {
+    display: none !important;
+  }
+
+  .site-footer__legal {
+    border-top: 1px solid #999 !important;
+  }
+}
+
+.print-brand {
+  display: none;
+}

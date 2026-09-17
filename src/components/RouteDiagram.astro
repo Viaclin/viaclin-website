@@ -1,0 +1,43 @@
+---
+// The route, molecule to patient. Two artboards: horizontal from 641 px up, vertical below.
+// Decorative SVG; the caption beneath carries the meaning as text.
+const stops = ['Molecule', 'Manufacture', 'QP release', 'Depot', 'Site', 'Patient'];
+const xs = [40, 224, 408, 592, 776, 960];
+const ys = [30, 118, 206, 294, 382, 470];
+---
+
+<div class="route" data-reveal="fade">
+  <svg class="route--desktop" viewBox="0 0 1000 132" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <line class="route__line" x1="40" y1="40" x2="960" y2="40"></line>
+    <circle class="route__pulse" r="5" cx="40" cy="40" opacity="0">
+      <animate attributeName="cx" values="40;960" dur="7s" begin="2.2s" repeatCount="indefinite"></animate>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.06;0.94;1" dur="7s" begin="2.2s" repeatCount="indefinite"></animate>
+    </circle>
+    {xs.map((x, i) => <circle class="route__node" cx={x} cy="40" r="9" style={`--i:${i}`}></circle>)}
+    {stops.map((stop, i) => (
+      <text class="route__label" x={xs[i]} y="76" text-anchor={i === 0 ? 'start' : i === 5 ? 'end' : 'middle'} dx={i === 0 ? -9 : i === 5 ? 9 : 0} style={`--i:${i}`}>{stop}</text>
+    ))}
+    <path class="route__bracket" d="M40 104 v14 h920 v-14"></path>
+  </svg>
+
+  <svg class="route--mobile" viewBox="0 0 320 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <path class="route__bracket" d="M26 30 h-12 v440 h12"></path>
+    <line class="route__line" x1="56" y1="30" x2="56" y2="470"></line>
+    <circle class="route__pulse" r="5" cx="56" cy="30" opacity="0">
+      <animate attributeName="cy" values="30;470" dur="6s" begin="2.2s" repeatCount="indefinite"></animate>
+      <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.06;0.94;1" dur="6s" begin="2.2s" repeatCount="indefinite"></animate>
+    </circle>
+    {ys.map((y, i) => <circle class="route__node" cx="56" cy={y} r="9" style={`--i:${i}`}></circle>)}
+    {stops.map((stop, i) => (
+      <text class="route__label route__label--lg" x="84" y={ys[i]} dominant-baseline="middle" style={`--i:${i}`}>{stop}</text>
+    ))}
+  </svg>
+
+  <p class="route__caption">One accountable owner, molecule to patient</p>
+</div>
+
+<style>
+  .route__label--lg {
+    font-size: 19px;
+  }
+</style>

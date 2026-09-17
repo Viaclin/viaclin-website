@@ -1,0 +1,33 @@
+---
+// Section wrapper: ground tone, optional eyebrow, heading and intro, then a slot.
+interface Props {
+  id?: string;
+  tone?: 'white' | 'mist' | 'navy';
+  eyebrow?: string;
+  title?: string;
+  intro?: string;
+  /** Tighter vertical padding for short sections. */
+  tight?: boolean;
+  class?: string;
+}
+
+const { id, tone = 'white', eyebrow, title, intro, tight = false, class: className = '' } = Astro.props;
+const headingId = id ? `${id}-title` : undefined;
+---
+
+<section
+  id={id}
+  class:list={['section', tone === 'mist' && 'section--mist', tone === 'navy' && 'section--navy', tight && 'section--tight', className]}
+  aria-labelledby={title ? headingId : undefined}
+>
+  <div class="container">
+    {(eyebrow || title || intro) && (
+      <div class="section-head" data-reveal>
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {title && <h2 id={headingId}>{title}</h2>}
+        {intro && <p class="lead">{intro}</p>}
+      </div>
+    )}
+    <slot />
+  </div>
+</section>

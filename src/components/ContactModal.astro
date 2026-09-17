@@ -1,0 +1,35 @@
+---
+// The start-a-conversation popup, kept from the previous site and upgraded to a real form.
+// Any element with class `js-convo` opens it; without JavaScript those links go to /contact.
+import ContactForm from './ContactForm.astro';
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+---
+
+<dialog class="dialog" id="convo-dialog" aria-labelledby="convo-title" data-pagefind-ignore>
+  <div class="dialog__panel glass">
+    <button class="icon-btn dialog__close" type="button" data-dialog-close aria-label="Close dialog">
+      <Icon name="close" />
+    </button>
+    <p class="eyebrow">Start a conversation</p>
+    <h2 id="convo-title">Talk to the person who does the work.</h2>
+    <p class="dialog__intro">
+      No sales pitch and no obligation. Tell us where the programme is stuck: a short call, then a written plan.
+    </p>
+    <ContactForm idPrefix="dlg" />
+    <p class="dialog__mail small">
+      Prefer email? <a href={`mailto:${site.email}`}>{site.email}</a>
+    </p>
+  </div>
+</dialog>
+
+<style>
+  .dialog__panel h2 {
+    margin-top: var(--space-3);
+  }
+
+  .dialog__mail {
+    margin-top: var(--space-5);
+    color: var(--fg-3);
+  }
+</style>

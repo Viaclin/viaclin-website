@@ -1,0 +1,54 @@
+---
+// A grid of titled blocks. `glass` renders liquid glass cards for use over footage.
+interface Item {
+  title: string;
+  body: string;
+  href?: string;
+  linkLabel?: string;
+}
+
+interface Props {
+  items: Item[];
+  cols?: 2 | 3 | 4;
+  glass?: boolean;
+  /** Heading level for block titles. Use 3 under an H2, 2 when the blocks are the top level. */
+  level?: 2 | 3;
+}
+
+const { items, cols = 3, glass = false, level = 3 } = Astro.props;
+const Heading = `h${level}` as 'h2' | 'h3';
+---
+
+<div class:list={['grid', `grid--${cols}`]}>
+  {items.map((item, index) => (
+    <article
+      class:list={['block', glass && 'block--glass glass glass--film']}
+      data-reveal
+      style={`--d:${index * 90}ms`}
+    >
+      <Heading class="block__title">{item.title}</Heading>
+      <p>{item.body}</p>
+      {item.href && (
+        <a class:list={['text-link', glass && 'text-link--on-film']} href={item.href}>
+          {item.linkLabel ?? 'Read more'}<span class="sr-only">: {item.title}</span>
+        </a>
+      )}
+    </article>
+  ))}
+</div>
+
+<style>
+  .block__title {
+    font-size: var(--text-xl);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+    margin-bottom: var(--space-3);
+  }
+
+  .block .text-link {
+    display: inline-block;
+    margin-top: var(--space-4);
+    min-height: 28px;
+  }
+</style>

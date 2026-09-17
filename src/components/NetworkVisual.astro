@@ -1,0 +1,117 @@
+---
+// One lead, six specialisms. Decorative; the network section's copy says the same in words.
+const spokes = [
+  { x: 240, y: 52, label: 'IRT', lx: 240, ly: 28 },
+  { x: 398, y: 118, label: 'QP release', lx: 398, ly: 94 },
+  { x: 398, y: 266, label: 'Cold chain', lx: 398, ly: 298 },
+  { x: 240, y: 330, label: 'Forecasting', lx: 240, ly: 362 },
+  { x: 82, y: 266, label: 'Packaging', lx: 82, ly: 298 },
+  { x: 82, y: 118, label: 'Regulatory', lx: 82, ly: 94 },
+];
+---
+
+<div class="netviz" data-reveal="scale" aria-hidden="true">
+  <svg viewBox="0 0 480 384" xmlns="http://www.w3.org/2000/svg" focusable="false">
+    <circle class="netviz__orbit" cx="240" cy="190" r="158"></circle>
+    {spokes.map((s, i) => <line class="netviz__spoke" x1="240" y1="190" x2={s.x} y2={s.y} style={`--i:${i}`}></line>)}
+    {spokes.map((s, i) => <circle class="netviz__node" cx={s.x} cy={s.y} r="9" style={`--i:${i}`}></circle>)}
+    <circle class="netviz__ring" cx="240" cy="190" r="10">
+      <animate attributeName="r" values="10;36" dur="2.8s" repeatCount="indefinite"></animate>
+      <animate attributeName="opacity" values="0.7;0" dur="2.8s" repeatCount="indefinite"></animate>
+    </circle>
+    <circle class="netviz__lead" cx="240" cy="190" r="12"></circle>
+    {spokes.map((s) => <text class="netviz__label" x={s.lx} y={s.ly} text-anchor="middle">{s.label}</text>)}
+    <text class="netviz__label netviz__label--lead" x="240" y="232" text-anchor="middle">Your lead</text>
+  </svg>
+</div>
+
+<style>
+  .netviz svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .netviz__orbit {
+    fill: none;
+    stroke: var(--rule);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 7;
+  }
+
+  .netviz__spoke {
+    stroke: var(--fg);
+    stroke-width: 2;
+    stroke-linecap: round;
+    opacity: 0.55;
+  }
+
+  .netviz__node {
+    fill: var(--bg);
+    stroke: var(--fg);
+    stroke-width: 2.5;
+    transition: fill var(--dur-2) var(--ease);
+  }
+
+  .section--mist .netviz__node {
+    fill: var(--bg-alt);
+  }
+
+  .netviz__lead {
+    fill: var(--accent);
+  }
+
+  .netviz__ring {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+
+  .netviz__label {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 600;
+    fill: var(--fg-2);
+  }
+
+  /* halo keeps the label clear of the spoke beneath it */
+  .netviz__label--lead {
+    fill: var(--link);
+    paint-order: stroke;
+    stroke: var(--bg);
+    stroke-width: 8px;
+    stroke-linejoin: round;
+  }
+
+  :global(.section--mist) .netviz__label--lead {
+    stroke: var(--bg-alt);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .netviz .netviz__spoke {
+      stroke-dasharray: 180;
+      stroke-dashoffset: 180;
+    }
+
+    :global(.js) .netviz.is-in .netviz__spoke {
+      animation: route-draw 900ms var(--ease) forwards;
+      animation-delay: calc(200ms + var(--i) * 110ms);
+    }
+
+    :global(.js) .netviz .netviz__node {
+      opacity: 0;
+    }
+
+    :global(.js) .netviz.is-in .netviz__node {
+      animation: route-fade 500ms var(--ease) forwards;
+      animation-delay: calc(700ms + var(--i) * 110ms);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .netviz {
+      max-width: 440px;
+      margin-inline: auto;
+    }
+  }
+</style>

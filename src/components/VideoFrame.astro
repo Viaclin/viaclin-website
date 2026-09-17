@@ -1,0 +1,52 @@
+---
+// Framed footage for split sections and inner page heroes.
+import Icon from './Icon.astro';
+import { videos, type VideoKey } from '../data/videos';
+
+interface Props {
+  video: VideoKey;
+  /** Poster loads eagerly when the frame sits in the first screen. */
+  eager?: boolean;
+}
+
+const { video, eager = false } = Astro.props;
+const film = videos[video];
+---
+
+<div class="vframe-wrap" data-reveal="scale">
+  <figure class="vframe" data-film>
+    <img
+      src={`${film.base}.jpg`}
+      alt={film.alt}
+      width="1280"
+      height="720"
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+    />
+    <video
+      muted
+      loop
+      playsinline
+      preload="none"
+      tabindex="-1"
+      aria-hidden="true"
+      disablepictureinpicture
+      data-src-lg={`${film.base}-1280.mp4`}
+      data-src-sm={`${film.base}-720.mp4`}
+    ></video>
+    <figcaption class="vframe__meta">
+      <span class="chip glass glass--clear">{film.chip}</span>
+      <button
+        class="vtoggle glass glass--clear"
+        type="button"
+        aria-pressed="false"
+        aria-label={`Pause film: ${film.chip}`}
+        data-film-toggle
+        data-film-name={film.chip}
+      >
+        <Icon name="pause" class="icon-pause" />
+        <Icon name="play" class="icon-play" />
+      </button>
+    </figcaption>
+  </figure>
+</div>

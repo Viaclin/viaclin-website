@@ -1,0 +1,20 @@
+---
+// A numbered sequence joined by a route line. `row` lays three or four steps side by side.
+interface Props {
+  items: { title: string; body: string }[];
+  row?: boolean;
+}
+
+const { items, row = false } = Astro.props;
+---
+
+<ol class:list={['steps', row && 'steps--row']} style={row ? `--cols:${items.length}` : undefined}>
+  {items.map((item, index) => (
+    <li class="step" data-reveal style={`--d:${Math.min(index, 4) * 100}ms`}>
+      <div>
+        <h3>{item.title}</h3>
+        <p>{item.body}</p>
+      </div>
+    </li>
+  ))}
+</ol>

@@ -1,0 +1,54 @@
+---
+// Inner page hero: breadcrumb, H1, lead, optional action and optional framed film.
+import VideoFrame from './VideoFrame.astro';
+import type { VideoKey } from '../data/videos';
+
+interface Crumb {
+  title: string;
+  href?: string;
+}
+
+interface Props {
+  title: string;
+  lead: string;
+  eyebrow?: string;
+  crumbs?: Crumb[];
+  cta?: { label: string; topic?: string };
+  video?: VideoKey;
+}
+
+const { title, lead, eyebrow, crumbs, cta, video } = Astro.props;
+const href = cta?.topic ? `/contact?topic=${cta.topic}` : '/contact';
+---
+
+<section class="page-hero">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="container">
+    {crumbs && (
+      <nav aria-label="Breadcrumb" data-reveal="fade">
+        <ol class="breadcrumb">
+          <li><a href="/">Home</a></li>
+          {crumbs.map((crumb) => (
+            <li>{crumb.href ? <a href={crumb.href}>{crumb.title}</a> : <span aria-current="page">{crumb.title}</span>}</li>
+          ))}
+        </ol>
+      </nav>
+    )}
+    <div class:list={[video && 'split']}>
+      <div class="page-hero__copy">
+        {eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
+        <h1 data-reveal style="--d:60ms">{title}</h1>
+        <p class="lead" data-reveal style="--d:140ms">{lead}</p>
+        {cta && (
+          <div class="actions" data-reveal style="--d:220ms">
+            <a class="btn btn--primary js-convo" href={href} data-topic={cta.topic} data-track="cta_click" data-track-place="page-hero">
+              {cta.label}
+            </a>
+          </div>
+        )}
+        <slot />
+      </div>
+      {video && <VideoFrame video={video} eager />}
+    </div>
+  </div>
+</section>
