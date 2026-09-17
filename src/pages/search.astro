@@ -1,0 +1,50 @@
+---
+// Search page: the same search box as the dialog, inline. Reads ?q= on load and keeps the address in step.
+// Out of the Pagefind index (the wrapper below) and out of search engines (noindex).
+import Base from '../layouts/Base.astro';
+import SearchModal from '../components/SearchModal.astro';
+import ContactBand from '../components/ContactBand.astro';
+---
+
+<Base
+  title="Search: Viaclin"
+  description="Search the Viaclin site: the three service areas, the nine-step trial close-out, how we work and the legal pages."
+  path="/search"
+  noindex
+>
+  <div data-pagefind-ignore="all">
+    <section class="page-hero search-hero" aria-labelledby="search-title">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container">
+        <nav aria-label="Breadcrumb" data-reveal="fade">
+          <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><span aria-current="page">Search</span></li>
+          </ol>
+        </nav>
+        <div class="page-hero__copy">
+          <p class="eyebrow" data-reveal>Site search</p>
+          <h1 id="search-title" data-reveal style="--d:60ms">Search</h1>
+          <p class="lead" data-reveal style="--d:140ms">
+            Find a service, a step in the close-out or a policy.
+          </p>
+        </div>
+        <div class="search-hero__box" data-reveal style="--d:220ms">
+          <SearchModal inline />
+        </div>
+      </div>
+    </section>
+
+    <ContactBand title="Not on the site?" line="Ask us. A short call, then a written plan." />
+  </div>
+</Base>
+
+<style>
+  .search-hero {
+    min-height: min(78svh, 760px);
+  }
+
+  .search-hero__box {
+    margin-top: clamp(28px, 4vw, 48px);
+  }
+</style>

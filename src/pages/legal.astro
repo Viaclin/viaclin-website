@@ -1,0 +1,174 @@
+---
+// Legal and compliance. Company details come from site.ts; a row with an empty value is left out.
+import Legal from '../layouts/Legal.astro';
+import { site } from '../data/site';
+
+const toc = [
+  { id: 'company-details', title: 'Company details' },
+  { id: 'regulatory-position', title: 'Regulatory position' },
+  { id: 'gxp', title: 'GxP and data integrity' },
+  { id: 'ai', title: 'Our position on AI' },
+  { id: 'trademarks', title: 'Trademark notice' },
+  { id: 'footage', title: 'Footage notice' },
+  { id: 'anti-bribery', title: 'Anti-bribery' },
+  { id: 'modern-slavery', title: 'Modern slavery' },
+  { id: 'equal-opportunity', title: 'Equal opportunity' },
+];
+
+const details = [
+  { term: 'Legal name', value: site.legalName },
+  { term: 'Trading name', value: site.name },
+  { term: 'Registered in', value: site.country },
+  { term: 'Company number', value: site.croNumber },
+  { term: 'Registered office', value: site.registeredOffice },
+  { term: 'VAT number', value: site.vat },
+  { term: 'Email', value: site.email, href: `mailto:${site.email}` },
+  { term: 'Website', value: site.url.replace('https://', ''), href: site.url },
+].filter((row) => row.value);
+---
+
+<Legal
+  title="Legal and compliance: Viaclin"
+  description="Company details for Viaclin Limited, our regulatory position as a consultancy, our stance on GxP, data integrity and AI, and notices on trademarks and footage."
+  lead="Who Viaclin is in law, what we are and are not under medicines regulation, and the standards we hold ourselves to."
+  path="/legal"
+  toc={toc}
+>
+  <h2 id="company-details">Company details</h2>
+  <dl class="facts">
+    {details.map((row) => (
+      <div class="facts__row">
+        <dt>{row.term}</dt>
+        <dd>{row.href ? <a href={row.href}>{row.value}</a> : row.value}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <h2 id="regulatory-position">Regulatory position</h2>
+  <p>
+    Viaclin is a consultancy. We advise on, manage and improve clinical and commercial supply chains for life sciences
+    companies.
+  </p>
+  <ul>
+    <li>Viaclin does not hold a manufacturing, import or wholesale distribution licence.</li>
+    <li>Viaclin does not release, store or distribute medicinal product.</li>
+    <li>
+      Our work runs inside the client's quality system and under the client's licences, or those of the client's
+      contracted partners. The licence holder keeps its regulatory duties at every stage.
+    </li>
+    <li>Batch certification and release stay with the Qualified Person named on the relevant licence.</li>
+  </ul>
+  <p>
+    Nothing on this site promotes a medicinal product, and nothing here is aimed at patients or the public as users of
+    medicines. The site gives general information and not regulatory, quality, legal or medical advice. The
+    {' '}<a href="/terms#no-professional-advice">terms of use</a> say more.
+  </p>
+
+  <h2 id="gxp">GxP and data integrity</h2>
+  <p>
+    Good practice rules exist to protect patients, and we treat them that way. On an engagement our consultants follow
+    the client's procedures, complete the client's training before they touch a controlled process, and work in the
+    client's validated systems with their own named accounts.
+  </p>
+  <p>
+    Records we create or handle are kept attributable, legible, contemporaneous, original and accurate, and they stay
+    complete, consistent, enduring and available. We do not keep shadow records outside the quality system. Deviations
+    and errors are reported through the client's process, in the open and without delay.
+  </p>
+
+  <h2 id="ai">Our position on AI</h2>
+  <p>
+    Operations Excellence work can include oversight agents, delivered with
+    {' '}<a href={site.sisterBrand.url} rel="noopener noreferrer">{site.sisterBrand.name}</a>. The position is simple:
+    agents advise, people decide.
+  </p>
+  <ul>
+    <li>An agent watches activity, flags risk and suggests a course of action. It does not act alone.</li>
+    <li>A named person makes and owns every decision, including every GxP decision.</li>
+    <li>
+      AI enters a GxP workflow once its intended use, risks, controls and evidence are written down and the client's
+      quality system has accepted them.
+    </li>
+    <li>Client data goes into an AI tool where the client has approved that tool for that data, and not before.</li>
+  </ul>
+
+  <h2 id="trademarks">Trademark notice</h2>
+  <p>
+    Third-party names and logos on this site are trademarks of their owners. They appear in the consultant experience
+    banner to describe the prior experience of consultants in the Viaclin network. No endorsement, sponsorship or
+    partnership is suggested, and none should be inferred.
+  </p>
+  <p>
+    If you own a mark shown here and want it changed or removed, email
+    {' '}<a href={`mailto:${site.email}`}>{site.email}</a> and we will act on it.
+  </p>
+  <p>The Viaclin name, the V mark and the wordmark identify {site.legalName}.</p>
+
+  <h2 id="footage">Footage notice</h2>
+  <p>
+    The films on this site are illustrative. They set the scene for each stage of a supply chain and do not show
+    client sites or client products. The films carry no audio.
+  </p>
+
+  <h2 id="anti-bribery">Anti-bribery</h2>
+  <p>
+    Viaclin does not offer, pay, ask for or accept bribes or facilitation payments, in any country, in person or
+    through anyone who acts for us. We follow the Criminal Justice (Corruption Offences) Act 2018 and the equivalent
+    law wherever we work. Gifts and hospitality stay modest, open and recorded. We expect the same of every consultant
+    and supplier.
+  </p>
+
+  <h2 id="modern-slavery">Modern slavery</h2>
+  <p>
+    Viaclin does not tolerate forced labour, child labour or human trafficking in its own business or in its supply
+    chain. Consultants join us by choice and under written contracts. If we find a supplier that falls short, we raise
+    it and, where it is not fixed, we end the relationship.
+  </p>
+
+  <h2 id="equal-opportunity">Equal opportunity</h2>
+  <p>
+    Viaclin selects and treats consultants, staff and suppliers on merit. We do not discriminate on any of the nine
+    grounds in Irish equality law: gender, civil status, family status, sexual orientation, religion, age, disability,
+    race and membership of the Traveller community. We make reasonable accommodation for people with disabilities.
+  </p>
+</Legal>
+
+<style>
+  .facts {
+    margin: var(--space-5) 0 0;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    background: var(--bg-raised);
+    overflow: hidden;
+  }
+
+  .facts__row {
+    display: grid;
+    grid-template-columns: minmax(140px, 0.4fr) minmax(0, 1fr);
+    gap: 4px 24px;
+    padding: 14px clamp(16px, 2.4vw, 24px);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .facts__row:last-child {
+    border-bottom: 0;
+  }
+
+  .facts dt {
+    font-size: var(--text-sm);
+    color: var(--fg-3);
+  }
+
+  .facts dd {
+    margin: 0;
+    color: var(--fg);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 520px) {
+    .facts__row {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

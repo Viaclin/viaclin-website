@@ -1,0 +1,257 @@
+---
+// Privacy notice. Company facts come from site.ts; an empty value renders nothing.
+import Legal from '../layouts/Legal.astro';
+import { site, formatDate } from '../data/site';
+
+const toc = [
+  { id: 'who-we-are', title: 'Who we are' },
+  { id: 'what-we-collect', title: 'What we collect' },
+  { id: 'why-we-use-it', title: 'Why we use it and the legal bases' },
+  { id: 'who-processes-it', title: 'Who processes it' },
+  { id: 'international-transfers', title: 'International transfers' },
+  { id: 'retention', title: 'How long we keep it' },
+  { id: 'your-rights', title: 'Your rights' },
+  { id: 'complaints', title: 'Complaints' },
+  { id: 'children', title: 'Children' },
+  { id: 'changes', title: 'Changes' },
+];
+
+const domain = site.url.replace('https://', '');
+const mailto = `mailto:${site.email}`;
+const registration =
+  `The company is registered in ${site.country}` +
+  (site.croNumber ? `, company number ${site.croNumber}` : '') +
+  (site.registeredOffice ? `, with its registered office at ${site.registeredOffice}` : '') +
+  '.';
+---
+
+<Legal
+  title="Privacy notice: Viaclin"
+  description="How Viaclin Limited handles personal data on viaclin.com: the contact form, analytics by consent, who processes it, retention, your rights and how to complain."
+  lead="What this website collects, why, who handles it, how long it stays and the rights you hold."
+  path="/privacy"
+  toc={toc}
+>
+  <h2 id="who-we-are">Who we are</h2>
+  <p>
+    {site.legalName}, trading as {site.name}, is the data controller for this website. {registration}
+  </p>
+  <p>
+    This notice covers {domain} and the enquiries that reach us through it. It follows the General Data Protection
+    Regulation (GDPR) and the Data Protection Act 2018. Work we carry out for a client is covered by the contract for
+    that engagement.
+  </p>
+  <p>For any question about this notice or your data, write to <a href={mailto}>{site.email}</a>.</p>
+
+  <h2 id="what-we-collect">What we collect</h2>
+
+  <h3>When you send the contact form</h3>
+  <p>
+    We receive your name, company, work email, programme stage and message, along with a record that you ticked the
+    consent box.
+  </p>
+  <p>
+    The form also carries campaign values, such as utm_source, where the address of the page holds them, along with
+    the path of that page. If you have accepted analytics, the site keeps those values for the rest of your visit, so
+    the form carries the ones from the page you landed on.
+  </p>
+  <p>If you write to us by email instead, we hold your address and whatever you choose to tell us.</p>
+  <p>
+    The site does not ask for health data or any other special category of data. Leave patient and trial subject
+    details out of your message.
+  </p>
+
+  <h3>When you visit</h3>
+  <p>
+    Our hosting provider records standard server logs, including IP address, browser type, the page requested and the
+    time of the request, to run and protect the site.
+  </p>
+  <p>
+    The site also keeps a small number of settings in your browser, such as your light or dark theme. The
+    {' '}<a href="/cookies">cookie policy</a> lists each one.
+  </p>
+
+  <h3>When you accept analytics or insights</h3>
+  <p>
+    Nothing in this group loads until you say yes. Google Consent Mode starts every visit with all signals set to
+    denied, and the advertising signals stay denied whatever you choose.
+  </p>
+  <ul>
+    <li>
+      <strong>Analytics.</strong> Google Analytics 4 records the pages you view, the site or campaign that brought you
+      here, your device and browser type, an approximate location taken from your IP address, and events such as a
+      button press, a form start or a search.
+    </li>
+    <li>
+      <strong>Insights.</strong> Microsoft Clarity records how pages are used: clicks, taps, scrolling and pointer
+      movement. We see the results as heatmaps and session replays. With the same consent, the site can place you in a
+      test group so that we can compare two versions of a page.
+    </li>
+  </ul>
+  <p>
+    We use these tools to see how the site performs, not to work out who you are. The site carries no advertising, and
+    we do not sell data.
+  </p>
+
+  <h2 id="why-we-use-it">Why we use it and the legal bases</h2>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Purposes and legal bases">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Purpose</th>
+          <th scope="col">Data</th>
+          <th scope="col">Legal basis</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Reply to your enquiry and, where you ask us to, prepare a proposal</td>
+          <td>Contact form and email details</td>
+          <td>Your consent, given when you tick the box and send the form: Article 6(1)(a) GDPR</td>
+        </tr>
+        <tr>
+          <td>Measure how the site is used, so that we can improve it</td>
+          <td>Analytics data</td>
+          <td>Your consent, given through the cookie settings: Article 6(1)(a) GDPR</td>
+        </tr>
+        <tr>
+          <td>See how pages are used and compare page versions</td>
+          <td>Insights data</td>
+          <td>Your consent, given through the cookie settings: Article 6(1)(a) GDPR</td>
+        </tr>
+        <tr>
+          <td>Run the site, keep it secure and investigate misuse</td>
+          <td>Server logs</td>
+          <td>Our legitimate interest in a working, secure website: Article 6(1)(f) GDPR</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    You can withdraw consent at any time. For analytics and insights, open the cookie settings from the footer of any
+    page or from the <a href="/cookies">cookie policy</a>. For an enquiry, email us. Withdrawal does not affect
+    anything done before it.
+  </p>
+  <p>
+    You are under no duty to give us data. Without a name and an email address we cannot reply to an enquiry. We make
+    no decisions about you by automated means.
+  </p>
+
+  <h2 id="who-processes-it">Who processes it</h2>
+  <p>
+    We use a small number of providers to run the site. The privacy notice of each one explains how it handles data.
+  </p>
+  <div class="table-wrap" tabindex="0" role="region" aria-label="Providers that process data">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Provider</th>
+          <th scope="col">What it does for us</th>
+          <th scope="col">Data</th>
+          <th scope="col">When</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row"><a href="https://vercel.com/legal/privacy-policy" rel="noopener noreferrer">Vercel</a></th>
+          <td>Hosts and delivers the site</td>
+          <td>Server logs, including IP address</td>
+          <td>On every visit</td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="https://web3forms.com/privacy" rel="noopener noreferrer">Web3Forms</a></th>
+          <td>Passes contact form submissions to our mailbox</td>
+          <td>The contents of the form</td>
+          <td>When you send the form</td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="https://policies.google.com/privacy" rel="noopener noreferrer">Google Analytics 4</a></th>
+          <td>Site measurement</td>
+          <td>Analytics data</td>
+          <td>After you accept analytics</td>
+        </tr>
+        <tr>
+          <th scope="row"><a href="https://www.microsoft.com/privacy/privacystatement" rel="noopener noreferrer">Microsoft Clarity</a></th>
+          <td>Heatmaps and session replays</td>
+          <td>Insights data</td>
+          <td>After you accept insights</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Enquiries arrive in our business mailbox, which an email provider hosts for us.</p>
+  <p>
+    We disclose data to a court, a regulator or a professional adviser where the law requires it, or where we need to
+    establish or defend a legal claim. We do not sell data, and we do not pass it to anyone for their marketing.
+  </p>
+
+  <h2 id="international-transfers">International transfers</h2>
+  <p>
+    Vercel, Web3Forms, Google and Microsoft may process data in the United States and in other countries outside the
+    European Economic Area.
+  </p>
+  <p>
+    Where that happens, the transfer rests on one of two safeguards: the European Commission's adequacy decision for
+    the EU-US Data Privacy Framework, for providers certified under it, or the Commission's standard contractual
+    clauses. Email us if you would like to know which safeguard covers a given provider.
+  </p>
+
+  <h2 id="retention">How long we keep it</h2>
+  <ul>
+    <li><strong>Enquiries:</strong> 24 months, or longer where the enquiry becomes part of an engagement record.</li>
+    <li>
+      <strong>Analytics and insights:</strong> the settings of each provider decide. Google Analytics 4 is set to keep
+      user and event data for 14 months. Microsoft Clarity keeps recordings and heatmap data for the periods in its own
+      documentation.
+    </li>
+    <li><strong>Server logs:</strong> held by our hosting provider under its own schedule.</li>
+    <li><strong>Browser storage:</strong> the <a href="/cookies">cookie policy</a> gives the life of each item.</li>
+  </ul>
+  <p>At the end of a period we delete the data or anonymise it.</p>
+
+  <h2 id="your-rights">Your rights</h2>
+  <p>Under the GDPR you can ask us to:</p>
+  <ul>
+    <li>give you a copy of the data we hold about you</li>
+    <li>correct data that is wrong or incomplete</li>
+    <li>erase your data</li>
+    <li>restrict how we use it</li>
+    <li>send it to you, or to another organisation, in a portable format</li>
+  </ul>
+  <p>
+    You can also object to processing that rests on our legitimate interests, and you can withdraw consent at any time.
+  </p>
+  <p>
+    To use any of these rights, email <a href={mailto}>{site.email}</a>. We may ask for proof of identity before we
+    act. We answer within one month. The law allows two further months for a complex request, and we will tell you if
+    we need them. There is no charge for a request. The law allows a fee, or a refusal, where a request is unfounded or
+    excessive.
+  </p>
+
+  <h2 id="complaints">Complaints</h2>
+  <p>If something has gone wrong, tell us first at <a href={mailto}>{site.email}</a> and we will try to put it right.</p>
+  <p>
+    You have the right to complain to the Data Protection Commission, the supervisory authority for Ireland, at
+    {' '}<a href="https://www.dataprotection.ie" rel="noopener noreferrer">dataprotection.ie</a>. If you live or work in
+    another EU or EEA country, you can complain to the authority there instead.
+  </p>
+
+  <h2 id="children">Children</h2>
+  <p>
+    This site is written for people who work in life sciences companies. It is not aimed at children, and we do not
+    seek data from anyone under 18. If you believe a child has sent us data, tell us and we will delete it.
+  </p>
+
+  <h2 id="changes">Changes</h2>
+  <p>
+    This notice was last updated on {formatDate(site.legalUpdated)}. Changes appear on this page, and the date at the
+    top shows when the text last changed.
+  </p>
+</Legal>
+
+<style>
+  /* provider names stay on one line; the table scrolls inside its frame on a narrow screen */
+  tbody th {
+    white-space: nowrap;
+  }
+</style>

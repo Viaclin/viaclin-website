@@ -1,3 +1,389 @@
 ---
-// Stub. Task 6 replaces this with the consent banner and the preferences dialog.
+// Consent banner and the preferences dialog.
+// The banner ships hidden: consent.ts shows it when no choice is stored, so a page without JavaScript
+// never shows a banner whose buttons cannot work (and never loads a tracker either).
+// The banner is a region, not a modal: no focus trap, and the page stays usable behind it.
+// Any element with [data-consent-open] opens the preferences dialog.
+import Icon from './Icon.astro';
+
+const categories = [
+  {
+    id: 'consent-necessary',
+    title: 'Necessary',
+    locked: true,
+    body: 'Always on. Remembers your theme and the choice you make here. Both stay in your browser and set no cookies.',
+  },
+  {
+    id: 'consent-analytics',
+    title: 'Analytics',
+    locked: false,
+    body: 'Google Analytics 4 counts visits and shows which pages are read. Sets _ga cookies and keeps campaign tags from your link for the browser session.',
+  },
+  {
+    id: 'consent-insights',
+    title: 'Insights',
+    locked: false,
+    body: 'Microsoft Clarity draws heatmaps of clicks and scrolling, and lets us test two versions of a page. Sets _cl cookies and remembers the version you saw.',
+  },
+];
 ---
+
+<div class="consent glass is-out" id="consent-banner" role="region" aria-label="Cookie choices" data-pagefind-ignore hidden>
+  <div class="consent__copy">
+    <p class="consent__title">Cookie choices</p>
+    <p class="consent__text">
+      We would like to measure visits and see which pages help, using Google Analytics and Microsoft Clarity.
+      Nothing loads until you choose. <a href="/cookies">Read the cookie policy</a>.
+    </p>
+  </div>
+  <div class="consent__actions">
+    <button class="btn btn--secondary btn--sm" type="button" data-consent-accept>Accept all</button>
+    <button class="btn btn--secondary btn--sm" type="button" data-consent-reject>Reject all</button>
+    <button class="btn btn--secondary btn--sm" type="button" data-consent-open>Choose</button>
+  </div>
+</div>
+
+<dialog class="dialog consent-dialog" id="consent-dialog" aria-labelledby="consent-title" data-pagefind-ignore>
+  <div class="dialog__panel glass">
+    <button class="icon-btn dialog__close" type="button" data-dialog-close aria-label="Close dialog">
+      <Icon name="close" />
+    </button>
+    <p class="eyebrow">Cookie settings</p>
+    <h2 id="consent-title">Choose what this site may store.</h2>
+    <p class="dialog__intro">
+      Optional items stay off until you switch them on. Cookie settings in the footer brings this panel back.
+    </p>
+
+    <ul class="prefs" role="list">
+      {categories.map((item) => (
+        <li class="pref">
+          <div class="pref__copy">
+            <label class="pref__title" for={item.id}>{item.title}</label>
+            <p class="pref__body" id={`${item.id}-note`}>{item.body}</p>
+          </div>
+          <span class:list={['switch', { 'switch--locked': item.locked }]}>
+            <input
+              type="checkbox"
+              role="switch"
+              id={item.id}
+              aria-describedby={`${item.id}-note`}
+              checked={item.locked}
+              disabled={item.locked}
+            />
+            <span class="switch__track" aria-hidden="true"></span>
+            <span class="switch__state" aria-hidden="true"></span>
+          </span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="prefs__actions">
+      <button class="btn btn--primary" type="button" data-consent-save>Save choices</button>
+      <button class="btn btn--secondary" type="button" data-consent-accept>Accept all</button>
+      <button class="btn btn--secondary" type="button" data-consent-reject>Reject all</button>
+    </div>
+    <p class="prefs__more small">
+      The <a href="/cookies">cookie policy</a> lists every item by name. The <a href="/privacy">privacy notice</a> covers the rest.
+    </p>
+  </div>
+</dialog>
+
+<style>
+  /* ───────── banner ───────── */
+  .consent {
+    position: fixed;
+    right: 0;
+    bottom: calc(16px + env(safe-area-inset-bottom));
+    left: 0;
+    z-index: 180;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px clamp(20px, 3vw, 48px);
+    width: min(var(--container), calc(100% - 2 * var(--gutter)));
+    margin-inline: auto;
+    padding: 18px clamp(18px, 2.2vw, 28px);
+    color: var(--fg);
+    /* A touch more body than the header glass: the banner carries a full sentence over moving footage. */
+    --glass-bg: color-mix(in srgb, var(--bg) 80%, transparent);
+    box-shadow: inset 0 1px 1px var(--glass-inset), var(--shadow-float);
+  }
+
+  .consent__title {
+    font-weight: 700;
+    color: var(--fg);
+  }
+
+  .consent__text {
+    margin-top: 2px;
+    max-width: 74ch;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--fg);
+  }
+
+  .consent__text a {
+    color: inherit;
+    font-weight: 600;
+  }
+
+  /* The hover keeps the text colour (contrast over footage) and thickens the underline. */
+  .consent__text a:hover {
+    color: inherit;
+    text-decoration-thickness: 2px;
+  }
+
+  /* Three equal columns: no choice is given more weight than another. */
+  .consent__actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .consent__actions .btn {
+    width: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .consent {
+      transition: transform var(--dur-3) var(--ease), opacity var(--dur-2) var(--ease);
+    }
+
+    .consent.is-out {
+      transform: translate3d(0, calc(100% + 40px), 0);
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 860px) {
+    .consent {
+      grid-template-columns: minmax(0, 1fr);
+      bottom: calc(10px + env(safe-area-inset-bottom));
+      width: calc(100% - 20px);
+      padding: 16px;
+    }
+
+    .consent__actions .btn {
+      padding-inline: 6px;
+    }
+  }
+
+  /* The smallest phones: three columns still fit with a smaller label, which keeps the banner short. */
+  @media (max-width: 360px) {
+    .consent__actions {
+      gap: 6px;
+    }
+
+    .consent__actions .btn {
+      padding-inline: 4px;
+      font-size: 0.875rem;
+    }
+  }
+
+  @media print {
+    .consent {
+      display: none;
+    }
+  }
+
+  /* While the banner is open: keep focused elements, the footer's last lines and the back-to-top button clear of it. */
+  :global(html.consent-open) {
+    scroll-padding-bottom: calc(var(--consent-h, 120px) + 32px);
+  }
+
+  :global(html.consent-open .site-footer) {
+    padding-bottom: calc(var(--consent-h, 120px) + 32px);
+  }
+
+  :global(html.consent-open .to-top) {
+    bottom: calc(var(--consent-h, 120px) + 28px + env(safe-area-inset-bottom));
+  }
+
+  /* ───────── preferences dialog ───────── */
+  dialog.consent-dialog {
+    max-width: min(640px, calc(100vw - 24px));
+  }
+
+  .dialog__panel h2 {
+    margin-top: var(--space-3);
+  }
+
+  .prefs {
+    margin: var(--space-5) 0 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .pref {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px clamp(16px, 3vw, 32px);
+    align-items: start;
+    padding-block: 18px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .pref__title {
+    display: inline-block;
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--fg);
+    cursor: pointer;
+  }
+
+  .pref__body {
+    margin-top: 4px;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+    color: var(--fg-2);
+  }
+
+  /* A real checkbox, drawn as a switch. The input covers the whole control, so the target is 44px tall. */
+  .switch {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+  }
+
+  .switch input {
+    position: absolute;
+    inset: 0;
+    /* Above the drawn track, so a click anywhere on the control reaches the checkbox. */
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .switch input:disabled {
+    cursor: not-allowed;
+  }
+
+  .switch__track {
+    position: relative;
+    flex: none;
+    width: 52px;
+    height: 30px;
+    border-radius: var(--radius-pill);
+    background: var(--fg-3);
+    transition: background-color var(--dur-2) var(--ease), box-shadow var(--dur-1) var(--ease);
+  }
+
+  .switch__track::after {
+    content: '';
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--white);
+    box-shadow: 0 1px 3px rgba(6, 26, 46, 0.35);
+    transition: transform var(--dur-2) var(--ease);
+  }
+
+  .switch input:checked + .switch__track {
+    background: var(--action);
+  }
+
+  .switch input:checked + .switch__track::after {
+    transform: translateX(22px);
+  }
+
+  .switch input:hover:not(:disabled) + .switch__track {
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  .switch input:focus-visible + .switch__track {
+    box-shadow: var(--focus-ring);
+  }
+
+  .switch--locked .switch__track {
+    opacity: 0.55;
+  }
+
+  .switch__state {
+    min-width: 2.2em;
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--fg-2);
+    text-align: right;
+  }
+
+  .switch__state::after {
+    content: 'Off';
+  }
+
+  .switch input:checked ~ .switch__state::after {
+    content: 'On';
+  }
+
+  .prefs__actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: var(--space-5);
+  }
+
+  .prefs__actions .btn {
+    width: 100%;
+    padding-inline: 12px;
+  }
+
+  .prefs__more {
+    margin-top: var(--space-4);
+    color: var(--fg-3);
+  }
+
+  @media (max-width: 560px) {
+    /* Narrow screens: a smaller title keeps the three switches and the buttons close to one screen. */
+    .dialog__panel h2 {
+      font-size: var(--text-xl);
+      line-height: 1.25;
+    }
+
+    /* The switch sits beside the title and the description runs the full width. */
+    .pref {
+      grid-template-areas:
+        'title switch'
+        'body body';
+      align-items: center;
+      gap: 0 16px;
+      padding-block: 10px 16px;
+    }
+
+    .pref__copy {
+      display: contents;
+    }
+
+    .pref__title {
+      grid-area: title;
+    }
+
+    .pref__body {
+      grid-area: body;
+      margin-top: 0;
+    }
+
+    .pref .switch {
+      grid-area: switch;
+    }
+
+    .prefs {
+      margin-top: var(--space-4);
+    }
+
+    .prefs__actions {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: var(--space-4);
+    }
+
+    .prefs__actions .btn--primary {
+      grid-column: 1 / -1;
+    }
+  }
+</style>

@@ -1,0 +1,137 @@
+---
+// Accessibility statement. States the target, what was built in, the known limits and the feedback route.
+import Legal from '../layouts/Legal.astro';
+import { site, formatDate } from '../data/site';
+
+const toc = [
+  { id: 'commitment', title: 'Our commitment' },
+  { id: 'what-we-did', title: 'What we did' },
+  { id: 'known-limits', title: 'Known limits' },
+  { id: 'report', title: 'Report a barrier' },
+  { id: 'enforcement', title: 'Enforcement in Ireland' },
+  { id: 'assessment', title: 'How we assessed the site' },
+  { id: 'date', title: 'Date of this statement' },
+];
+
+const mailto = `mailto:${site.email}?subject=Accessibility`;
+
+const measures = [
+  {
+    title: 'Keyboard access.',
+    body: 'Every link, button, menu, dialog and form field works from the keyboard, in a logical order. Dialogs hold focus while open, close with Escape and hand focus back to the control that opened them.',
+  },
+  { title: 'Skip link.', body: 'The first press of Tab on any page offers a link straight to the main content.' },
+  {
+    title: 'Visible focus.',
+    body: 'A clear ring marks the element that has focus, on light, dark and footage backgrounds.',
+  },
+  {
+    title: 'Contrast.',
+    body: 'Text and controls meet the AA contrast ratios in both the light and the dark theme. Over footage, text sits on a tinted glass panel that holds the ratio whatever the film shows.',
+  },
+  {
+    title: 'Reduced motion.',
+    body: 'If your device asks for less motion, scroll reveals, drawn lines and the spinning sphere stay still, and each background film shows a still image until you press play.',
+  },
+  {
+    title: 'A pause control on every film.',
+    body: 'Each background film has a pause and play button. The films carry no audio and no information; they are decorative.',
+  },
+  {
+    title: 'Text alternatives.',
+    body: 'Images and diagrams that carry meaning have a text alternative. Decorative artwork is hidden from assistive technology.',
+  },
+  {
+    title: 'Structure.',
+    body: 'One main heading per page, headings in order without gaps, landmarks for the header, main content and footer, and the page language set to English (Ireland).',
+  },
+  {
+    title: 'Forms.',
+    body: 'Every field has a visible label. Errors appear as text beside the field, begin with the field name and are gathered in a summary. Colour alone never carries a message.',
+  },
+  {
+    title: 'Target size.',
+    body: 'Controls meet the WCAG 2.2 minimum target size, and the main buttons and menus offer 44 pixels or more.',
+  },
+  { title: 'Reflow.', body: 'Pages fold to a single column on narrow screens and under browser zoom.' },
+  {
+    title: 'Print.',
+    body: 'A print stylesheet gives ink-on-white pages without footage or menus, with link addresses written out.',
+  },
+];
+---
+
+<Legal
+  title="Accessibility statement: Viaclin"
+  description="Viaclin aims to meet WCAG 2.2 level AA on viaclin.com. What we built in, the known limits, how to report a barrier and the enforcement route in Ireland."
+  heading="Accessibility statement"
+  lead="Our target is WCAG 2.2 level AA. This page sets out what we built in, where the limits are and how to tell us about a barrier."
+  path="/accessibility"
+  toc={toc}
+>
+  <h2 id="commitment">Our commitment</h2>
+  <p>
+    Viaclin wants everyone to be able to read and use this site, whatever their device, ability or assistive
+    technology. Our target is the Web Content Accessibility Guidelines (WCAG) 2.2 at level AA, on every page and in
+    both the light and the dark theme.
+  </p>
+
+  <h2 id="what-we-did">What we did</h2>
+  <ul>
+    {measures.map((item) => <li><strong>{item.title}</strong> {item.body}</li>)}
+  </ul>
+
+  <h2 id="known-limits">Known limits</h2>
+  <ul>
+    <li>
+      <strong>Logos in the consultant experience banner.</strong> The third-party logos are images of text. WCAG treats
+      logotypes as an exception, and each logo carries the company name as its text alternative. The banner has a pause
+      button, pauses on hover and on focus, and becomes a static grid under reduced motion.
+    </li>
+    <li>
+      <strong>Background footage.</strong> The films are decorative. They have no audio, no captions and no audio
+      description, because they hold no information that the page text does not give.
+    </li>
+    <li>
+      <strong>Site search.</strong> Search needs JavaScript. Without it, every page stays within reach through the
+      header and footer links.
+    </li>
+    <li>
+      <strong>Wide tables.</strong> On a narrow screen the tables in the cookie policy and the privacy notice scroll
+      sideways inside their own frame. The frame takes keyboard focus so that arrow keys can scroll it.
+    </li>
+  </ul>
+  <p>If you find a limit that is not on this list, we want to hear about it.</p>
+
+  <h2 id="report">Report a barrier</h2>
+  <p>
+    Email <a href={mailto}>{site.email}</a>. It helps if you tell us the address of the page, what you were trying to
+    do, and the browser and assistive technology you use.
+  </p>
+  <p>
+    We aim to respond within 5 working days. If you need the content of a page in another format, ask and we will send
+    it.
+  </p>
+
+  <h2 id="enforcement">Enforcement in Ireland</h2>
+  <p>
+    If our answer does not settle the matter, the Equal Status Acts 2000 to 2018 prohibit discrimination in the
+    provision of services, including on the ground of disability. Complaints under those Acts go to the
+    {' '}<a href="https://www.workplacerelations.ie" rel="noopener noreferrer">Workplace Relations Commission</a>. The
+    {' '}<a href="https://www.ihrec.ie" rel="noopener noreferrer">Irish Human Rights and Equality Commission</a> gives
+    information on your rights.
+  </p>
+
+  <h2 id="assessment">How we assessed the site</h2>
+  <p>
+    Viaclin assessed the site itself. Every page runs through automated axe checks in both themes as part of the
+    release process. We add manual checks with the keyboard alone and with a screen reader, and we test at phone,
+    tablet and desktop widths.
+  </p>
+  <p>Automated checks find some barriers and miss others, which is why your reports matter.</p>
+
+  <h2 id="date">Date of this statement</h2>
+  <p>
+    This statement was prepared on {formatDate(site.legalUpdated)}. We review it when the site changes.
+  </p>
+</Legal>

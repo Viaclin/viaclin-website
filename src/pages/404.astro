@@ -1,0 +1,237 @@
+---
+// Not found. Astro builds this file to /404.html, which the host serves for unknown routes.
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import { services } from '../data/nav';
+
+const links = [
+  ...services.filter((item) => item.href !== '/services/trial-close-out'),
+  { title: 'Contact', href: '/contact', summary: 'Tell us where the programme is stuck.' },
+];
+
+// The route from the home page, with one stop missing from the line.
+const onRoute = [24, 152, 280, 536];
+---
+
+<Base
+  title="Page not found: Viaclin"
+  description="That page is not on the Viaclin site. Try the three service areas, the contact page or the site search."
+  path="/404"
+  noindex
+>
+  <div data-pagefind-ignore="all">
+    <section class="page-hero" aria-labelledby="nf-title">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container">
+        <div class="split nf-split">
+          <div class="page-hero__copy">
+            <p class="eyebrow" data-reveal>Error 404</p>
+            <h1 id="nf-title" data-reveal style="--d:60ms">That page is not on the route.</h1>
+            <p class="lead" data-reveal style="--d:140ms">Try the three service areas or the contact page.</p>
+            <div class="actions" data-reveal style="--d:220ms">
+              <a class="btn btn--primary" href="/">Back to the home page</a>
+              <button class="btn btn--secondary nf-search" type="button" data-search-open>
+                <Icon name="search" />Search the site
+              </button>
+              <a class="btn btn--secondary nf-search-link" href="/search">Search the site</a>
+            </div>
+          </div>
+
+          <div class="route nf-route" data-reveal="fade" aria-hidden="true">
+            <svg viewBox="0 0 560 230" xmlns="http://www.w3.org/2000/svg" focusable="false">
+              <line class="route__line" x1="24" y1="56" x2="536" y2="56"></line>
+              <circle class="route__pulse" r="5" cx="24" cy="56" opacity="0">
+                <animate attributeName="cx" values="24;536" dur="6s" begin="2.4s" repeatCount="indefinite"></animate>
+                <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.06;0.94;1" dur="6s" begin="2.4s" repeatCount="indefinite"></animate>
+              </circle>
+              {onRoute.map((x, i) => <circle class="route__node" cx={x} cy="56" r="9" style={`--i:${i}`}></circle>)}
+              <circle class="nf-socket" cx="408" cy="56" r="9"></circle>
+              <path class="nf-drift" d="M408 70 C408 122 424 150 446 164"></path>
+              <g class="nf-lost">
+                <circle class="nf-lost__halo" cx="458" cy="172" r="22"></circle>
+                <circle class="route__node nf-lost__node" cx="458" cy="172" r="11"></circle>
+              </g>
+              <text class="route__label nf-label" x="492" y="180">404</text>
+            </svg>
+          </div>
+        </div>
+
+        <nav class="nf-links" aria-label="Pages to try">
+          <ul class="grid grid--4" role="list">
+            {links.map((item, index) => (
+              <li data-reveal style={`--d:${index * 80}ms`}>
+                <a class="card nf-card" href={item.href}>
+                  <span class="nf-card__title">{item.title}</span>
+                  <span class="nf-card__body">{item.summary}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .nf-split {
+    align-items: center;
+  }
+
+  .nf-route {
+    max-width: 560px;
+    width: 100%;
+    justify-self: end;
+  }
+
+  /* the empty place on the line */
+  .nf-socket {
+    fill: var(--bg);
+    stroke: var(--fg-3);
+    stroke-width: 2;
+    stroke-dasharray: 3.5 3.5;
+  }
+
+  .nf-drift {
+    fill: none;
+    stroke: var(--fg-3);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 2 8;
+  }
+
+  .nf-lost__halo {
+    fill: var(--accent);
+    opacity: 0.16;
+  }
+
+  .nf-lost__node {
+    stroke-width: 3.5;
+  }
+
+  .nf-label {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .nf-links {
+    margin-top: clamp(48px, 7vw, 96px);
+  }
+
+  .nf-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    height: 100%;
+    padding: clamp(20px, 2.2vw, 28px);
+    text-decoration: none;
+  }
+
+  /* each card starts with a node on a short length of route */
+  .nf-card::before {
+    content: '';
+    width: 100%;
+    height: 12px;
+    margin-bottom: var(--space-3);
+    background:
+      radial-gradient(circle at 6px 6px, var(--accent) 0 5.5px, transparent 6px),
+      linear-gradient(var(--rule), var(--rule)) 0 5px / 100% 2px no-repeat;
+  }
+
+  .nf-card__title {
+    color: var(--fg);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+
+  .nf-card__body {
+    color: var(--fg-2);
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  .nf-card:hover .nf-card__title {
+    color: var(--link);
+  }
+
+  .nf-card:focus-visible {
+    border-radius: var(--radius-lg);
+  }
+
+  /* the search dialog needs script; without it the button gives way to a link to the search page */
+  .nf-search-link {
+    display: none;
+  }
+
+  :global(.no-js) .nf-search {
+    display: none;
+  }
+
+  :global(.no-js) .nf-search-link {
+    display: inline-flex;
+  }
+
+  @media (max-width: 900px) {
+    .nf-route {
+      justify-self: start;
+      max-width: 440px;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js:not(.static)) .nf-route .nf-socket,
+    :global(.js:not(.static)) .nf-route .nf-drift,
+    :global(.js:not(.static)) .nf-route .nf-lost,
+    :global(.js:not(.static)) .nf-route .nf-label {
+      opacity: 0;
+    }
+
+    :global(.js:not(.static)) .nf-route.is-in .nf-socket {
+      animation: route-fade 500ms var(--ease) 1100ms forwards;
+    }
+
+    :global(.js:not(.static)) .nf-route.is-in .nf-drift {
+      animation: route-fade 700ms var(--ease) 1500ms forwards;
+    }
+
+    /* the stop slips off the line, then hangs there */
+    :global(.js:not(.static)) .nf-route.is-in .nf-lost {
+      animation: nf-slip 1100ms var(--ease) 1300ms forwards, nf-hang 4200ms var(--ease-in-out) 2400ms infinite alternate;
+    }
+
+    :global(.js:not(.static)) .nf-route.is-in .nf-label {
+      animation: route-fade 600ms var(--ease) 2100ms forwards;
+    }
+
+    /* the lost stop is lit by its group, not by the shared node timing */
+    :global(.js:not(.static)) .nf-route .nf-lost__node {
+      opacity: 1;
+      animation: none;
+    }
+  }
+
+  @keyframes nf-slip {
+    from {
+      opacity: 0;
+      transform: translate(-50px, -116px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes nf-hang {
+    from {
+      transform: none;
+    }
+
+    to {
+      transform: translate(3px, 7px);
+    }
+  }
+</style>

@@ -80,7 +80,7 @@ export function initSphere(): void {
     if (!run) draw();
   };
 
-  // Draw only while the sphere is on screen and the tab is in front.
+  // Animate while the sphere is on screen and the tab is in front; rest otherwise.
   new IntersectionObserver((entries) => {
     visible = entries[0].isIntersecting;
     sync();

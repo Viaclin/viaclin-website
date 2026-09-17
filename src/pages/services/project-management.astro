@@ -1,0 +1,250 @@
+---
+// Project Management. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.3.
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Section from '../../components/Section.astro';
+import Blocks from '../../components/Blocks.astro';
+import Steps from '../../components/Steps.astro';
+import ContactBand from '../../components/ContactBand.astro';
+import { site } from '../../data/site';
+
+const path = '/services/project-management';
+const pageName = 'Project Management';
+const description =
+  'End-to-end project management ownership for life sciences: tech transfer, CDMO programmes, packaging and serialisation, cross-border logistics and launch readiness under one accountable owner.';
+
+const takeOn = [
+  {
+    title: 'Tech transfer, scale-up and PPQ',
+    body: 'Transfer planning, receiving-site readiness, process performance qualification and the handover into routine supply.',
+  },
+  {
+    title: 'CDMO and CMO programmes',
+    body: 'Slot management, batch records, deviations, campaign reports and the commercial terms behind them.',
+  },
+  {
+    title: 'Packaging and serialisation',
+    body: 'Packaging definition, artwork and label drafting, serialisation adoption and packaging line readiness.',
+  },
+  {
+    title: 'Cross-border logistics and launch',
+    body: 'Importer of record, licences, bonds, cold chain routes, depot strategy and launch sequencing by market.',
+  },
+  {
+    title: 'Global site readiness',
+    body: 'Pharmacy manuals, storage capability, IRT integration and first-patient readiness across countries.',
+  },
+  {
+    title: 'Interim leadership',
+    body: 'A senior project owner while you hire, restructure or scale.',
+  },
+];
+
+const runSteps = [
+  {
+    title: 'Scope and charter in week one',
+    body: 'Objectives, boundaries, decision rights and the definition of done, signed off by your sponsor.',
+  },
+  {
+    title: 'One plan',
+    body: 'Budget, schedule, risk register and action log, owned by the Viaclin lead and open to your team at all times.',
+  },
+  {
+    title: 'Decisions in the open',
+    body: 'A weekly decisions log to your leadership, each item with options and a recommendation.',
+  },
+  {
+    title: 'Handover',
+    body: 'Documentation, trained owners and a closed action log. No dependency on us once the project ends.',
+  },
+];
+
+const engage = [
+  { title: 'Run', body: 'A Viaclin lead owns the project end to end.' },
+  { title: 'Retain', body: 'A fractional project owner across a portfolio, a set number of days each month.' },
+  { title: 'Diagnose', body: 'A project health check: plan, risks, vendor performance and a recovery route, in writing.' },
+];
+
+// Supporting artwork repeats words from the copy beside it, so it stays hidden from assistive tech and search.
+const routeStops = ['Joins your leadership team', 'Pushes the project forward', 'Answers for delivery'];
+const routeYs = [30, 110, 190];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${site.url}${path}#service`,
+    name: pageName,
+    description,
+    serviceType: 'Life sciences project management',
+    url: `${site.url}${path}`,
+    areaServed: ['IE', 'EU', 'US', 'GB'],
+    provider: { '@id': `${site.url}/#organisation` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${site.url}/#services` },
+      { '@type': 'ListItem', position: 3, name: pageName, item: `${site.url}${path}` },
+    ],
+  },
+];
+---
+
+<Base title="Project Management: Viaclin" description={description} path={path} schema={schema}>
+  <PageHero
+    title={pageName}
+    lead="End-to-end ownership of the projects that decide your timeline. One owner for scope, schedule, budget, regulatory alignment, risk and operations, from concept to patient delivery."
+    eyebrow="Service area"
+    crumbs={[{ title: 'Services', href: '/#services' }, { title: pageName }]}
+    cta={{ label: 'Start a conversation' }}
+    video="labelling"
+  />
+
+  <!-- intro -->
+  <Section>
+    <div class="lead-split">
+      <div class="lead-split__copy" data-reveal>
+        <p class="eyebrow">Our role</p>
+        <p class="lead lead--intro">
+          We do not administer plans or produce status reports. A Viaclin lead joins as an extension of your leadership
+          team, pushes the project forward and answers for delivery. Documentation and knowledge transfer come as
+          standard, so the capability stays with you.
+        </p>
+      </div>
+      <div class="route miniroute" data-reveal="fade" aria-hidden="true" data-pagefind-ignore>
+        <svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg" focusable="false">
+          <path class="route__bracket" d="M26 30 h-12 v160 h12"></path>
+          <line class="route__line" x1="56" y1="30" x2="56" y2="190"></line>
+          {routeYs.map((y, i) => <circle class="route__node" cx="56" cy={y} r="9" style={`--i:${i}`}></circle>)}
+          {routeStops.map((stop, i) => (
+            <text class="route__label" x="84" y={routeYs[i]} dominant-baseline="middle" style={`--i:${i}`}>{stop}</text>
+          ))}
+        </svg>
+        <p class="route__caption">The capability stays with you</p>
+      </div>
+    </div>
+  </Section>
+
+  <!-- what we take on -->
+  <Section id="what-we-take-on" tone="mist" eyebrow="Scope" title="What we take on">
+    <div class="rows"><Blocks items={takeOn} cols={2} /></div>
+  </Section>
+
+  <!-- how we run a project: the heading holds its place while the four steps pass -->
+  <section class="section" id="how-we-run-a-project" aria-labelledby="how-we-run-a-project-title">
+    <div class="container run-split">
+      <div class="run-split__head" data-reveal>
+        <p class="eyebrow">Method</p>
+        <h2 id="how-we-run-a-project-title">How we run a project</h2>
+        <p class="pull" aria-hidden="true" data-pagefind-ignore>No dependency on us once the project ends.</p>
+      </div>
+      <Steps items={runSteps} />
+    </div>
+  </section>
+
+  <!-- ways to engage -->
+  <Section id="ways-to-engage" tone="mist" eyebrow="Engagement" title="Ways to engage">
+    <Blocks items={engage} cols={3} />
+  </Section>
+
+  <ContactBand />
+</Base>
+
+<style>
+  /* a single paragraph set as a lead, with a quiet companion beside it */
+  .lead-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+    gap: clamp(32px, 6vw, 88px);
+    align-items: center;
+  }
+
+  .lead-split__copy > * + * {
+    margin-top: var(--space-5);
+  }
+
+  .lead--intro {
+    max-width: 34em;
+    font-size: clamp(1.25rem, 1.9vw, 1.5rem);
+    line-height: 1.45;
+    letter-spacing: -0.005em;
+  }
+
+  /* a short vertical route segment, drawn with the shared route classes */
+  .miniroute {
+    width: 100%;
+    max-width: 340px;
+    justify-self: end;
+  }
+
+  .miniroute .route__label {
+    font-size: 18px;
+  }
+
+  .miniroute .route__caption {
+    margin-top: var(--space-2);
+    padding-left: 14px;
+    text-align: left;
+  }
+
+  .run-split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(32px, 6vw, 88px);
+    align-items: start;
+  }
+
+  .run-split__head {
+    position: sticky;
+    top: calc(var(--header-h) + 32px);
+  }
+
+  .run-split__head > * + * {
+    margin-top: var(--space-4);
+  }
+
+  /* pull line lifted from the last step */
+  .run-split__head .pull {
+    max-width: 22ch;
+    margin-top: var(--space-6);
+    padding-left: var(--space-5);
+    border-left: 2px solid var(--accent);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--fg);
+  }
+
+  /* two-column block grids run to several rows: open the rows up so each rule reads as a new start */
+  .rows :global(.grid) {
+    row-gap: clamp(36px, 4.4vw, 56px);
+  }
+
+  /* dark theme: the mist ground and the contact band share a colour, so a hairline marks the seam */
+  :global(:root[data-theme='dark'] .section--mist + .cband) {
+    border-top: 1px solid var(--rule);
+  }
+
+  @media (max-width: 900px) {
+    .lead-split,
+    .run-split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .run-split__head {
+      position: static;
+    }
+
+    .pull {
+      display: none;
+    }
+
+    .miniroute {
+      max-width: 300px;
+      justify-self: start;
+    }
+  }
+</style>

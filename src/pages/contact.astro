@@ -1,0 +1,186 @@
+---
+// Contact: the form in a card, other ways to reach us beside it, then what follows an enquiry.
+// contact.ts reads ?topic=close-out and fills the form inside <main>.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import Steps from '../components/Steps.astro';
+import ContactForm from '../components/ContactForm.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const title = 'Start a conversation: Viaclin';
+const description =
+  'Start a conversation with Viaclin. Tell us where the programme is stuck: a short call, then a written plan.';
+const pageUrl = `${site.url}/contact`;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    '@id': `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: title,
+    description,
+    inLanguage: 'en-IE',
+    isPartOf: { '@id': `${site.url}/#website` },
+    about: { '@id': `${site.url}/#organisation` },
+    mainEntity: { '@id': `${site.url}/#organisation` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: site.url },
+      { '@type': 'ListItem', position: 2, name: 'Contact', item: pageUrl },
+    ],
+  },
+];
+
+const next = [
+  {
+    title: 'A thirty-minute call',
+    body: 'We ask about the programme, the phase, the systems and the deadline.',
+  },
+  {
+    title: 'A written proposal',
+    body: 'If we can help, you get a written proposal: scope, named lead, network specialists, timeline and fee.',
+  },
+  {
+    title: 'Or a straight answer',
+    body: 'If we cannot, we say so and point you to someone who can.',
+  },
+];
+---
+
+<Base title={title} description={description} path="/contact" schema={schema}>
+  <PageHero
+    title="Start a conversation"
+    lead="Tell us where the programme is stuck. A short call, then a written plan."
+    crumbs={[{ title: 'Contact' }]}
+  >
+    <div class="contact-layout">
+      <section class="contact-card card" aria-labelledby="enquiry-title" data-reveal style="--d:200ms">
+        <h2 class="contact-card__title" id="enquiry-title">Your enquiry</h2>
+        <p class="contact-card__note small">Every field is required.</p>
+        <ContactForm idPrefix="page" />
+      </section>
+
+      <aside class="contact-side" aria-label="Other ways to reach Viaclin">
+        <div class="block side-block" data-reveal style="--d:280ms">
+          <h2>Email</h2>
+          <p class="copy-row">
+            <a class="text-link side-mail" href={`mailto:${site.email}`} data-track="cta_click" data-track-place="contact-email">{site.email}</a>
+            <button class="copy-btn" type="button" data-copy={site.email}><Icon name="copy" /><span data-copy-label>Copy</span></button>
+          </p>
+        </div>
+
+        {/* Shown once site.linkedin holds a value. */}
+        {site.linkedin && (
+          <div class="block side-block" data-reveal style="--d:340ms">
+            <h2>LinkedIn</h2>
+            <p>
+              <a class="text-link" href={site.linkedin} rel="noopener noreferrer" target="_blank">
+                Viaclin on LinkedIn<span class="sr-only"> (opens in a new tab)</span>
+              </a>
+            </p>
+          </div>
+        )}
+
+        <div class="block side-block" data-reveal style="--d:400ms">
+          <h2>Where we work</h2>
+          <p>Remote-first, registered in Ireland, on programmes across the EU, US and UK.</p>
+        </div>
+      </aside>
+    </div>
+  </PageHero>
+
+  <Section id="next" tone="mist" eyebrow="After you send" title="What happens next">
+    <Steps items={next} row />
+  </Section>
+</Base>
+
+<style>
+  .contact-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+    gap: clamp(32px, 5vw, 80px);
+    align-items: start;
+    margin-top: clamp(36px, 5vw, 64px);
+  }
+
+  .contact-card {
+    padding: clamp(22px, 3.4vw, 44px);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* a form should hold still under the pointer */
+  .contact-card:hover {
+    transform: none;
+    border-color: var(--rule);
+  }
+
+  .contact-card:focus-within {
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--rule));
+  }
+
+  .contact-card__title {
+    font-size: var(--text-xl);
+    letter-spacing: -0.005em;
+  }
+
+  .contact-card__note {
+    margin-top: var(--space-2);
+    color: var(--fg-3);
+  }
+
+  .contact-side {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  /* on a tall enough screen the side column stays in view while the form scrolls */
+  @media (min-width: 901px) and (min-height: 720px) {
+    .contact-side {
+      position: sticky;
+      top: calc(var(--header-h) + 24px);
+    }
+  }
+
+  .side-block h2 {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.005em;
+  }
+
+  .side-mail {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-size: var(--text-lg);
+    overflow-wrap: anywhere;
+  }
+
+  .contact-side .copy-btn {
+    min-height: 44px;
+    padding-inline: 16px;
+  }
+
+  /* copying needs script; without it the address stands alone */
+  :global(.no-js) .contact-side .copy-btn {
+    display: none;
+  }
+
+  /* the form is on this page, so the sticky phone bar would cover the fields it points to */
+  :global(#mobile-cta) {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .contact-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

@@ -1,0 +1,123 @@
+---
+// Confirmation page for the form path that runs without JavaScript. Kept out of search engines and site search.
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import Blocks from '../components/Blocks.astro';
+import { site } from '../data/site';
+import { serviceCards } from '../data/services';
+---
+
+<Base
+  title="Received: Viaclin"
+  description="Your enquiry reached Viaclin. A lead will reply to the address you gave."
+  path="/thanks"
+  noindex
+>
+  <div data-pagefind-ignore="all">
+    <section class="page-hero" aria-labelledby="thanks-title">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container">
+        <div class="page-hero__copy">
+          <div class="sent" aria-hidden="true" data-reveal="fade">
+            <span class="sent__line"></span>
+            <span class="sent__node">
+              <svg class="tick" viewBox="0 0 32 32" focusable="false"><path d="M6 17l7 7L26 9"></path></svg>
+            </span>
+          </div>
+          <h1 id="thanks-title" data-reveal style="--d:120ms">Received.</h1>
+          <p class="lead" data-reveal style="--d:200ms">
+            A Viaclin lead will reply to the address you gave. If it is urgent, email{' '}
+            <a href={`mailto:${site.email}?subject=Urgent`}>{site.email}</a> with "urgent" in the subject line.
+          </p>
+          <div class="actions" data-reveal style="--d:280ms">
+            <a class="btn btn--secondary" href="/">Back to the home page</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Section id="services" tone="mist" eyebrow="While you wait" title="The three service areas">
+      <Blocks items={serviceCards} cols={3} />
+    </Section>
+  </div>
+</Base>
+
+<style>
+  /* the route arrives: a line draws in, the last node lights, the tick lands */
+  .sent {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-6);
+  }
+
+  .sent__line {
+    width: clamp(56px, 9vw, 120px);
+    height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--fg) 0 70%, var(--accent) 70% 100%);
+    transform-origin: left center;
+  }
+
+  .sent__node {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    flex: none;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--accent-soft);
+    box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent) 12%, transparent);
+  }
+
+  .sent .tick {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* drawn by default; the draw-in runs when motion is welcome */
+  .sent .tick path {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  .page-hero__copy .actions {
+    margin-top: var(--space-6);
+  }
+
+  /* the enquiry has been sent, so the sticky phone bar asking for one stays away */
+  :global(#mobile-cta) {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js:not(.static)) .sent__line {
+      transform: scaleX(0);
+      animation: sent-line 700ms var(--ease-in-out) 150ms forwards;
+    }
+
+    :global(.js:not(.static)) .sent__node {
+      opacity: 0;
+      transform: scale(0.8);
+      animation: sent-node 500ms var(--ease) 750ms forwards;
+    }
+
+    :global(.js:not(.static)) .sent .tick path {
+      stroke-dashoffset: 40;
+      animation: route-draw 700ms var(--ease) 1100ms forwards;
+    }
+  }
+
+  @keyframes sent-line {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes sent-node {
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

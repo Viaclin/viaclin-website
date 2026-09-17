@@ -1,0 +1,142 @@
+---
+// Terms of use. Company facts come from site.ts; an empty value renders nothing.
+import Legal from '../layouts/Legal.astro';
+import { site } from '../data/site';
+
+const toc = [
+  { id: 'using-this-site', title: 'Using this site' },
+  { id: 'intellectual-property', title: 'Intellectual property and copyright' },
+  { id: 'no-professional-advice', title: 'No professional advice' },
+  { id: 'accuracy', title: 'Accuracy and availability' },
+  { id: 'links', title: 'Links to other sites' },
+  { id: 'liability', title: 'Liability' },
+  { id: 'governing-law', title: 'Governing law' },
+  { id: 'changes', title: 'Changes' },
+  { id: 'contact', title: 'Contact' },
+];
+
+const domain = site.url.replace('https://', '');
+const company =
+  `${site.legalName}, a company registered in ${site.country}` +
+  (site.croNumber ? ` under company number ${site.croNumber}` : '') +
+  (site.registeredOffice ? `, with its registered office at ${site.registeredOffice}` : '');
+---
+
+<Legal
+  title="Terms of use: Viaclin"
+  description="The terms for using viaclin.com: acceptable use, copyright and intellectual property, no professional advice, liability and the governing law of Ireland."
+  lead="The terms that apply when you use this website. Client engagements run under their own signed contract."
+  path="/terms"
+  toc={toc}
+>
+  <h2 id="using-this-site">Using this site</h2>
+  <p>
+    {domain} is operated by {company}. In these terms, "Viaclin", "we" and "us" mean that company.
+  </p>
+  <p>By using the site you accept these terms. If you do not accept them, stop using the site.</p>
+  <p>You may use the site for any lawful purpose. You must not:</p>
+  <ul>
+    <li>try to gain access to the site, its server or any connected system without permission</li>
+    <li>introduce malicious code, or attack the site in any other way</li>
+    <li>copy the site in bulk with automated tools in a way that harms its operation</li>
+    <li>use the contact form to send unsolicited marketing, or pretend to be someone else when you write to us</li>
+  </ul>
+  <p>
+    The <a href="/privacy">privacy notice</a> and the <a href="/cookies">cookie policy</a> explain how we handle data.
+    Both form part of these terms.
+  </p>
+
+  <h2 id="intellectual-property">Intellectual property and copyright</h2>
+  <p>
+    The content of this site, including the text, design, diagrams, logo, footage and code, belongs
+    to {site.legalName} or to its licensors. Copyright and other intellectual property laws protect it. All rights
+    are reserved.
+  </p>
+  <p>
+    The Viaclin name, the V mark and the wordmark identify {site.legalName}. Use them to refer to us and for nothing
+    else, unless we agree in writing.
+  </p>
+  <p>
+    Third-party names and logos shown on the site belong to their owners. The
+    {' '}<a href="/legal#trademarks">trademark notice</a> explains why they appear.
+  </p>
+  <p>
+    You are welcome to view and print pages for your own use, to share links, and to quote short passages with a credit
+    to Viaclin and a link to the source page. Anything beyond that, such as republishing whole pages or reusing the
+    footage, needs our written permission first.
+  </p>
+
+  <h2 id="no-professional-advice">No professional advice</h2>
+  <p>
+    The content of this site is general information about our services and about life sciences supply chains. It is
+    not regulatory, quality, legal or medical advice, and it takes no account of your circumstances. Do not act on it
+    without advice that fits your situation.
+  </p>
+  <p>
+    Nothing on this site is an offer open to acceptance, and nothing here forms part of a contract. An engagement with
+    Viaclin is governed by the signed contract for that engagement and by nothing else.
+  </p>
+  <p>
+    The site is written for people who work in life sciences companies. It promotes no medicinal product and is not
+    aimed at patients. If you have a question about a medicine or about your health, speak to a doctor or a pharmacist.
+  </p>
+
+  <h2 id="accuracy">Accuracy and availability</h2>
+  <p>
+    We take care to keep the site accurate and up to date. We do not promise that every page is complete, current or
+    free of error, and we may change or remove content without notice.
+  </p>
+  <p>
+    We do not promise that the site will be available at all times or free of interruption. We may suspend or withdraw
+    it, in whole or in part, for maintenance or for any business reason.
+  </p>
+  <p>We take steps to keep the site secure. Protecting your own device with up-to-date software is your responsibility.</p>
+
+  <h2 id="links">Links to other sites</h2>
+  <p>
+    Where the site links to another website, the link is there for information. We do not control those sites, we have
+    not checked everything on them, and a link is not an endorsement. Their own terms and privacy notices apply once
+    you leave.
+  </p>
+  <p>
+    You may link to any page of this site, provided the link is fair and does not suggest that we endorse you, or that
+    we are connected to you, where that is not the case.
+  </p>
+
+  <h2 id="liability">Liability</h2>
+  <p>
+    To the extent the law allows, {site.legalName} excludes all conditions, warranties and representations that might
+    otherwise apply to this site or its content, whether express or implied.
+  </p>
+  <p>
+    To the same extent, we are not liable for any loss or damage that arises from the use of this site, from being
+    unable to use it, or from depending on its content. That includes loss of profit, revenue, business, data or
+    goodwill, and any indirect or consequential loss.
+  </p>
+  <p>
+    Nothing in these terms limits or excludes liability that cannot be limited or excluded under the law
+    of {site.country}, including liability for death or personal injury caused by negligence and liability for fraud.
+    If you use the site as a consumer, your statutory rights are not affected.
+  </p>
+
+  <h2 id="governing-law">Governing law</h2>
+  <p>
+    These terms, and any dispute or claim that arises from them or from the use of this site, are governed by the laws
+    of {site.country}. The courts of {site.country} have exclusive jurisdiction.
+  </p>
+  <p>If any part of these terms is found to be unenforceable, the rest stays in force.</p>
+
+  <h2 id="changes">Changes</h2>
+  <p>
+    We may revise these terms. The date at the top of the page shows when the text last changed, and the version on
+    this page is the one that applies to your visit.
+  </p>
+
+  <h2 id="contact">Contact</h2>
+  <p>
+    {site.legalName}, registered in {site.country}{site.croNumber && `, company number ${site.croNumber}`}.
+    {site.registeredOffice && ` Registered office: ${site.registeredOffice}.`}
+    {` VAT number ${site.vat}.`}
+  </p>
+  <p>Email: <a href={`mailto:${site.email}`}>{site.email}</a></p>
+</Legal>

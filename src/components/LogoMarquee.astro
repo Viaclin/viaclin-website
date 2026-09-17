@@ -1,3 +1,317 @@
 ---
-// Stub. Task 8 replaces this with the consultant experience banner.
+// Consultant experience: a slow banner of company names and single-colour logos.
+// The plain state is a centred grid. The moving state is layered on top when JS runs,
+// the page is on a screen and motion is welcome.
+import Icon from './Icon.astro';
+import { clients } from '../data/clients';
+
+// Logos are inlined so currentColor follows the theme. A client without a file is typeset.
+const files = import.meta.glob<string>('../assets/clients/*.svg', { query: '?raw', import: 'default', eager: true });
+const items = clients.map((client) => ({
+  ...client,
+  svg: client.file ? files[`../assets/clients/${client.file}`] : undefined,
+}));
+const hasLogos = items.some((item) => item.svg);
+const trademark = hasLogos ? 'Names and logos are trademarks of their owners.' : 'Names are trademarks of their owners.';
 ---
+
+<section class="section experience" id="experience" aria-labelledby="experience-title" data-pagefind-ignore>
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Background</p>
+      <h2 id="experience-title">Consultant experience</h2>
+      <p class="lead">Companies our network consultants have worked with or for across their careers.</p>
+    </div>
+  </div>
+
+  <div class="marquee" data-marquee data-reveal="fade">
+    <div class="marquee__viewport">
+      <div class="marquee__track">
+        <ul class="marquee__list" role="list">
+          {items.map((item) => (
+            <li class="marquee__item">
+              {item.svg ? (
+                <span class="marquee__logo" role="img" aria-label={item.name} style={`--s:${item.scale ?? 1}`} set:html={item.svg} />
+              ) : (
+                <span class="marquee__name">{item.name}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+        <!-- second copy closes the loop; it is hidden from assistive tech and holds nothing focusable -->
+        <ul class="marquee__list marquee__list--copy" aria-hidden="true">
+          {items.map((item) => (
+            <li class="marquee__item">
+              {item.svg ? (
+                <span class="marquee__logo" style={`--s:${item.scale ?? 1}`} set:html={item.svg} />
+              ) : (
+                <span class="marquee__name">{item.name}</span>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="container marquee__foot">
+      <button
+        class="marquee__toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Pause the moving banner of company names"
+        data-marquee-toggle
+      >
+        <Icon name="pause" class="icon-pause" />
+        <Icon name="play" class="icon-play" />
+      </button>
+      <p class="marquee__note">
+        {trademark} They show where Viaclin network consultants have worked before and imply no endorsement of, or
+        partnership with, Viaclin.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Pause and play for the banner (WCAG 2.2.2). The banner also rests while it is off screen.
+  const banners = document.querySelectorAll<HTMLElement>('[data-marquee]');
+
+  banners.forEach((banner) => {
+    const toggle = banner.querySelector<HTMLButtonElement>('[data-marquee-toggle]');
+
+    const setPaused = (paused: boolean) => {
+      banner.toggleAttribute('data-paused', paused);
+      if (!toggle) return;
+      toggle.setAttribute('aria-pressed', String(paused));
+      toggle.setAttribute('aria-label', `${paused ? 'Play' : 'Pause'} the moving banner of company names`);
+    };
+
+    toggle?.addEventListener('click', () => setPaused(!banner.hasAttribute('data-paused')));
+
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        for (const entry of entries) banner.toggleAttribute('data-offscreen', !entry.isIntersecting);
+      });
+      observer.observe(banner);
+    }
+  });
+</script>
+
+<style>
+  .experience {
+    overflow: clip;
+  }
+
+  .marquee {
+    --band: 30px;
+    --gap: clamp(44px, 5vw, 76px);
+  }
+
+  /* plain state: a centred grid inside the page measure */
+  .marquee__viewport {
+    width: 100%;
+    max-width: calc(var(--container) + var(--gutter) * 2);
+    margin-inline: auto;
+    padding-inline: var(--gutter);
+  }
+
+  .marquee__list {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .marquee__list--copy {
+    display: none;
+  }
+
+  .marquee__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 84px;
+    padding: 14px 16px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    color: var(--fg-2);
+    text-align: center;
+    transition: color var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease);
+  }
+
+  .marquee__item:hover {
+    color: var(--fg);
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--rule));
+  }
+
+  .marquee__name {
+    font-size: var(--text-base);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .marquee__logo {
+    display: block;
+    line-height: 0;
+  }
+
+  .marquee__logo :global(svg) {
+    display: block;
+    width: auto;
+    height: calc(var(--band) * var(--s, 1));
+    max-width: none;
+    fill: currentColor;
+  }
+
+  .marquee__foot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    margin-top: clamp(24px, 3vw, 36px);
+  }
+
+  .marquee__note {
+    max-width: 104ch;
+    font-size: var(--text-xs);
+    line-height: 1.55;
+    color: var(--fg-3);
+  }
+
+  /* pause and play: the film toggle, redrawn for a light ground */
+  .marquee__toggle {
+    display: none;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--fg);
+    transition: transform var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+  }
+
+  .marquee__toggle:hover {
+    transform: scale(1.06);
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  .marquee__toggle:focus-visible {
+    border-radius: 50%;
+  }
+
+  .marquee__toggle :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .marquee__toggle :global(.icon-play),
+  .marquee__toggle[aria-pressed='true'] :global(.icon-pause) {
+    display: none;
+  }
+
+  .marquee__toggle[aria-pressed='true'] :global(.icon-play) {
+    display: block;
+  }
+
+  @media (max-width: 1100px) {
+    .marquee__list {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .marquee {
+      --band: 24px;
+    }
+
+    .marquee__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .marquee__item {
+      min-height: 72px;
+      padding: 12px;
+    }
+
+    .marquee__name {
+      font-size: var(--text-sm);
+    }
+
+    .marquee__foot {
+      align-items: flex-start;
+    }
+  }
+
+  /* moving state */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    :global(.js:not(.static)) .marquee__viewport {
+      max-width: 1800px;
+      padding-inline: 0;
+      overflow: clip;
+      border-block: 1px solid var(--rule);
+      -webkit-mask-image: linear-gradient(90deg, transparent, black 9%, black 91%, transparent);
+      mask-image: linear-gradient(90deg, transparent, black 9%, black 91%, transparent);
+    }
+
+    :global(.js:not(.static)) .marquee__track {
+      display: flex;
+      width: max-content;
+      animation: marquee-slide 90s linear infinite;
+      will-change: transform;
+    }
+
+    :global(.js:not(.static)) .marquee__list {
+      display: flex;
+      flex: none;
+      align-items: center;
+      gap: 0;
+      padding-block: clamp(26px, 3vw, 38px);
+    }
+
+    :global(.js:not(.static)) .marquee__item {
+      flex: none;
+      min-height: calc(var(--band) * 1.5);
+      margin-right: var(--gap);
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      opacity: 0.8;
+      white-space: nowrap;
+    }
+
+    :global(.js:not(.static)) .marquee__item:hover {
+      opacity: 1;
+    }
+
+    :global(.js:not(.static)) .marquee__name {
+      font-size: calc(var(--band) * 0.72);
+      line-height: 1;
+    }
+
+    :global(.js:not(.static)) .marquee__toggle {
+      display: inline-flex;
+    }
+
+    :global(.js:not(.static)) .marquee__viewport:hover .marquee__track,
+    :global(.js:not(.static)) .marquee__viewport:focus-within .marquee__track,
+    :global(.js:not(.static)) .marquee[data-paused] .marquee__track,
+    :global(.js:not(.static)) .marquee[data-offscreen] .marquee__track {
+      animation-play-state: paused;
+    }
+  }
+
+  @keyframes marquee-slide {
+    to {
+      transform: translate3d(-50%, 0, 0);
+    }
+  }
+</style>

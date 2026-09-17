@@ -306,6 +306,11 @@
   margin-top: var(--space-4);
 }
 
+/* stacked rows of plain blocks need more air between rows than the grid's column gap */
+.grid--2:has(> .block:not(.block--glass)) {
+  row-gap: clamp(36px, 4.4vw, 56px);
+}
+
 .block--glass {
   padding: clamp(22px, 2.6vw, 32px);
 }
@@ -1357,18 +1362,31 @@
 .breadcrumb {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin: 0 0 var(--space-5);
+  align-items: center;
+  gap: 0 8px;
+  margin: -12px 0 var(--space-3);
   padding: 0;
   list-style: none;
   font-size: var(--text-sm);
   color: var(--fg-3);
 }
 
+.breadcrumb li {
+  display: inline-flex;
+  align-items: center;
+}
+
 .breadcrumb li + li::before {
   content: '/';
   margin-right: 8px;
   color: var(--rule);
+}
+
+.breadcrumb a,
+.breadcrumb [aria-current] {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
 
 .breadcrumb a {
@@ -1393,6 +1411,11 @@
 
 :root[data-theme='dark'] .cband {
   background: var(--night-raised);
+}
+
+/* in dark mode a mist section and the contact band share a ground: keep a seam between them */
+:root[data-theme='dark'] .section--mist + .cband {
+  border-top: 1px solid var(--rule);
 }
 
 .cband::before {
@@ -1485,7 +1508,7 @@
 .site-footer li button {
   display: inline-flex;
   align-items: center;
-  min-height: 36px;
+  min-height: 44px;
   padding: 0;
   border: 0;
   background: none;
@@ -1767,8 +1790,14 @@ dialog.dialog::backdrop {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-dasharray: 40;
-  stroke-dashoffset: 40;
-  animation: route-draw 700ms var(--ease) 150ms forwards;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js:not(.static) .tick path {
+    stroke-dashoffset: 40;
+    animation: route-draw 700ms var(--ease) 150ms forwards;
+  }
 }
 
 @media (max-width: 640px) {

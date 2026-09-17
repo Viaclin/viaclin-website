@@ -1,0 +1,498 @@
+---
+// Legal page shell: hero with the last-updated line and a print button, then a contents list beside the text.
+// Pages write <h2 id="..."> headings that match the `toc` prop. Section numbers come from CSS counters.
+import Base from './Base.astro';
+import PageHero from '../components/PageHero.astro';
+import ContactBand from '../components/ContactBand.astro';
+import Icon from '../components/Icon.astro';
+import { legal } from '../data/nav';
+import { site, formatDate } from '../data/site';
+
+interface TocItem {
+  id: string;
+  title: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  path: string;
+  /** ISO date. Falls back to site.legalUpdated. */
+  updated?: string;
+  toc: TocItem[];
+  /** H1 text. Falls back to the title without the site name. */
+  heading?: string;
+  /** Hero lead. Falls back to the meta description. */
+  lead?: string;
+}
+
+const { title, description, path, updated = site.legalUpdated, toc, heading, lead } = Astro.props;
+const h1 = heading ?? title.replace(/:\s*Viaclin$/, '');
+const others = legal.filter((item) => item.href !== path);
+---
+
+<Base title={title} description={description} path={path}>
+  <div class="legal-hero">
+    <PageHero title={h1} lead={lead ?? description} eyebrow="Legal" crumbs={[{ title: h1 }]}>
+      <div class="legal-meta" data-reveal style="--d:220ms">
+        <p class="meta-line">Last updated <time datetime={updated}>{formatDate(updated)}</time></p>
+        <button class="copy-btn no-print" type="button" data-print>
+          <Icon name="print" /><span>Print this page</span>
+        </button>
+      </div>
+    </PageHero>
+  </div>
+
+  <div class="section legal">
+    <div class="container legal__grid">
+      <!-- small screens: the contents list sits above the text, collapsed -->
+      <nav class="toc-m no-print" aria-label="On this page">
+        <details data-toc-drawer>
+          <summary><span>On this page</span><Icon name="chevron" /></summary>
+          <ol class="toc__list" role="list" data-toc>
+            {toc.map((item) => <li><a href={`#${item.id}`}>{item.title}</a></li>)}
+          </ol>
+        </details>
+      </nav>
+
+      <!-- 1000 px and up: the contents list stays in view beside the text -->
+      <div class="toc-d no-print" data-reveal="fade" style="--d:120ms">
+        <nav aria-label="On this page">
+          <p class="toc__label" aria-hidden="true">On this page</p>
+          <ol class="toc__list" role="list" data-toc>
+            {toc.map((item) => <li><a href={`#${item.id}`}>{item.title}</a></li>)}
+          </ol>
+        </nav>
+      </div>
+
+      <div class="legal__body">
+        <div class="prose">
+          <slot />
+        </div>
+
+        <nav class="legal-set no-print" aria-label="Legal pages">
+          <p class="legal-set__label">The rest of the legal set</p>
+          <ul role="list">
+            {others.map((item) => <li><a href={item.href}>{item.title}</a></li>)}
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+
+  <ContactBand title="A question about this page?" line="Write to us and a person will answer." />
+</Base>
+
+<script>
+  // Print button.
+  document.querySelectorAll<HTMLButtonElement>('[data-print]').forEach((button) => {
+    button.addEventListener('click', () => window.print());
+  });
+
+  // Contents list: mark the section in view, close the small-screen list after a choice,
+  // and hand focus to the heading so keyboard and screen reader users land in the text.
+  const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-toc] a'));
+  const heads = Array.from(document.querySelectorAll<HTMLElement>('.prose h2[id]'));
+  const drawer = document.querySelector<HTMLDetailsElement>('details[data-toc-drawer]');
+
+  links.forEach((link) => {
+    link.addEventListener('click', () => {
+      const target = document.getElementById(link.hash.slice(1));
+      if (drawer) drawer.open = false;
+      if (target) {
+        target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
+      }
+    });
+  });
+
+  if (links.length && heads.length) {
+    const header = document.getElementById('site-header');
+    let queued = false;
+
+    const mark = () => {
+      queued = false;
+      const line = (header?.offsetHeight ?? 76) + 56;
+      let current = heads[0];
+      for (const head of heads) {
+        if (head.getBoundingClientRect().top <= line) current = head;
+      }
+      links.forEach((link) => {
+        const on = link.hash === `#${current.id}`;
+        link.classList.toggle('is-active', on);
+        if (on) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      });
+    };
+
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(mark);
+      },
+      { passive: true },
+    );
+    mark();
+  }
+</script>
+
+<style>
+  /* hero: tighter foot, so the text starts close to the title */
+  .legal-hero :global(.page-hero) {
+    padding-bottom: clamp(32px, 4vw, 56px);
+  }
+
+  .legal-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 20px;
+  }
+
+  .legal-meta .meta-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .legal-meta .meta-line::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  .legal-meta .copy-btn {
+    min-height: 44px;
+    padding-inline: 16px;
+    font-size: var(--text-sm);
+  }
+
+  .legal-meta .copy-btn:focus-visible {
+    border-radius: var(--radius-pill);
+  }
+
+  /* the button calls window.print(), so it has no job without JavaScript */
+  :global(.no-js) .legal-meta .copy-btn {
+    display: none;
+  }
+
+  .legal {
+    padding-top: clamp(16px, 2.4vw, 32px);
+  }
+
+  /* contents list, shared */
+  .toc__list {
+    margin: 0;
+    counter-reset: toc;
+    border-left: 2px solid var(--rule);
+  }
+
+  .toc__list li {
+    counter-increment: toc;
+  }
+
+  .toc__list a {
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    gap: 10px;
+    align-items: baseline;
+    min-height: 44px;
+    margin-left: -2px;
+    padding: 12px 12px 11px 16px;
+    border-left: 2px solid transparent;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--fg-2);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+    text-decoration: none;
+    transition: color var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease),
+      border-color var(--dur-2) var(--ease);
+  }
+
+  .toc__list a::before {
+    content: counter(toc, decimal-leading-zero);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--fg-3);
+    transition: color var(--dur-1) var(--ease);
+  }
+
+  .toc__list a:hover {
+    color: var(--fg);
+    background: var(--accent-soft);
+  }
+
+  .toc__list a.is-active {
+    color: var(--fg);
+    font-weight: 600;
+    border-left-color: var(--accent);
+  }
+
+  .toc__list a.is-active::before {
+    color: var(--link);
+  }
+
+  /* small screens: collapsed card */
+  .toc-m {
+    margin-bottom: var(--space-7);
+  }
+
+  .toc-m details {
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    background: var(--bg-raised);
+  }
+
+  .toc-m summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 56px;
+    padding: 0 18px;
+    border-radius: var(--radius-lg);
+    color: var(--fg);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .toc-m summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-m summary:focus-visible {
+    border-radius: var(--radius-lg);
+  }
+
+  .toc-m summary :global(svg) {
+    flex: none;
+    color: var(--link);
+    transition: transform var(--dur-2) var(--ease);
+  }
+
+  .toc-m details[open] summary :global(svg) {
+    transform: rotate(180deg);
+  }
+
+  .toc-m .toc__list {
+    margin: 4px 18px 18px;
+  }
+
+  .toc-d {
+    display: none;
+  }
+
+  .toc__label {
+    margin-bottom: var(--space-3);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--fg);
+    letter-spacing: 0.01em;
+  }
+
+  @media (min-width: 1000px) {
+    .legal__grid {
+      display: grid;
+      grid-template-columns: 264px minmax(0, 1fr);
+      gap: clamp(48px, 6vw, 96px);
+      align-items: start;
+    }
+
+    .toc-m {
+      display: none;
+    }
+
+    .toc-d {
+      display: block;
+      position: sticky;
+      top: calc(var(--header-h) + 28px);
+      max-height: calc(100svh - var(--header-h) - 56px);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      /* room for the focus ring inside the scroll box; the margin keeps the list on the grid line */
+      margin: -8px 0 0 -8px;
+      padding: 8px;
+    }
+  }
+
+  /* the text: numbered sections, each opened by a rule */
+  /* text keeps the reading measure; tables and fact blocks may use the full column */
+  .prose {
+    counter-reset: sec;
+    max-width: none;
+    overflow-wrap: break-word;
+  }
+
+  /* rem, not ch: headings and text then share one right edge whatever their font size */
+  .prose > :global(*) {
+    max-width: 44rem;
+  }
+
+  .prose > :global(.table-wrap),
+  .prose > :global(dl) {
+    max-width: 880px;
+  }
+
+  /* the page sets scroll-padding for the fixed header, and the rule above each heading adds its own air */
+  .prose :global(h2) {
+    counter-increment: sec;
+    scroll-margin-top: 0;
+    margin-top: var(--space-7);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--rule);
+    font-size: var(--text-2xl);
+  }
+
+  .prose :global(h2)::before {
+    content: counter(sec, decimal-leading-zero);
+    display: block;
+    margin-bottom: 8px;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+    color: var(--link);
+  }
+
+  .prose > :global(h2:first-child) {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .prose :global(h2:focus) {
+    outline: none;
+    box-shadow: none;
+  }
+
+  .prose :global(h2 + *),
+  .prose :global(h3 + *) {
+    margin-top: var(--space-3);
+  }
+
+  .prose :global(.table-wrap),
+  .prose :global(h2 + .table-wrap),
+  .prose :global(h2 + dl) {
+    margin-top: var(--space-5);
+  }
+
+  .prose :global(.table-wrap + *) {
+    margin-top: var(--space-5);
+  }
+
+  .prose :global(.table-wrap:focus-visible) {
+    border-radius: var(--radius);
+  }
+
+  /* a soft edge shows when a table has more to scroll to; it lifts once that edge is reached */
+  .prose :global(.table-wrap) {
+    background:
+      linear-gradient(90deg, var(--bg) 40%, transparent) left / 36px 100% no-repeat local,
+      linear-gradient(270deg, var(--bg) 40%, transparent) right / 36px 100% no-repeat local,
+      linear-gradient(90deg, color-mix(in srgb, var(--fg) 16%, transparent), transparent) left / 12px 100% no-repeat scroll,
+      linear-gradient(270deg, color-mix(in srgb, var(--fg) 16%, transparent), transparent) right / 12px 100% no-repeat scroll;
+  }
+
+  /* row headers read as part of the row, not as a second header band */
+  .prose :global(tbody th) {
+    background: transparent;
+  }
+
+  .prose :global(tbody tr:last-child th) {
+    border-bottom: 0;
+  }
+
+  /* links to the other legal pages */
+  .legal-set {
+    max-width: 44rem;
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--rule);
+  }
+
+  .legal-set__label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .legal-set ul {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: var(--space-4);
+  }
+
+  .legal-set a {
+    display: flex;
+    align-items: center;
+    min-height: 52px;
+    padding: 10px 18px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+    color: var(--fg);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease),
+      transform var(--dur-1) var(--ease);
+  }
+
+  .legal-set a:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .legal-set a:hover {
+      transform: translateY(-1px);
+    }
+  }
+
+  .legal-set a:focus-visible {
+    border-radius: var(--radius);
+  }
+
+  @media (max-width: 520px) {
+    .legal-set ul {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media print {
+    .legal__grid {
+      display: block;
+    }
+
+    .legal {
+      padding-top: 0 !important;
+    }
+
+    .prose {
+      max-width: none;
+    }
+
+    .prose :global(h2) {
+      margin-top: 8mm;
+      padding-top: 4mm;
+    }
+
+    .prose :global(table) {
+      min-width: 0;
+      font-size: 9pt;
+    }
+
+    .prose :global(.table-wrap) {
+      overflow: visible;
+    }
+  }
+</style>

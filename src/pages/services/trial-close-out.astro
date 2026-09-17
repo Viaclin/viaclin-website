@@ -1,0 +1,347 @@
+---
+// Trial close-out. Copy from VIACLIN_WEBSITE_SPEC.md section 8.5, as written. The nine steps live in src/data/closeout.ts.
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import Steps from '../../components/Steps.astro';
+import ContactBand from '../../components/ContactBand.astro';
+import { site } from '../../data/site';
+import { closeoutSteps } from '../../data/closeout';
+
+const path = '/services/trial-close-out';
+const title = 'The nine-step trial close-out: Viaclin';
+const description =
+  'A fixed-fee nine-step clinical trial close-out for supply chain: inventory reconciliation, IRT decommissioning, CMO close-out, cold chain, customs and destruction.';
+
+// The H1 uses non-breaking hyphens (U+2011) so "nine-step" and "close-out" never split across two lines.
+const heading = 'The nine‑step close‑out no one plans for.';
+
+const steps = closeoutSteps.map((step) => ({ title: step.title, body: step.body }));
+
+// The contents of the close-out file, as listed in the "What you receive" paragraph.
+const fileIndex = [
+  'Reconciliation records',
+  'Disposition certificates',
+  'Archived data',
+  'Closed excursion reports',
+  'Settled contracts',
+];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${site.url}${path}#service`,
+    name: 'Trial close-out',
+    serviceType: 'Clinical trial supply chain close-out',
+    description,
+    url: `${site.url}${path}`,
+    provider: { '@id': `${site.url}/#organisation` },
+    areaServed: ['IE', 'EU', 'US', 'GB'],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${site.url}/#services` },
+      { '@type': 'ListItem', position: 3, name: 'Trial close-out', item: `${site.url}${path}` },
+    ],
+  },
+];
+---
+
+<Base title={title} description={description} path={path} schema={schema}>
+  <PageHero
+    title={heading}
+    lead="Trial close-out is the most under-resourced phase in clinical supply. Our fixed-fee programme leaves no financial, regulatory or compliance liability open."
+    crumbs={[{ title: 'Services', href: '/#services' }, { title: 'Trial close-out' }]}
+    cta={{ label: 'Book the close-out', topic: 'close-out' }}
+    video="warehouse"
+  />
+
+  <!-- intro -->
+  <section class="section section--tight" aria-label="The standard we work to">
+    <div class="container split">
+      <div class="intro" data-reveal>
+        <p class="intro__statement">Every fluctuation recorded. Every excursion investigated, documented and closed.</p>
+        <p>The same rigour runs through all nine steps, and you get a close-out file your auditors can open.</p>
+      </div>
+      <div class="trace-card card" data-reveal="scale">
+        <svg class="trace" viewBox="0 0 520 96" aria-hidden="true" focusable="false">
+          <line class="trace__limit" x1="0" y1="22" x2="520" y2="22"></line>
+          <line class="trace__limit" x1="0" y1="70" x2="520" y2="70"></line>
+          <text class="trace__text" x="0" y="15">8°C</text>
+          <text class="trace__text" x="0" y="86">2°C</text>
+          <path class="trace__area" d="M34 48 L80 44 L126 50 L172 46 L218 52 L250 27 L282 52 L330 48 L380 45 L430 50 L506 47 L506 70 L34 70 Z"></path>
+          <path class="trace__line" d="M34 48 L80 44 L126 50 L172 46 L218 52 L250 27 L282 52 L330 48 L380 45 L430 50 L506 47"></path>
+          <line class="trace__flag" x1="250" y1="27" x2="250" y2="10"></line>
+          <circle class="trace__dot" cx="250" cy="27" r="5"></circle>
+        </svg>
+        <p class="trace-card__note">Excursion logged, investigated, closed</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- the nine steps -->
+  <section class="section section--mist" id="nine-steps" aria-labelledby="nine-steps-title">
+    <div class="container nine">
+      <div class="section-head nine__head" data-reveal>
+        <p class="eyebrow">Fixed-fee programme</p>
+        <h2 id="nine-steps-title">The nine steps</h2>
+      </div>
+      <Steps items={steps} />
+    </div>
+  </section>
+
+  <!-- what you receive -->
+  <section class="section" id="deliverable" aria-labelledby="deliverable-title">
+    <div class="container split">
+      <div class="stack-lg" data-reveal>
+        <p class="eyebrow">Deliverable</p>
+        <h2 id="deliverable-title">What you receive</h2>
+        <p class="measure">
+          A close-out file with reconciliation records, disposition certificates, archived data, closed excursion
+          reports and settled contracts, indexed for audit. A named Viaclin lead runs the programme from first
+          reconciliation to final certificate.
+        </p>
+      </div>
+      <div class="file card" data-reveal="scale">
+        <p class="file__title">Close-out file</p>
+        <ol class="file__index" role="list">
+          {fileIndex.map((entry) => <li>{entry}</li>)}
+        </ol>
+        <p class="file__foot">Indexed for audit</p>
+      </div>
+    </div>
+  </section>
+
+  <ContactBand title="Ready to close the trial?" line="Fixed fee, agreed before we start." label="Book the close-out" topic="close-out" />
+</Base>
+
+<style>
+  /* intro */
+  .intro > * + * {
+    margin-top: var(--space-5);
+  }
+
+  .intro__statement {
+    font-size: var(--text-2xl);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: var(--tracking-heading);
+    color: var(--fg);
+  }
+
+  .intro p:not(.intro__statement) {
+    max-width: 46ch;
+    padding-left: var(--space-5);
+    border-left: 2px solid var(--accent);
+    font-size: var(--text-lg);
+    line-height: 1.55;
+  }
+
+  /* temperature trace: the home page teaser pattern, restated here because those styles are scoped to the home page */
+  .trace-card {
+    padding: clamp(22px, 3vw, 36px);
+  }
+
+  .trace {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .trace__limit {
+    stroke: var(--rule);
+    stroke-width: 1;
+    stroke-dasharray: 4 5;
+  }
+
+  .trace__text {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    fill: var(--fg-3);
+  }
+
+  .trace__area {
+    fill: var(--accent);
+    opacity: 0.14;
+  }
+
+  .trace-card__note {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--rule);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .trace-card__note::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  /* the axis labels scale with the drawing, so they grow on a narrow card to stay readable */
+  @media (max-width: 520px) {
+    .trace__text {
+      font-size: 19px;
+    }
+  }
+
+  .trace__line {
+    fill: none;
+    stroke: var(--fg);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .trace__flag {
+    stroke: var(--accent);
+    stroke-width: 2;
+  }
+
+  .trace__dot {
+    fill: var(--accent);
+    stroke: var(--bg-raised);
+    stroke-width: 2.5;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .trace-card .trace__line {
+      stroke-dasharray: 560;
+      stroke-dashoffset: 560;
+    }
+
+    :global(.js) .trace-card.is-in .trace__line {
+      animation: route-draw 1600ms var(--ease-in-out) 300ms forwards;
+    }
+
+    :global(.js) .trace-card .trace__dot,
+    :global(.js) .trace-card .trace__flag,
+    :global(.js) .trace-card .trace__area {
+      opacity: 0;
+    }
+
+    :global(.js) .trace-card.is-in .trace__dot,
+    :global(.js) .trace-card.is-in .trace__flag {
+      animation: route-fade 500ms var(--ease) 1500ms forwards;
+    }
+
+    :global(.js) .trace-card.is-in .trace__area {
+      animation: trace-area 700ms var(--ease) 1300ms forwards;
+    }
+  }
+
+  @keyframes trace-area {
+    to {
+      opacity: 0.14;
+    }
+  }
+
+  /* static capture freezes animation, so the trace shows in its end state */
+  :global(.static) .trace-card .trace__line {
+    stroke-dashoffset: 0;
+  }
+
+  :global(.static) .trace-card .trace__dot,
+  :global(.static) .trace-card .trace__flag {
+    opacity: 1;
+  }
+
+  :global(.static) .trace-card .trace__area {
+    opacity: 0.14;
+  }
+
+  /* the nine steps: heading stays in view on the left while the steps scroll */
+  .nine {
+    display: grid;
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr);
+    gap: clamp(32px, 6vw, 88px);
+    align-items: start;
+  }
+
+  .nine__head {
+    position: sticky;
+    top: calc(var(--header-h) + 32px);
+    margin-bottom: 0;
+  }
+
+  /* close-out file */
+  .file {
+    padding: clamp(24px, 3vw, 40px);
+  }
+
+  .file__title {
+    font-size: var(--text-xl);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--fg);
+  }
+
+  .file__index {
+    margin: var(--space-4) 0 0;
+    counter-reset: entry;
+  }
+
+  .file__index li {
+    counter-increment: entry;
+    display: grid;
+    grid-template-columns: 40px minmax(0, 1fr);
+    align-items: baseline;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .file__index li::before {
+    content: counter(entry, decimal-leading-zero);
+    color: var(--link);
+    font-size: var(--text-sm);
+    font-weight: 700;
+  }
+
+  .file__foot {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--rule);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--link);
+  }
+
+  .file__foot::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+
+  @media (max-width: 900px) {
+    .nine {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .nine__head {
+      position: static;
+      margin-bottom: clamp(32px, 5vw, 56px);
+    }
+  }
+</style>

@@ -5,7 +5,7 @@ import { videos, type VideoKey } from '../data/videos';
 
 interface Props {
   video: VideoKey;
-  /** Poster loads eagerly when the frame sits in the first screen. */
+  /** Set when the frame sits in the first screen, so the poster loads at once. */
   eager?: boolean;
 }
 

@@ -1,0 +1,2549 @@
+---
+// Brand guidelines: logo, colour, type, liquid glass, motion, voice, footage and downloads.
+// Values come from src/styles/tokens.css, src/data/videos.ts and the files in public/. Kept out of search engines.
+import fs from 'node:fs';
+import path from 'node:path';
+import Base from '../layouts/Base.astro';
+import Section from '../components/Section.astro';
+import Logo from '../components/Logo.astro';
+import Icon from '../components/Icon.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { site } from '../data/site';
+import { videos } from '../data/videos';
+
+const sections = [
+  { id: 'logo', label: 'Logo' },
+  { id: 'colour', label: 'Colour' },
+  { id: 'typography', label: 'Typography' },
+  { id: 'glass', label: 'Liquid glass' },
+  { id: 'motion', label: 'Motion' },
+  { id: 'voice', label: 'Voice' },
+  { id: 'footage', label: 'Footage' },
+  { id: 'downloads', label: 'Downloads' },
+];
+
+/* ───────── logo ───────── */
+const grounds = [
+  { file: '', variant: 'Colour', ground: 'white' },
+  { file: '', variant: 'Colour', ground: 'mist' },
+  { file: '-reversed', variant: 'Reversed', ground: 'navy' },
+  { file: '-mono-navy', variant: 'Mono navy', ground: 'white' },
+  { file: '-mono-navy', variant: 'Mono navy', ground: 'mist' },
+  { file: '-mono-white', variant: 'Mono white', ground: 'navy' },
+];
+
+const logoGroups = [
+  {
+    key: 'lockup',
+    title: 'Lockup',
+    body: 'Mark, wordmark and descriptor. The primary logo: use it wherever the space allows.',
+    width: 1736,
+    height: 357,
+  },
+  {
+    key: 'compact',
+    title: 'Compact',
+    body: 'Mark and wordmark without the descriptor. Made for the site header and other shallow spaces.',
+    width: 1636,
+    height: 257,
+  },
+  {
+    key: 'mark',
+    title: 'Mark',
+    body: 'The V alone. Favicon, app icon, social avatar, and the tick beside list items.',
+    width: 356,
+    height: 345,
+  },
+];
+
+const misuse = [
+  'Do not re-typeset the wordmark, and do not set any other text in its typeface.',
+  'Do not recolour the mark, swap the navy and the green, or add a gradient.',
+  'Do not place the logo on green, or on footage without film glass or a shade beneath it.',
+  'Do not stretch, rotate, outline or add a shadow.',
+  'Do not put the colour logo on navy. The reversed version exists for that.',
+  'Do not crowd the clear space or render below the minimum widths.',
+];
+
+/* ───────── colour ───────── */
+interface Swatch {
+  name: string;
+  token: string;
+  hex: string;
+  role: string;
+}
+
+const lightPalette: Swatch[] = [
+  { name: 'Navy', token: '--navy', hex: '#0A2948', role: 'Headlines, primary text, footer ground, statement bands' },
+  { name: 'Green', token: '--green', hex: '#258253', role: 'Primary button, route line, large accents' },
+  { name: 'Green deep', token: '--green-deep', hex: '#1B6B43', role: 'Links and small green text on white or mist' },
+  { name: 'Green light', token: '--green-light', hex: '#6ECB93', role: 'Links and accents on navy and over footage' },
+  { name: 'Slate', token: '--slate', hex: '#3D5166', role: 'Body copy' },
+  { name: 'Mist', token: '--mist', hex: '#F2F6F9', role: 'Alternate section ground' },
+  { name: 'Line', token: '--line', hex: '#D3DCE5', role: 'Rules, borders, input borders' },
+  { name: 'Green tint', token: '--green-tint', hex: '#E4F2EA', role: 'Callouts, highlighted rows, hover grounds' },
+  { name: 'Navy tint', token: '--navy-tint', hex: '#DCE6F0', role: 'Diagram fills' },
+  { name: 'White', token: '--white', hex: '#FFFFFF', role: 'Page ground, text on navy and on green' },
+];
+
+const darkPalette: Swatch[] = [
+  { name: 'Night', token: '--night', hex: '#061A2E', role: 'Page ground' },
+  { name: 'Night raised', token: '--night-raised', hex: '#0B2540', role: 'Alternate section ground' },
+  { name: 'Night card', token: '--bg-raised', hex: '#0F2E4D', role: 'Cards, menus and dialogs' },
+  { name: 'Night deep', token: '--night-deep', hex: '#041322', role: 'Footer and statement band ground' },
+  { name: 'Night rule', token: '--rule', hex: '#1E3A57', role: 'Rules and borders' },
+  { name: 'Night text', token: '--fg', hex: '#F2F6F9', role: 'Headlines and primary text' },
+  { name: 'Night body', token: '--fg-2', hex: '#B9C7D6', role: 'Body copy' },
+  { name: 'Night quiet', token: '--fg-3', hex: '#8FA3B8', role: 'Hints and fine print' },
+  { name: 'Green light', token: '--accent', hex: '#6ECB93', role: 'Links, accents and the focus ring' },
+  { name: 'Logo green', token: '--logo-green', hex: '#2E9A64', role: 'The green stroke of the reversed logo' },
+];
+
+// WCAG relative luminance and contrast, so every ratio on this page is computed from the hex values shown.
+const channel = (value: number) => {
+  const s = value / 255;
+  return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+};
+const luminance = (hex: string) => {
+  const n = parseInt(hex.slice(1), 16);
+  return 0.2126 * channel(n >> 16) + 0.7152 * channel((n >> 8) & 255) + 0.0722 * channel(n & 255);
+};
+const contrast = (a: string, b: string) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+const grade = (value: number) => (value >= 7 ? 'AAA' : value >= 4.5 ? 'AA' : 'AA for large text');
+
+const pair = (label: string, fg: string, bg: string, note = '') => {
+  const value = contrast(fg, bg);
+  return { label, fg, bg, note, ratio: `${value.toFixed(1)}:1`, grade: grade(value) };
+};
+
+const lightPairs = [
+  pair('Navy on white', '#0A2948', '#FFFFFF'),
+  pair('Slate on white', '#3D5166', '#FFFFFF'),
+  pair('Green deep on white', '#1B6B43', '#FFFFFF'),
+  pair('Green deep on mist', '#1B6B43', '#F2F6F9'),
+  pair('White on navy', '#FFFFFF', '#0A2948'),
+  pair('Green light on navy', '#6ECB93', '#0A2948'),
+  pair('White on green', '#FFFFFF', '#258253', 'Button text, 16 px semibold or larger'),
+];
+
+const darkPairs = [
+  pair('Night text on night', '#F2F6F9', '#061A2E'),
+  pair('Night body on night', '#B9C7D6', '#061A2E'),
+  pair('Night body on night raised', '#B9C7D6', '#0B2540'),
+  pair('Night quiet on night', '#8FA3B8', '#061A2E'),
+  pair('Green light on night', '#6ECB93', '#061A2E'),
+  pair('Green light on night raised', '#6ECB93', '#0B2540'),
+  pair('White on green', '#FFFFFF', '#258253', 'The action colour stays the same in both themes'),
+];
+
+/* ───────── typography ───────── */
+const specimens = [
+  { role: 'Hero display', token: '--text-hero', detail: '40 to 74 px, bold 700, leading 1.04, tracking -0.025em', sample: 'We push the project.', css: 'font-size:var(--text-hero);font-weight:700;line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);color:var(--fg)' },
+  { role: 'Display, page H1', token: '--text-3xl', detail: '36 to 56 px, bold 700, leading 1.04, tracking -0.025em', sample: 'Supply chain ownership', css: 'font-size:var(--text-3xl);font-weight:700;line-height:var(--leading-tight);letter-spacing:var(--tracking-tight);color:var(--fg)' },
+  { role: 'H2', token: '--text-2xl', detail: '28 to 38 px, bold 700, leading 1.15, tracking -0.015em', sample: 'Three service areas', css: 'font-size:var(--text-2xl);font-weight:700;line-height:var(--leading-heading);letter-spacing:var(--tracking-heading);color:var(--fg)' },
+  { role: 'H3', token: '--text-xl', detail: '22 px, semibold 600, leading 1.25', sample: 'Supply Chain Consultancy', css: 'font-size:var(--text-xl);font-weight:600;line-height:1.25;letter-spacing:-0.005em;color:var(--fg)' },
+  { role: 'Lead', token: '--text-lg', detail: '20 px, regular 400, leading 1.5, 60 characters wide at most', sample: 'One accountable lead on your programme, a specialist network behind them.', css: 'font-size:var(--text-lg);line-height:1.5;color:var(--fg)' },
+  { role: 'Body', token: '--text-base', detail: '17 px, regular 400, leading 1.6, 66 characters wide at most', sample: 'A senior operator joins your team, inside your quality system and your tools. Specialist questions route across the network and come back answered.', css: 'font-size:var(--text-base);line-height:var(--leading-body);color:var(--fg-2)' },
+  { role: 'Small', token: '--text-sm', detail: '15 px, leading 1.5. Footer, captions, proof strip, eyebrows', sample: 'Remote-first across the EU, US and UK.', css: 'font-size:var(--text-sm);line-height:1.5;color:var(--fg-2)' },
+  { role: 'Fine print', token: '--text-xs', detail: '13 px. Chips, hints, legal lines', sample: `${site.legalName}, registered in ${site.country}.`, css: 'font-size:var(--text-xs);line-height:1.5;color:var(--fg-3)' },
+];
+
+const weights = [
+  { weight: 400, name: 'Regular', use: 'Body copy and lead paragraphs' },
+  { weight: 600, name: 'Semibold', use: 'H3, buttons, labels, links, eyebrows' },
+  { weight: 700, name: 'Bold', use: 'Display, H1, H2 and step numerals' },
+];
+
+const typeRules = [
+  'Sentence case everywhere: headings, buttons, labels and links.',
+  'Headings in navy, body in slate, links in green deep with a 1 px underline.',
+  'Left aligned. Centred text belongs to diagram labels alone.',
+  'Three weights and no italics. Emphasis comes from weight and size.',
+  'Numbered markers on true sequences: the method, the project steps, the nine close-out steps.',
+  'The wordmark typeface is artwork. It never sets page text.',
+];
+
+/* ───────── glass ───────── */
+const glassRules = [
+  'Glass sits over footage or over content that scrolls beneath it. On a flat ground, use a card.',
+  'Do not nest one glass panel inside another.',
+  'Every film keeps its shade layer beneath the glass, so contrast never depends on the frame on screen.',
+  'Browsers without backdrop blur receive a solid ground from the same palette.',
+];
+
+/* ───────── motion ───────── */
+const timings = [
+  { token: '--dur-1', value: '160 ms', use: 'Hover, press and focus states' },
+  { token: '--dur-2', value: '320 ms', use: 'Menus, cards, theme change' },
+  { token: '--dur-3', value: '700 ms', use: 'Reveals: content rises 18 px and fades in' },
+  { token: 'Line draws', value: '900 to 1400 ms', use: 'Eyebrow segment, route line, step connectors' },
+  { token: '--ease', value: 'cubic-bezier(0.2, 0.7, 0.2, 1)', use: 'Anything that enters or responds' },
+  { token: '--ease-in-out', value: 'cubic-bezier(0.65, 0, 0.35, 1)', use: 'Long line draws' },
+];
+
+const demoStops = ['Molecule', 'Depot', 'Site', 'Patient'];
+const demoXs = [14, 124.7, 235.3, 346];
+
+/* ───────── voice ───────── */
+const tone = [
+  { title: 'Clear', body: 'One idea per sentence. A reader should grasp the offer in under a minute and know how to start.' },
+  { title: 'Confident', body: 'We say what we own, who answers for it, and what we do not do.' },
+  { title: 'Structured', body: 'Headings state the point. Steps are numbered when the order is real. Lists run in parallel form.' },
+];
+
+const voicePairs = [
+  {
+    title: 'Punctuation',
+    yes: 'Use a comma, a colon or a full stop. Write ranges with the word to: Phase I to IV.',
+    no: 'Use long or short dash characters, anywhere. That covers alt text, labels and code comments.',
+  },
+  {
+    title: 'Adverbs',
+    yes: 'Let the verb and the fact carry the weight: on your programme within days.',
+    no: 'Add adverbs ending in -ly for emphasis. Supply, apply, family and schedule words such as monthly are fine.',
+  },
+  {
+    title: 'Plain words',
+    yes: 'Say what happens and who answers for it: one accountable lead, a written plan, agreed outcomes.',
+    no: 'Reach for consultancy buzzwords or throat-clearing openers. The copy check holds the banned list and stops the build on a hit.',
+  },
+  {
+    title: 'Spelling',
+    yes: 'British spelling: optimise, organisation, programme, labelling, licence as a noun.',
+    no: 'Mix in American forms of those words.',
+  },
+  {
+    title: 'Case and marks',
+    yes: 'Sentence case for headings, buttons and labels. Link text that says where it goes.',
+    no: 'Set text in all capitals, separate items with middle dots, or append arrows to links.',
+  },
+  {
+    title: 'Facts',
+    yes: 'Take company facts from the site data file. An empty value renders nothing.',
+    no: 'Invent a legal value, print a phone number, name prices or day rates, or write about the people behind the company.',
+  },
+];
+
+/* ───────── footage ───────── */
+const films = Object.entries(videos).map(([key, film], index) => ({ key, ...film, order: String(index + 1).padStart(2, '0') }));
+
+const filmRules = [
+  'The six films follow the product, cleanroom to doorstep. Keep that order wherever more than one appears.',
+  'No audio. H.264 MP4 at 1280 and 720 px wide, plus a poster image for each.',
+  'Poster first. A film loads when it scrolls into view, plays while visible and pauses when it leaves.',
+  'Every film has a visible pause control. Under reduced motion or a data saver setting, the poster stands alone.',
+  'Text over footage sits on film glass, above the shade layer.',
+  'Full-bleed bands treat footage as decoration, with empty alt text. Framed films carry the alt text shown here.',
+  'No stock photography and no icon sets beside the films.',
+];
+
+/* ───────── downloads ───────── */
+const publicDir = path.join(process.cwd(), 'public');
+
+interface FileInfo {
+  href: string;
+  type: string;
+  size: string;
+}
+
+// Size and type are read from the file on disk at build time. A missing file renders nothing.
+function fileInfo(href: string): FileInfo | null {
+  try {
+    const { size } = fs.statSync(path.join(publicDir, href));
+    const ext = path.extname(href).slice(1).toLowerCase();
+    const type = ext === 'webmanifest' ? 'JSON' : ext.toUpperCase();
+    const label = size < 1024 ? `${size} B` : size < 1024 * 1024 ? `${Math.round(size / 1024)} KB` : `${(size / 1024 / 1024).toFixed(1)} MB`;
+    return { href, type, size: label };
+  } catch {
+    return null;
+  }
+}
+
+const pack = fileInfo('/brand/viaclin-logo-pack.zip');
+
+const logoFiles = logoGroups.flatMap((group) =>
+  [
+    { label: 'colour', file: '', png: true },
+    { label: 'reversed', file: '-reversed', png: true },
+    { label: 'mono navy', file: '-mono-navy', png: false },
+    { label: 'mono white', file: '-mono-white', png: false },
+  ].map((variant) => {
+    const stem = `/brand/logo/viaclin-${group.key}${variant.file}`;
+    return {
+      name: `${group.title}, ${variant.label}`,
+      thumb: `${stem}.svg`,
+      dark: variant.file === '-reversed' || variant.file === '-mono-white',
+      files: [
+        { tag: 'SVG', info: fileInfo(`${stem}.svg`) },
+        ...(variant.png ? [{ tag: 'PNG', info: fileInfo(`${stem}.png`) }, { tag: 'PNG 2x', info: fileInfo(`${stem}-2x.png`) }] : []),
+      ].filter((file) => file.info !== null),
+    };
+  }),
+).filter((row) => row.files.length > 0);
+
+const iconFiles = [
+  { name: 'Favicon, vector', tag: 'SVG', thumb: '/brand/logo/viaclin-mark.svg', info: fileInfo('/favicon.svg') },
+  { name: 'Favicon, 32 px', tag: 'PNG', thumb: '/favicon-32.png', info: fileInfo('/favicon-32.png') },
+  { name: 'Apple touch icon, 180 px', tag: 'PNG', thumb: '/apple-touch-icon.png', info: fileInfo('/apple-touch-icon.png') },
+  { name: 'App icon, 192 px, maskable', tag: 'PNG', thumb: '/icon-192.png', info: fileInfo('/icon-192.png') },
+  { name: 'App icon, 512 px, maskable', tag: 'PNG', thumb: '/icon-512.png', info: fileInfo('/icon-512.png') },
+  { name: 'Web manifest', tag: 'JSON', thumb: '', info: fileInfo('/site.webmanifest') },
+].filter((row) => row.info !== null);
+
+const material = [
+  {
+    title: 'Open Graph image',
+    body: '1200 by 630 px. The preview that social networks and chat apps show for a shared link.',
+    thumb: '/og/viaclin-og.png',
+    thumbAlt: 'The Viaclin lockup above the line Supply chain ownership for life sciences, with a green route line along the bottom',
+    width: 1200,
+    height: 630,
+    ground: 'white',
+    files: [{ tag: 'PNG', info: fileInfo('/og/viaclin-og.png'), open: false }],
+  },
+  {
+    title: 'LinkedIn banner',
+    body: '1584 by 396 px, navy ground, route motif and the strapline. The lower left stays clear for the profile picture.',
+    thumb: '/brand/viaclin-linkedin-banner.png',
+    thumbAlt: `A navy banner with the line ${site.strapline}, a six-stop route and the reversed lockup`,
+    width: 1584,
+    height: 396,
+    ground: 'navy',
+    files: [{ tag: 'PNG', info: fileInfo('/brand/viaclin-linkedin-banner.png'), open: false }],
+  },
+  {
+    title: 'Email signature',
+    body: 'Table markup with inline styles, built for mail apps. Open the page, change the name and the role, copy the signature and paste it into your mail settings.',
+    thumb: '/brand/viaclin-email-signature-preview.png',
+    thumbAlt: 'An email signature with the lockup, sample name and role, the email address, the web address and the company line',
+    width: 1280,
+    height: 440,
+    ground: 'white',
+    files: [{ tag: 'HTML', info: fileInfo('/brand/viaclin-email-signature.html'), open: true }],
+  },
+  {
+    title: 'Letterhead',
+    body: 'A4, vector. Lockup top left, and a route line footer with the company line and the email address.',
+    thumb: '/brand/viaclin-letterhead-preview.png',
+    thumbAlt: 'An A4 letterhead with the lockup at the top left and a green route line above the company details at the foot',
+    width: 1191,
+    height: 1685,
+    ground: 'page',
+    files: [
+      { tag: 'PDF', info: fileInfo('/brand/viaclin-letterhead.pdf'), open: false },
+      { tag: 'PNG preview', info: fileInfo('/brand/viaclin-letterhead-preview.png'), open: false },
+    ],
+  },
+]
+  .map((item) => ({ ...item, files: item.files.filter((file) => file.info !== null) }))
+  .filter((item) => item.files.length > 0 && fileInfo(item.thumb) !== null);
+---
+
+<Base
+  title="Brand guidelines: Viaclin"
+  description="The Viaclin identity in one place: logo, colour, typography, liquid glass, motion, voice, footage and downloads."
+  path="/brand"
+  noindex
+>
+  <div data-pagefind-ignore="all">
+    <!-- hero -->
+    <section class="page-hero brand-hero">
+      <div class="hero__bg" aria-hidden="true"></div>
+      <div class="container">
+        <nav aria-label="Breadcrumb" data-reveal="fade">
+          <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li><span aria-current="page">Brand guidelines</span></li>
+          </ol>
+        </nav>
+        <div class="split brand-hero__split">
+          <div class="page-hero__copy">
+            <p class="eyebrow" data-reveal>Identity</p>
+            <h1 data-reveal style="--d:60ms">Brand guidelines</h1>
+            <p class="lead" data-reveal style="--d:140ms">
+              The Viaclin identity in one place: the V mark, the palette, the type, the glass, the route in motion, the
+              voice and the footage. Use it as the reference for anything that carries the name.
+            </p>
+            <div class="actions" data-reveal style="--d:220ms">
+              {pack && (
+                <a class="btn btn--primary" href={pack.href} download data-track="cta_click" data-track-place="brand-hero">
+                  Download the logo pack
+                </a>
+              )}
+              <a class="btn btn--secondary" href="#downloads">See every file</a>
+            </div>
+          </div>
+
+          <div class="vframe-wrap board-wrap" data-reveal="scale" aria-hidden="true">
+            <div class="board">
+              <div class="board__tile board__tile--navy">
+                <img src="/brand/logo/viaclin-mark-reversed.svg" alt="" width="356" height="345" />
+                <svg viewBox="0 0 200 24" focusable="false">
+                  <line x1="8" y1="12" x2="192" y2="12"></line>
+                  <circle cx="8" cy="12" r="5"></circle>
+                  <circle cx="69" cy="12" r="5"></circle>
+                  <circle cx="131" cy="12" r="5"></circle>
+                  <circle cx="192" cy="12" r="5"></circle>
+                </svg>
+              </div>
+              <div class="board__tile board__tile--type">
+                <span class="board__aa">Aa</span>
+                <span class="board__note">Noto Sans</span>
+              </div>
+              <div class="board__tile board__tile--dots">
+                <span style="background:var(--navy)"></span>
+                <span style="background:var(--green)"></span>
+                <span style="background:var(--green-light)"></span>
+                <span style="background:var(--slate)"></span>
+                <span style="background:var(--mist)"></span>
+              </div>
+              <div class="board__tile board__tile--film">
+                <img src={`${videos.robot.base}.jpg`} alt="" width="1280" height="720" />
+                <span class="chip glass glass--clear">Liquid glass</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- sticky section links -->
+    <nav class="guide-nav" aria-label="Sections of the guidelines" data-guide-nav>
+      <div class="container">
+        <ul role="list">
+          {sections.map((item) => (
+            <li><a href={`#${item.id}`}>{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </nav>
+
+    <!-- logo -->
+    <Section
+      id="logo"
+      class="guide-section"
+      eyebrow="The mark"
+      title="Logo"
+      intro="The V mark and the Viaclin wordmark are artwork, kept from the original identity and redrawn as vectors. Three versions, each in colour, reversed and single colour."
+    >
+      {logoGroups.map((group) => (
+        <div class="logo-group">
+          <div class="logo-group__head" data-reveal>
+            <h3>{group.title}</h3>
+            <p>{group.body}</p>
+          </div>
+          <ul class:list={['tiles', group.key === 'mark' && 'tiles--mark']} role="list">
+            {grounds.map((item, index) => (
+              <li data-reveal style={`--d:${index * 60}ms`}>
+                <figure class="tile">
+                  <div class:list={['tile__ground', `tile__ground--${item.ground}`]}>
+                    <img
+                      src={`/brand/logo/viaclin-${group.key}${item.file}.svg`}
+                      alt={`Viaclin ${group.key}, ${item.variant.toLowerCase()}, on ${item.ground}`}
+                      width={group.width}
+                      height={group.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <figcaption>{item.variant} on {item.ground}</figcaption>
+                </figure>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+
+      <div class="grid grid--2 logo-rules">
+        <article class="card guide-card" data-reveal>
+          <h3>Clear space</h3>
+          <div class="clear" aria-hidden="true">
+            <div class="clear__zone">
+              <span class="clear__x clear__x--top">x</span>
+              <span class="clear__x clear__x--right">x</span>
+              <span class="clear__x clear__x--bottom">x</span>
+              <span class="clear__x clear__x--left">x</span>
+              <div class="clear__logo">
+                <Logo variant="lockup" label="" />
+                <span class="clear__measure"></span>
+              </div>
+            </div>
+          </div>
+          <p>
+            Keep a margin equal to the height of the V, marked x, clear on every side. No text, no edges and no other
+            logo inside it.
+          </p>
+        </article>
+
+        <article class="card guide-card" data-reveal style="--d:90ms">
+          <h3>Minimum size</h3>
+          <div class="minsize">
+            <div class="minsize__item">
+              <div class="minsize__stage"><Logo variant="lockup" label="" class="minsize__lockup" /></div>
+              <p><strong>140 px wide</strong> Lockup and compact logo</p>
+            </div>
+            <div class="minsize__item">
+              <div class="minsize__stage"><Logo variant="mark" label="" class="minsize__mark" /></div>
+              <p><strong>24 px wide</strong> Mark</p>
+            </div>
+          </div>
+          <p>
+            Below these widths the descriptor and the curve of the V lose their shape. The site header sets the compact
+            logo 30 px tall; the footer sets the reversed lockup 54 px tall.
+          </p>
+        </article>
+      </div>
+
+      <div class="grid grid--2 logo-rules">
+        <div data-reveal>
+          <h3 class="list-title">Which version, where</h3>
+          <dl class="where">
+            <div><dt>Colour</dt><dd>White and mist grounds. The default.</dd></div>
+            <div><dt>Reversed</dt><dd>Navy and night grounds, and film glass over footage.</dd></div>
+            <div><dt>Mono navy</dt><dd>Single-colour print on light stock, stamps and engraving.</dd></div>
+            <div><dt>Mono white</dt><dd>Single-colour work on dark grounds, such as embroidery or etched glass.</dd></div>
+          </dl>
+        </div>
+        <div data-reveal style="--d:90ms">
+          <h3 class="list-title">Misuse</h3>
+          <ul class="marks marks--no" role="list">
+            {misuse.map((line) => <li>{line}</li>)}
+          </ul>
+        </div>
+      </div>
+    </Section>
+
+    <!-- colour -->
+    <Section
+      id="colour"
+      class="guide-section"
+      tone="mist"
+      eyebrow="Palette"
+      title="Colour"
+      intro="Navy carries the words, green marks the route and the action, and white and mist give both room. Every value lives as a token in the stylesheet; components never hold a raw hex value."
+    >
+      <div class="palette-head" data-reveal>
+        <h3>Light palette</h3>
+        <p>The default theme.</p>
+      </div>
+      <ul class="swatches" role="list">
+        {lightPalette.map((swatch, index) => (
+          <li data-reveal style={`--d:${Math.min(index, 5) * 50}ms`}>
+            <div class="swatch">
+            <div class="swatch__chip" style={`background:${swatch.hex}`}></div>
+            <div class="swatch__body">
+              <p class="swatch__name"><span>{swatch.name}</span> <code>{swatch.token}</code></p>
+              <p class="copy-row swatch__hex">
+                <span>{swatch.hex}</span>
+                <button class="copy-btn" type="button" data-copy={swatch.hex}>
+                  <Icon name="copy" /><span data-copy-label>Copy</span><span class="sr-only"> the hex value of {swatch.name}</span>
+                </button>
+              </p>
+              <p class="swatch__role">{swatch.role}</p>
+            </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="palette-head" data-reveal>
+        <h3>Dark palette</h3>
+        <p>
+          The dark theme swaps the role tokens and keeps the brand tokens. The action colour stays green in both
+          themes; logo green is a lighter cut for the reversed logo alone.
+        </p>
+      </div>
+      <ul class="swatches" role="list">
+        {darkPalette.map((swatch, index) => (
+          <li data-reveal style={`--d:${Math.min(index, 5) * 50}ms`}>
+            <div class="swatch">
+            <div class="swatch__chip" style={`background:${swatch.hex}`}></div>
+            <div class="swatch__body">
+              <p class="swatch__name"><span>{swatch.name}</span> <code>{swatch.token}</code></p>
+              <p class="copy-row swatch__hex">
+                <span>{swatch.hex}</span>
+                <button class="copy-btn" type="button" data-copy={swatch.hex}>
+                  <Icon name="copy" /><span data-copy-label>Copy</span><span class="sr-only"> the hex value of {swatch.name}, dark palette</span>
+                </button>
+              </p>
+              <p class="swatch__role">{swatch.role}</p>
+            </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="grid grid--2 contrast">
+        {[{ title: 'Contrast, light theme', pairs: lightPairs }, { title: 'Contrast, dark theme', pairs: darkPairs }].map((set, setIndex) => (
+          <article class="card guide-card" data-reveal style={`--d:${setIndex * 90}ms`}>
+            <h3>{set.title}</h3>
+            <ul class="pairs" role="list">
+              {set.pairs.map((item) => (
+                <li class="pairs__row">
+                  <span class="pairs__chip" style={`background:${item.bg};color:${item.fg}`} aria-hidden="true">Aa</span>
+                  <span class="pairs__label">
+                    {item.label}
+                    {item.note && <small>{item.note}</small>}
+                  </span>
+                  <span class="pairs__ratio">{item.ratio}</span>
+                  <span class="pairs__grade">{item.grade}</span>
+                </li>
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+
+      <div class="grid grid--2 colour-notes">
+        <div data-reveal>
+          <h3 class="list-title">Proportion</h3>
+          <div class="ratio-bar" aria-hidden="true">
+            <span class="ratio-bar__white"></span>
+            <span class="ratio-bar__mist"></span>
+            <span class="ratio-bar__navy"></span>
+            <span class="ratio-bar__green"></span>
+          </div>
+          <p>
+            About 80 per cent white and mist, 15 per cent navy, 5 per cent green. Navy as a full-width ground appears
+            twice on a page at most: the closing band and the footer.
+          </p>
+        </div>
+        <div data-reveal style="--d:90ms">
+          <h3 class="list-title">Rules</h3>
+          <ul class="marks" role="list">
+            <li>Small green text on white or mist uses green deep. Green alone fails AA below 16 px semibold.</li>
+            <li>On navy, night and footage, links and accents use green light.</li>
+            <li>Errors read in navy with a heavier border, never in red.</li>
+            <li>The logo never sits on green.</li>
+          </ul>
+        </div>
+      </div>
+    </Section>
+
+    <!-- typography -->
+    <Section
+      id="typography"
+      class="guide-section"
+      eyebrow="Type"
+      title="Typography"
+      intro="One family, Noto Sans, in three weights, served from the site itself. The scale below renders live from the tokens, so it follows the width of your screen."
+    >
+      <ul class="weights" role="list">
+        {weights.map((item, index) => (
+          <li class="card weights__item" data-reveal style={`--d:${index * 80}ms`}>
+            <span class="weights__aa" style={`font-weight:${item.weight}`} aria-hidden="true">Aa</span>
+            <p class="weights__name">{item.name} {item.weight}</p>
+            <p>{item.use}</p>
+          </li>
+        ))}
+      </ul>
+
+      <div class="specs">
+        {specimens.map((item) => (
+          <div class="spec" data-reveal>
+            <div class="spec__meta">
+              <p class="spec__role">{item.role}</p>
+              <p><code>{item.token}</code></p>
+              <p class="spec__detail">{item.detail}</p>
+            </div>
+            <p class="spec__sample" style={item.css}>{item.sample}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="type-rules" data-reveal>
+        <h3 class="list-title">Usage</h3>
+        <ul class="marks marks--cols" role="list">
+          {typeRules.map((line) => <li>{line}</li>)}
+        </ul>
+      </div>
+    </Section>
+
+    <!-- liquid glass -->
+    <Section
+      id="glass"
+      class="guide-section"
+      tone="mist"
+      eyebrow="Surface"
+      title="Liquid glass"
+      intro="Glass lets footage and page content show through the interface without costing legibility. Three recipes, one job each. The samples below are live, set over a film poster."
+    >
+      <div class="grid grid--3">
+        <figure class="glass-demo" data-reveal>
+          <div class="glass-demo__stage">
+            <img src={`${videos.technician.base}.jpg`} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+            <div class="glass glass-demo__panel glass-demo__panel--surface">
+              <Logo variant="compact" label="" />
+              <span class="glass-demo__pill">Menu</span>
+            </div>
+          </div>
+          <figcaption>
+            <h3>Surface glass</h3>
+            <p><code>.glass</code></p>
+            <p>
+              The header once scrolled, dialogs, the cookie banner, the mobile action bar and the back-to-top button.
+              It takes the page ground at part strength with a 16 px blur, so page text stays readable in both themes.
+            </p>
+          </figcaption>
+        </figure>
+
+        <figure class="glass-demo" data-reveal style="--d:90ms">
+          <div class="glass-demo__stage">
+            <img src={`${videos.technician.base}.jpg`} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+            <div class="glass glass--film glass-demo__panel glass-demo__panel--film">
+              <p class="eyebrow eyebrow--on-film">Over footage</p>
+              <p class="glass-demo__title">Text holds its contrast.</p>
+              <p>White copy on a navy tint while the film moves behind.</p>
+            </div>
+          </div>
+          <figcaption>
+            <h3>Film glass</h3>
+            <p><code>.glass.glass--film</code></p>
+            <p>
+              Any panel that carries text over footage: service cards, caption cards, the closing band. A navy tint and
+              a 12 px blur hold white copy at AA contrast on every frame.
+            </p>
+          </figcaption>
+        </figure>
+
+        <figure class="glass-demo" data-reveal style="--d:180ms">
+          <div class="glass-demo__stage glass-demo__stage--shade">
+            <img src={`${videos.technician.base}.jpg`} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+            <div class="glass-demo__row">
+              <span class="chip glass glass--clear">{videos.technician.chip}</span>
+              <span class="glass glass--clear glass-demo__round" aria-hidden="true"><Icon name="pause" /></span>
+            </div>
+          </div>
+          <figcaption>
+            <h3>Clear glass</h3>
+            <p><code>.glass.glass--clear</code></p>
+            <p>
+              Chips and round controls over footage. The original recipe: near clear, a 4 px blur and a white ring. It
+              holds a short label or an icon, never a paragraph.
+            </p>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="glass-rules" data-reveal>
+        <h3 class="list-title">Rules</h3>
+        <ul class="marks marks--cols" role="list">
+          {glassRules.map((line) => <li>{line}</li>)}
+        </ul>
+      </div>
+    </Section>
+
+    <!-- motion -->
+    <Section
+      id="motion"
+      class="guide-section"
+      eyebrow="The route"
+      title="Motion"
+      intro="Motion follows one idea, the route: lines draw, nodes light, content rises 18 px and fades in. It shows order and direction, then it stops."
+    >
+      <p class="note motion-note">Motion is switched off on this device, so the three demos show their end state.</p>
+
+      <div class="grid grid--3">
+        <article class="card demo">
+          <div class="demo__stage" id="demo-eyebrow" data-reveal="fade">
+            <p class="eyebrow">Service area</p>
+          </div>
+          <h3>Eyebrow line</h3>
+          <p>A two-tone route segment draws from the left over 900 ms, ahead of each section label.</p>
+          <button class="copy-btn replay" type="button" data-replay="demo-eyebrow">
+            <Icon name="play" /><span>Replay</span><span class="sr-only"> the eyebrow line</span>
+          </button>
+        </article>
+
+        <article class="card demo">
+          <div class="demo__stage">
+            <div class="route demo__route" id="demo-route" data-reveal="fade">
+              <svg viewBox="0 0 360 62" aria-hidden="true" focusable="false">
+                <line class="route__line" x1="14" y1="16" x2="346" y2="16" pathLength="1000"></line>
+                {demoXs.map((x, i) => <circle class="route__node" cx={x} cy="16" r="8" style={`--i:${i}`}></circle>)}
+                {demoStops.map((stop, i) => (
+                  <text
+                    class="route__label"
+                    x={demoXs[i]}
+                    y="52"
+                    text-anchor={i === 0 ? 'start' : i === demoStops.length - 1 ? 'end' : 'middle'}
+                    dx={i === 0 ? -8 : i === demoStops.length - 1 ? 8 : 0}
+                    style={`--i:${i}`}
+                  >{stop}</text>
+                ))}
+              </svg>
+            </div>
+          </div>
+          <h3>Route draw</h3>
+          <p>The line draws over 1400 ms on the in-out curve. Nodes and labels light in sequence, 190 ms apart.</p>
+          <button class="copy-btn replay" type="button" data-replay="demo-route">
+            <Icon name="play" /><span>Replay</span><span class="sr-only"> the route draw</span>
+          </button>
+        </article>
+
+        <article class="card demo">
+          <div class="demo__stage">
+            <div class="demo__card" id="demo-reveal" data-reveal>
+              <span class="demo__bar"></span>
+              <span class="demo__bar demo__bar--short"></span>
+            </div>
+          </div>
+          <h3>Reveal</h3>
+          <p>Content rises 18 px and fades in over 700 ms as it enters the screen. Siblings stagger by 90 ms.</p>
+          <button class="copy-btn replay" type="button" data-replay="demo-reveal">
+            <Icon name="play" /><span>Replay</span><span class="sr-only"> the reveal</span>
+          </button>
+        </article>
+      </div>
+
+      <div class="motion-grid">
+        <div class="table-wrap" data-reveal tabindex="0" role="region" aria-label="Durations and easing curves">
+          <table class="tokens">
+            <caption class="sr-only">Durations and easing curves</caption>
+            <thead>
+              <tr><th scope="col">Token</th><th scope="col">Value</th><th scope="col">Use</th></tr>
+            </thead>
+            <tbody>
+              {timings.map((row) => (
+                <tr>
+                  <th scope="row">{row.token.startsWith('--') ? <code>{row.token}</code> : row.token}</th>
+                  <td>{row.value}</td>
+                  <td>{row.use}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="curves" data-reveal style="--d:90ms">
+          <figure class="curve">
+            <svg viewBox="-6 -6 112 112" aria-hidden="true" focusable="false">
+              <rect x="0" y="0" width="100" height="100"></rect>
+              <path d="M0 100 C20 30 20 0 100 0"></path>
+            </svg>
+            <figcaption><code>--ease</code></figcaption>
+          </figure>
+          <figure class="curve">
+            <svg viewBox="-6 -6 112 112" aria-hidden="true" focusable="false">
+              <rect x="0" y="0" width="100" height="100"></rect>
+              <path d="M0 100 C65 100 35 0 100 0"></path>
+            </svg>
+            <figcaption><code>--ease-in-out</code></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <div class="motion-rule" data-reveal>
+        <h3 class="list-title">Reduced motion</h3>
+        <ul class="marks marks--cols" role="list">
+          <li>Every animation sits inside a <code>prefers-reduced-motion: no-preference</code> query.</li>
+          <li>Scripts check the same setting before they move anything.</li>
+          <li>With motion off, lines render complete, content is in place and films show their poster.</li>
+          <li>Nothing loops without a pause control beside it.</li>
+        </ul>
+      </div>
+    </Section>
+
+    <!-- voice -->
+    <Section
+      id="voice"
+      class="guide-section"
+      tone="mist"
+      eyebrow="House rules"
+      title="Voice"
+      intro="Plain words, short sentences, facts over force. The build checks every page against these rules, and this page follows them too."
+    >
+      <div class="grid grid--3 tone">
+        {tone.map((item, index) => (
+          <div class="block" data-reveal style={`--d:${index * 90}ms`}>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="grid grid--2 pairs-grid">
+        {voicePairs.map((item, index) => (
+          <article class="card voice" data-reveal style={`--d:${(index % 2) * 90}ms`}>
+            <h3>{item.title}</h3>
+            <div class="voice__cols">
+              <div class="voice__col voice__col--yes">
+                <p class="voice__tag"><Icon name="check" />Do</p>
+                <p>{item.yes}</p>
+              </div>
+              <div class="voice__col voice__col--no">
+                <p class="voice__tag"><Icon name="close" />Do not</p>
+                <p>{item.no}</p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <dl class="phrases" data-reveal>
+        <div><dt>Strapline</dt><dd>{site.strapline}</dd></div>
+        <div><dt>Descriptor</dt><dd>{site.descriptor}</dd></div>
+        <div><dt>Headline</dt><dd>Supply chain ownership for life sciences.</dd></div>
+      </dl>
+    </Section>
+
+    <!-- footage -->
+    <Section
+      id="footage"
+      class="guide-section"
+      eyebrow="Film"
+      title="Footage"
+      intro="Six short films follow the product down the page, from the cleanroom to the doorstep. They set the scene; the words do the selling."
+    >
+      <ol class="films" role="list">
+        {films.map((film, index) => (
+          <li data-reveal style={`--d:${(index % 3) * 80}ms`}>
+            <figure class="film">
+              <div class="film__frame">
+                <img src={`${film.base}.jpg`} alt={film.alt} width="1280" height="720" loading="lazy" decoding="async" />
+              </div>
+              <figcaption>
+                <span class="film__order">{film.order}</span>
+                <span class="film__name">{film.chip}</span>
+                <span class="film__alt">{film.alt}.</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ol>
+
+      <div class="film-rules" data-reveal>
+        <h3 class="list-title">Usage</h3>
+        <ul class="marks marks--cols" role="list">
+          {filmRules.map((line) => <li>{line}</li>)}
+        </ul>
+      </div>
+    </Section>
+
+    <!-- downloads -->
+    <Section
+      id="downloads"
+      class="guide-section"
+      tone="mist"
+      eyebrow="Files"
+      title="Downloads"
+      intro="Every file below is generated from the same vector artwork and the same tokens as this site. Sizes are read from the files themselves."
+    >
+      {pack && (
+        <div class="card pack" data-reveal>
+          <div>
+            <h3>Logo pack</h3>
+            <p>Every logo file in one archive: lockup, compact and mark, as SVG and PNG.</p>
+          </div>
+          <a class="btn btn--primary" href={pack.href} download data-track="cta_click" data-track-place="brand-pack">
+            Download the logo pack<span class="pack__size">{pack.type}, {pack.size}</span>
+          </a>
+        </div>
+      )}
+
+      <div class="grid grid--2 file-groups">
+        <div data-reveal>
+          <h3 class="list-title">Logo files</h3>
+          <ul class="files" role="list">
+            {logoFiles.map((row) => (
+              <li class="files__row">
+                <span class:list={['files__thumb', row.dark && 'files__thumb--navy']} aria-hidden="true">
+                  <img src={row.thumb} alt="" loading="lazy" decoding="async" />
+                </span>
+                <span class="files__name">{row.name}</span>
+                <span class="files__links files__links--cols">
+                  {row.files.map((file) => file.info && (
+                    <a class="file-chip" href={file.info.href} download>
+                      <span class="sr-only">{row.name}, </span>{file.tag}<span class="file-chip__size">{file.info.size}</span>
+                    </a>
+                  ))}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div data-reveal style="--d:90ms">
+          <h3 class="list-title">Icons and manifest</h3>
+          <ul class="files" role="list">
+            {iconFiles.map((row) => row.info && (
+              <li class="files__row">
+                <span class:list={['files__thumb', 'files__thumb--icon', !row.thumb && 'files__thumb--text']} aria-hidden="true">
+                  {row.thumb ? <img src={row.thumb} alt="" loading="lazy" decoding="async" /> : '{ }'}
+                </span>
+                <span class="files__name">{row.name}</span>
+                <span class="files__links">
+                  <a class="file-chip" href={row.info.href} download>
+                    <span class="sr-only">{row.name}, </span>{row.tag}<span class="file-chip__size">{row.info.size}</span>
+                  </a>
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p class="note icon-note">
+            The vector favicon follows the browser theme: the navy stroke turns white in a dark scheme. The app icons
+            keep the mark inside the maskable safe zone, so a round or rounded-square crop never clips it.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="list-title material-title" data-reveal>Social and stationery</h3>
+      <div class="grid grid--2 material">
+        {material.map((item, index) => (
+          <article class="card material__item" data-reveal style={`--d:${(index % 2) * 90}ms`}>
+            <div class:list={['material__thumb', `material__thumb--${item.ground}`]}>
+              <img src={item.thumb} alt={item.thumbAlt} width={item.width} height={item.height} loading="lazy" decoding="async" />
+            </div>
+            <h4>{item.title}</h4>
+            <p>{item.body}</p>
+            <p class="files__links">
+              {item.files.map((file) => file.info && (
+                <a class="file-chip" href={file.info.href} download={file.open ? undefined : true}>
+                  <span class="sr-only">{item.title}, </span>{file.open ? `Open the ${file.tag} page` : file.tag}<span class="file-chip__size">{file.info.size}</span>
+                </a>
+              ))}
+            </p>
+          </article>
+        ))}
+      </div>
+    </Section>
+  </div>
+
+  <ContactBand
+    title="Need a file that is not here?"
+    line="Tell us what it is for and we will send the right format."
+  />
+</Base>
+
+<script>
+  // Section links: mark the section on screen. Motion demos: replay on request.
+  const nav = document.querySelector<HTMLElement>('[data-guide-nav]');
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (nav && 'IntersectionObserver' in window) {
+    const strip = nav.querySelector<HTMLElement>('ul');
+    const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>('a[href^="#"]'));
+    let current = '';
+
+    const mark = (id: string) => {
+      if (id === current) return;
+      current = id;
+      for (const link of links) {
+        if (link.hash === `#${id}`) {
+          link.setAttribute('aria-current', 'location');
+          if (strip && strip.scrollWidth > strip.clientWidth) {
+            const left = link.offsetLeft - (strip.clientWidth - link.offsetWidth) / 2;
+            strip.scrollTo({ left, behavior: calm ? 'auto' : 'smooth' });
+          }
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      }
+    };
+
+    // A thin band a third of the way down the screen decides which section is current.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) mark(entry.target.id);
+        }
+      },
+      { rootMargin: '-34% 0px -64% 0px' },
+    );
+
+    for (const link of links) {
+      const section = document.getElementById(link.hash.slice(1));
+      if (section) observer.observe(section);
+    }
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-replay]').forEach((button) => {
+    const target = document.getElementById(button.dataset.replay ?? '');
+    if (!target) return;
+    button.addEventListener('click', () => {
+      if (calm) return;
+      target.classList.add('is-reset');
+      target.classList.remove('is-in');
+      void target.offsetWidth;
+      target.classList.remove('is-reset');
+      requestAnimationFrame(() => target.classList.add('is-in'));
+    });
+  });
+</script>
+
+<style>
+  /* ───────── shared bits ───────── */
+  :global(.guide-section) {
+    scroll-margin-top: calc(var(--header-h) + 56px);
+  }
+
+  code {
+    padding: 2px 7px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--rule);
+    background: color-mix(in srgb, var(--fg) 5%, transparent);
+    color: var(--fg);
+    font-family: ui-monospace, 'Cascadia Mono', Consolas, 'Liberation Mono', monospace;
+    font-size: 0.82em;
+    white-space: nowrap;
+  }
+
+  .list-title {
+    margin-bottom: var(--space-4);
+    font-size: var(--text-lg);
+  }
+
+  .guide-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .guide-card:hover {
+    transform: none;
+  }
+
+  /* rule lists: the V tick for guidance, a cross for misuse */
+  .marks {
+    display: grid;
+    gap: 12px;
+  }
+
+  .marks li {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .marks li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.22em;
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='110 20 245 345'%3E%3Cpath d='M126 272C157 218 190 166 226 115C254 75.3 296 42 346 27V131C280 160 229.6 260 179 358Z'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='110 20 245 345'%3E%3Cpath d='M126 272C157 218 190 166 226 115C254 75.3 296 42 346 27V131C280 160 229.6 260 179 358Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  .marks--no li::before {
+    top: 0.3em;
+    width: 16px;
+    height: 16px;
+    left: 2px;
+    background: var(--fg);
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M5 5l14 14M19 5 5 19'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3.4' stroke-linecap='round'%3E%3Cpath d='M5 5l14 14M19 5 5 19'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  @media (min-width: 901px) {
+    .marks--cols {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px clamp(24px, 4vw, 56px);
+    }
+  }
+
+  /* ───────── hero board ───────── */
+  .brand-hero__split {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+
+  .board {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    grid-template-rows: 1fr 1fr 0.9fr;
+    gap: 12px;
+    aspect-ratio: 10 / 9;
+  }
+
+  .board__tile {
+    position: relative;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--rule);
+  }
+
+  .board__tile--navy {
+    grid-row: 1 / 3;
+    align-content: center;
+    gap: 14%;
+    background: var(--navy);
+    box-shadow: var(--shadow-float);
+  }
+
+  .board__tile--navy img {
+    width: 46%;
+    height: auto;
+  }
+
+  .board__tile--navy svg {
+    width: 64%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .board__tile--navy line {
+    stroke: rgba(255, 255, 255, 0.5);
+    stroke-width: 2;
+  }
+
+  .board__tile--navy circle {
+    fill: var(--green-light);
+    stroke: var(--navy);
+    stroke-width: 2.5;
+  }
+
+  .board__tile--type {
+    align-content: center;
+    gap: 2px;
+    background: var(--mist);
+    color: var(--navy);
+  }
+
+  .board__aa {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .board__note {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--slate);
+  }
+
+  .board__tile--dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--white);
+  }
+
+  .board__tile--dots span {
+    width: 17%;
+    aspect-ratio: 1;
+    margin-inline: -2%;
+    border-radius: 50%;
+    border: 2px solid var(--white);
+  }
+
+  .board__tile--film {
+    grid-column: 1 / -1;
+    place-items: end start;
+    padding: 12px;
+    border: 0;
+    background: var(--night);
+  }
+
+  .board__tile--film img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .board__tile--film .chip {
+    position: relative;
+  }
+
+  @media (max-width: 900px) {
+    .brand-hero__split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .board-wrap {
+      max-width: 520px;
+    }
+
+    .board {
+      aspect-ratio: 10 / 8;
+    }
+  }
+
+  /* ───────── sticky section links ───────── */
+  .guide-nav {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 120;
+    border-block: 1px solid var(--rule);
+    background: var(--glass-bg);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+    backdrop-filter: blur(var(--glass-blur)) saturate(1.5);
+  }
+
+  .guide-nav ul {
+    position: relative;
+    display: flex;
+    gap: 4px;
+    margin: 0 calc(var(--gutter) * -1);
+    padding: 6px var(--gutter);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+
+  .guide-nav ul::-webkit-scrollbar {
+    display: none;
+  }
+
+  .guide-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border-radius: var(--radius-pill);
+    color: var(--fg-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+  }
+
+  .guide-nav a:hover {
+    background: var(--accent-soft);
+    color: var(--fg);
+  }
+
+  .guide-nav a[aria-current] {
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  .guide-nav a:focus-visible {
+    border-radius: var(--radius-pill);
+  }
+
+  /* ───────── logo ───────── */
+  .logo-group + .logo-group {
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  .logo-group__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 20px;
+    margin-bottom: var(--space-5);
+  }
+
+  .logo-group__head p {
+    max-width: 62ch;
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.6vw, 20px);
+  }
+
+  .tiles--mark {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+
+  .tile {
+    margin: 0;
+  }
+
+  .tile__ground {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 8;
+    padding: 0 12%;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--rule);
+    transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+  }
+
+  .tile:hover .tile__ground {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .tiles--mark .tile__ground {
+    aspect-ratio: 1;
+    padding: 0 27%;
+  }
+
+  .tile__ground--white {
+    background: var(--white);
+  }
+
+  .tile__ground--mist {
+    background: var(--mist);
+  }
+
+  .tile__ground--navy {
+    background: var(--navy);
+  }
+
+  .tile__ground img {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+  }
+
+  .tile figcaption {
+    margin-top: 10px;
+    font-size: var(--text-sm);
+    color: var(--fg-2);
+  }
+
+  .logo-rules {
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  .guide-card p strong {
+    display: block;
+  }
+
+  /* clear space: the hatched band is as deep as the V is tall (0.1907 of the lockup width) */
+  .clear {
+    --w: min(300px, 44vw);
+    display: grid;
+    place-items: center;
+    padding: var(--space-4) 0;
+  }
+
+  .clear__zone {
+    position: relative;
+    padding: calc(var(--w) * 0.1907);
+    border: 1.5px dashed var(--accent);
+    border-radius: var(--radius-sm);
+    background: repeating-linear-gradient(
+      135deg,
+      var(--accent-soft) 0 6px,
+      transparent 6px 12px
+    );
+  }
+
+  .clear__logo {
+    position: relative;
+    width: var(--w);
+    background: var(--bg-raised);
+    outline: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+
+  .clear__logo :global(svg) {
+    width: 100%;
+    height: auto;
+  }
+
+  .clear__measure {
+    position: absolute;
+    left: -9px;
+    top: 4.2%;
+    bottom: 3.1%;
+    width: 7px;
+    border: 2px solid var(--fg);
+    border-right: 0;
+  }
+
+  .clear__x {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--link);
+  }
+
+  .clear__x--top,
+  .clear__x--bottom {
+    left: 0;
+    right: 0;
+    height: calc(var(--w) * 0.1907);
+  }
+
+  .clear__x--left,
+  .clear__x--right {
+    top: 0;
+    bottom: 0;
+    width: calc(var(--w) * 0.1907);
+  }
+
+  .clear__x--top {
+    top: 0;
+  }
+
+  .clear__x--bottom {
+    bottom: 0;
+  }
+
+  .clear__x--left {
+    left: 0;
+    padding-right: 12px;
+  }
+
+  .clear__x--right {
+    right: 0;
+  }
+
+  .minsize {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    flex: 1;
+  }
+
+  .minsize__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .minsize__stage {
+    display: grid;
+    place-items: center;
+    flex: 1;
+    min-height: 120px;
+    border-radius: var(--radius);
+    border: 1px solid var(--rule);
+    background: var(--bg-alt);
+  }
+
+  .minsize__stage :global(.minsize__lockup) {
+    width: 140px;
+    height: auto;
+  }
+
+  .minsize__stage :global(.minsize__mark) {
+    width: 24px;
+    height: auto;
+  }
+
+  .where {
+    display: grid;
+    gap: 0;
+    margin: 0;
+  }
+
+  .where div {
+    display: grid;
+    grid-template-columns: 116px minmax(0, 1fr);
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .where div:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .where dt {
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  /* ───────── colour ───────── */
+  .palette-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 6px 20px;
+    margin-bottom: var(--space-5);
+  }
+
+  .palette-head p {
+    max-width: 70ch;
+  }
+
+  .swatches + .palette-head {
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(12px, 1.4vw, 18px);
+  }
+
+  .swatch {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--rule);
+    background: var(--bg-raised);
+    height: 100%;
+    transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease);
+  }
+
+  .swatch:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--rule));
+    box-shadow: var(--shadow-card);
+  }
+
+  .swatch__chip {
+    height: 84px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .swatch__body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    padding: 14px 14px 16px;
+    font-size: var(--text-sm);
+  }
+
+  .swatch__name {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .swatch__name span {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .swatch__hex {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px 8px;
+    font-weight: 600;
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .swatch .copy-btn,
+  .replay {
+    min-height: 44px;
+    padding-inline: 14px;
+  }
+
+  .swatch__role {
+    margin-top: 2px;
+    font-size: var(--text-xs);
+    line-height: 1.45;
+    color: var(--fg-2);
+  }
+
+  .contrast,
+  .colour-notes {
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  .pairs {
+    display: grid;
+  }
+
+  .pairs__row {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto 64px;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    border-top: 1px solid var(--rule);
+    font-size: var(--text-sm);
+  }
+
+  .pairs__chip {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    box-shadow: inset 0 0 0 1px var(--rule);
+    font-weight: 700;
+  }
+
+  .pairs__label {
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .pairs__label small {
+    display: block;
+    font-size: var(--text-xs);
+    font-weight: 400;
+    color: var(--fg-2);
+  }
+
+  .pairs__ratio {
+    font-weight: 700;
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pairs__grade {
+    justify-self: end;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    background: var(--accent-soft);
+    color: var(--link);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-align: center;
+  }
+
+  .ratio-bar {
+    display: flex;
+    height: 44px;
+    margin-bottom: var(--space-4);
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--rule);
+  }
+
+  .ratio-bar__white {
+    flex: 50;
+    background: var(--white);
+  }
+
+  .ratio-bar__mist {
+    flex: 30;
+    background: var(--mist);
+  }
+
+  .ratio-bar__navy {
+    flex: 15;
+    background: var(--navy);
+  }
+
+  .ratio-bar__green {
+    flex: 5;
+    background: var(--green);
+  }
+
+  /* ───────── typography ───────── */
+  .weights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(12px, 1.6vw, 20px);
+  }
+
+  .weights__item {
+    font-size: var(--text-sm);
+  }
+
+  .weights__aa {
+    display: block;
+    font-size: clamp(3rem, 6vw, 4.5rem);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    color: var(--fg);
+  }
+
+  .weights__name {
+    margin-top: var(--space-4);
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .specs {
+    margin-top: clamp(40px, 5vw, 64px);
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .spec {
+    display: grid;
+    grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+    gap: clamp(16px, 4vw, 56px);
+    align-items: center;
+    padding: clamp(20px, 2.6vw, 32px) 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .spec__meta {
+    display: grid;
+    gap: 6px;
+    font-size: var(--text-sm);
+  }
+
+  .spec__role {
+    font-size: var(--text-base);
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .spec__detail {
+    font-size: var(--text-xs);
+    line-height: 1.5;
+  }
+
+  .spec__sample {
+    max-width: 60ch;
+    text-wrap: balance;
+  }
+
+  .type-rules,
+  .glass-rules,
+  .film-rules,
+  .motion-rule {
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  /* ───────── liquid glass ───────── */
+  .glass-demo {
+    margin: 0;
+  }
+
+  .glass-demo__stage {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    display: grid;
+    align-content: end;
+    aspect-ratio: 4 / 3;
+    padding: 16px;
+    border-radius: var(--radius-xl);
+    background: var(--night);
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-demo__stage > img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .glass-demo__stage::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(0deg, rgba(var(--film-shade), 0.5), transparent 60%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+  }
+
+  .glass-demo__stage--shade::after {
+    background: linear-gradient(0deg, rgba(var(--film-shade), 0.72), rgba(var(--film-shade), 0.1) 70%);
+  }
+
+  .glass-demo__panel {
+    padding: 16px 18px;
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  .glass-demo__panel--surface {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--fg);
+  }
+
+  .glass-demo__panel--surface :global(svg) {
+    width: auto;
+    height: 22px;
+  }
+
+  .glass-demo__pill {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--rule);
+    font-size: var(--text-xs);
+    font-weight: 600;
+  }
+
+  .glass-demo__panel--film .eyebrow {
+    font-size: var(--text-xs);
+  }
+
+  .glass-demo__title {
+    margin-top: 6px;
+    font-size: var(--text-lg);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--on-film);
+  }
+
+  .glass-demo__row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .glass-demo__round {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+  }
+
+  .glass-demo__round :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .glass-demo figcaption {
+    display: grid;
+    gap: 8px;
+    margin-top: var(--space-5);
+  }
+
+  /* ───────── motion ───────── */
+  .motion-note {
+    display: none;
+    margin-bottom: var(--space-5);
+    max-width: 72ch;
+  }
+
+  .demo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .demo:hover {
+    transform: none;
+  }
+
+  .demo__stage {
+    display: grid;
+    align-content: center;
+    min-height: 132px;
+    margin-bottom: var(--space-2);
+    padding: 18px;
+    border-radius: var(--radius);
+    border: 1px solid var(--rule);
+    background: var(--bg-alt);
+  }
+
+  .demo__stage .eyebrow {
+    font-size: var(--text-base);
+  }
+
+  .demo__route {
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .demo__route :global(.route__label) {
+    font-size: 14px;
+  }
+
+  .demo__card {
+    display: grid;
+    gap: 10px;
+    padding: 18px;
+    border-radius: var(--radius);
+    border: 1px solid var(--rule);
+    background: var(--bg-raised);
+    box-shadow: var(--shadow-card);
+  }
+
+  .demo__bar {
+    height: 10px;
+    border-radius: var(--radius-pill);
+    background: var(--fg);
+  }
+
+  .demo__bar--short {
+    width: 58%;
+    background: var(--accent);
+  }
+
+  .demo p {
+    flex: 1;
+    font-size: var(--text-sm);
+  }
+
+  .replay {
+    align-self: flex-start;
+    margin-top: var(--space-2);
+  }
+
+  :global(.is-reset),
+  :global(.is-reset *),
+  :global(.is-reset)::before,
+  :global(.is-reset *)::before,
+  :global(.is-reset *)::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-note {
+      display: block;
+    }
+
+    .replay {
+      display: none;
+    }
+  }
+
+  .motion-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(20px, 3vw, 40px);
+    align-items: center;
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  .table-wrap {
+    background: var(--bg-raised);
+  }
+
+  .tokens {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+  }
+
+  .tokens th,
+  .tokens td {
+    padding: 13px 16px;
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .tokens thead th {
+    background: var(--bg-alt);
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  .tokens tbody th {
+    font-weight: 600;
+    color: var(--fg);
+    white-space: nowrap;
+  }
+
+  .tokens tbody tr:last-child th,
+  .tokens tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .curves {
+    display: flex;
+    gap: var(--space-5);
+  }
+
+  .curve {
+    margin: 0;
+    text-align: center;
+  }
+
+  .curve svg {
+    width: clamp(120px, 12vw, 156px);
+    height: auto;
+    overflow: visible;
+  }
+
+  .curve rect {
+    fill: var(--bg-alt);
+    stroke: var(--rule);
+    stroke-width: 1;
+    rx: 6px;
+  }
+
+  .curve path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+  }
+
+  .curve figcaption {
+    margin-top: var(--space-3);
+  }
+
+  /* ───────── voice ───────── */
+  .pairs-grid {
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  .voice {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    font-size: var(--text-sm);
+  }
+
+  .voice:hover {
+    transform: none;
+  }
+
+  .voice__cols {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    flex: 1;
+  }
+
+  .voice__col {
+    padding: 14px 16px 16px;
+    border-radius: var(--radius);
+    border: 1px solid var(--rule);
+  }
+
+  .voice__col--yes {
+    background: var(--accent-soft);
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+
+  .voice__col--yes p:last-child {
+    color: var(--fg);
+  }
+
+  .voice__tag {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-weight: 700;
+    color: var(--fg);
+  }
+
+  .voice__tag :global(svg) {
+    width: 18px;
+    height: 18px;
+    stroke-width: 2.6;
+  }
+
+  .voice__col--yes .voice__tag {
+    color: var(--link);
+  }
+
+  .phrases {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2.6vw, 32px);
+    margin: clamp(40px, 5vw, 64px) 0 0;
+    padding-top: var(--space-5);
+    border-top: 2px solid var(--rule);
+  }
+
+  .phrases dt {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--link);
+  }
+
+  .phrases dd {
+    margin-top: 4px;
+    font-size: var(--text-xl);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--fg);
+    text-wrap: balance;
+  }
+
+  /* ───────── footage ───────── */
+  .films {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(16px, 2.4vw, 32px);
+    margin: 0;
+    padding: 0;
+  }
+
+  .film {
+    margin: 0;
+  }
+
+  .film__frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--radius-lg);
+    background: var(--night);
+    box-shadow: var(--shadow-card);
+  }
+
+  .film__frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.16);
+    pointer-events: none;
+  }
+
+  .film__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 900ms var(--ease);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .film:hover .film__frame img {
+      transform: scale(1.04);
+    }
+  }
+
+  .film figcaption {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 2px 12px;
+    margin-top: var(--space-3);
+  }
+
+  .film__order {
+    grid-row: 1 / 3;
+    font-size: var(--text-lg);
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--link);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .film__name {
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  .film__alt {
+    font-size: var(--text-sm);
+    line-height: 1.5;
+  }
+
+  /* ───────── downloads ───────── */
+  .pack {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    border-left: 4px solid var(--accent);
+  }
+
+  .pack:hover {
+    transform: none;
+  }
+
+  .pack h3 {
+    margin-bottom: 6px;
+  }
+
+  .pack__size {
+    padding-left: 10px;
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .file-groups,
+  .material-title {
+    margin-top: clamp(40px, 5vw, 64px);
+  }
+
+  .files {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .files__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 16px;
+    padding: 8px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .files__thumb {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 60px;
+    height: 40px;
+    padding: 7px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--rule);
+    background: var(--white);
+  }
+
+  .files__thumb--navy {
+    background: var(--navy);
+  }
+
+  .files__thumb--icon {
+    width: 40px;
+    padding: 5px;
+  }
+
+  .files__thumb--text {
+    padding: 0;
+    background: transparent;
+    color: var(--fg-3);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .files__thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .files__name {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--fg);
+  }
+
+  /* fixed columns keep the SVG, PNG and 2x chips in line down the list */
+  .files__links--cols {
+    display: grid;
+    grid-template-columns: 94px 94px 118px;
+  }
+
+  .files__links--cols .file-chip {
+    justify-content: space-between;
+  }
+
+  .icon-note {
+    margin-top: var(--space-5);
+  }
+
+  .files__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .file-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 44px;
+    padding: 0 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--rule);
+    background: var(--bg-raised);
+    color: var(--fg);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: border-color var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+  }
+
+  .file-chip:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--fg);
+    transform: translateY(-1px);
+  }
+
+  .file-chip:focus-visible {
+    border-radius: var(--radius-pill);
+  }
+
+  .file-chip__size {
+    font-weight: 400;
+    color: var(--fg-2);
+  }
+
+  .material__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .material__item h4 {
+    margin-top: var(--space-2);
+    font-size: var(--text-lg);
+    font-weight: 600;
+  }
+
+  .material__item > p:not(.files__links) {
+    flex: 1;
+  }
+
+  .material__thumb {
+    position: relative;
+    aspect-ratio: 16 / 7;
+    overflow: hidden;
+    border-radius: var(--radius);
+    border: 1px solid var(--rule);
+  }
+
+  .material__thumb--white,
+  .material__thumb--page {
+    background: var(--mist);
+  }
+
+  .material__thumb--navy {
+    background: var(--night);
+  }
+
+  .material__thumb img {
+    position: absolute;
+    inset: 16px;
+    width: calc(100% - 32px);
+    height: calc(100% - 32px);
+    object-fit: contain;
+    filter: drop-shadow(0 6px 10px rgba(var(--film-shade), 0.22));
+  }
+
+  /* the letterhead shows the top of the sheet */
+  .material__thumb--page img {
+    inset: 16px 0 0 50%;
+    width: min(56%, 260px);
+    height: calc(100% - 16px);
+    object-fit: cover;
+    object-position: top center;
+    transform: translateX(-50%);
+  }
+
+  /* ───────── responsive ───────── */
+  /* below five columns the swatch turns on its side: chip left, facts right, two to a row */
+  @media (max-width: 999px) {
+    .swatches {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .swatch {
+      flex-direction: row;
+    }
+
+    .swatch__chip {
+      flex: none;
+      width: 76px;
+      height: auto;
+      border-bottom: 0;
+      border-right: 1px solid var(--rule);
+    }
+
+    .swatch__name {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px 10px;
+    }
+
+    .swatch__hex {
+      justify-content: flex-start;
+      gap: 6px 14px;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .films {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .spec {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-4);
+    }
+
+    .motion-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .phrases {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tiles--mark {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .guide-nav ul {
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 32px), transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 18px, #000 calc(100% - 32px), transparent 100%);
+    }
+  }
+
+  @media (max-width: 620px) {
+    .swatches {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .weights {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .weights__item {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      column-gap: var(--space-4);
+      align-items: center;
+    }
+
+    .weights__aa {
+      grid-row: 1 / 3;
+      font-size: 3rem;
+    }
+
+    .weights__name {
+      margin-top: 0;
+    }
+
+    .voice__cols {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pairs__row {
+      grid-template-columns: 44px minmax(0, 1fr) auto;
+      gap: 6px 12px;
+    }
+
+    .pairs__grade {
+      grid-column: 2 / -1;
+      justify-self: start;
+    }
+
+    .pairs__chip {
+      width: 44px;
+      grid-row: 1 / 3;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .tiles:not(.tiles--mark) {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .tiles:not(.tiles--mark) .tile__ground {
+      aspect-ratio: 16 / 6;
+      padding: 0 22%;
+    }
+
+    .minsize {
+      grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
+    }
+
+    .minsize__stage {
+      min-height: 96px;
+    }
+
+    .where div {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 2px;
+    }
+
+  }
+</style>

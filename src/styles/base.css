@@ -356,7 +356,7 @@ main {
   }
 }
 
-/* reveal on scroll: hidden state exists only when JS runs and motion is welcome */
+/* reveal on scroll: the hidden state needs JS running and motion welcome; without both, content shows */
 @media (prefers-reduced-motion: no-preference) {
   .js [data-reveal] {
     opacity: 0;
@@ -411,6 +411,29 @@ main {
 .js.static [data-reveal] {
   opacity: 1 !important;
   transform: none !important;
+}
+
+/* drawn diagrams show complete in a static capture */
+.static .route__line,
+.static .route__node,
+.static .route__label,
+.static .route__bracket,
+.static .netviz__spoke,
+.static .netviz__node,
+.static .trace__line,
+.static .trace__dot,
+.static .trace__flag,
+.static .tick path {
+  opacity: 1 !important;
+  stroke-dashoffset: 0 !important;
+}
+
+.static .trace__area {
+  opacity: 0.14 !important;
+}
+
+.nowrap {
+  white-space: nowrap;
 }
 
 [hidden] {

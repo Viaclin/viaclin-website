@@ -49,15 +49,28 @@ export function initNav(): void {
       servicesMenu.classList.toggle('is-open', open);
     };
     const isOpen = () => servicesBtn.getAttribute('aria-expanded') === 'true';
-    servicesBtn.addEventListener('click', () => setOpen(!isOpen()));
+    // A mouse opens the menu by hovering; the click that follows must not toggle it shut again.
+    let openedByHover = false;
+    servicesBtn.addEventListener('click', () => {
+      if (openedByHover) {
+        openedByHover = false;
+        setOpen(true);
+        return;
+      }
+      setOpen(!isOpen());
+    });
     wrap.addEventListener('pointerenter', (event) => {
       if (event.pointerType === 'mouse') {
         window.clearTimeout(closeTimer);
+        if (!isOpen()) openedByHover = true;
         setOpen(true);
       }
     });
     wrap.addEventListener('pointerleave', (event) => {
-      if (event.pointerType === 'mouse') closeTimer = window.setTimeout(() => setOpen(false), 180);
+      if (event.pointerType === 'mouse') {
+        openedByHover = false;
+        closeTimer = window.setTimeout(() => setOpen(false), 180);
+      }
     });
     wrap.addEventListener('focusout', (event) => {
       if (!wrap.contains(event.relatedTarget as Node | null)) setOpen(false);

@@ -1,0 +1,288 @@
+---
+// How we work. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.6; shared copy comes from src/data/services.ts.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import Section from '../components/Section.astro';
+import Blocks from '../components/Blocks.astro';
+import Steps from '../components/Steps.astro';
+import NetworkVisual from '../components/NetworkVisual.astro';
+import ContactBand from '../components/ContactBand.astro';
+import { site } from '../data/site';
+import { network, method, principles, coverage } from '../data/services';
+
+const path = '/how-we-work';
+const description =
+  'How Viaclin works: one accountable lead with a specialist network behind them, the Diagnose, Embed, Deliver method, three operating principles and coverage across the EU, US and UK.';
+
+const onPage = [
+  { id: 'network', label: 'The network' },
+  { id: 'method', label: 'The method' },
+  { id: 'principles', label: 'Principles' },
+  { id: 'coverage', label: 'Coverage' },
+  { id: 'what-we-do-not-do', label: 'What we do not do' },
+];
+
+// Supporting lists repeat words from the paragraph beside them, so they stay hidden from assistive tech and search.
+const outOfScope = [
+  { label: 'We do not', items: ['Administer plans', 'Produce status reports', 'Fill seats with generalists'] },
+  { label: 'We do not run', items: ['Market access', 'Enterprise change programmes', 'IT integration outside the supply chain'] },
+];
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
+    { '@type': 'ListItem', position: 2, name: 'How we work', item: `${site.url}${path}` },
+  ],
+};
+---
+
+<Base title="How we work: Viaclin" description={description} path={path} schema={schema}>
+  <PageHero
+    title="How we work"
+    lead="One lead operator. A network behind them."
+    crumbs={[{ title: 'How we work' }]}
+    cta={{ label: 'Start a conversation' }}
+  >
+    <nav class="onpage" aria-label="On this page" data-reveal style="--d:300ms">
+      <ol role="list">
+        {onPage.map((item) => (
+          <li><a href={`#${item.id}`}>{item.label}</a></li>
+        ))}
+      </ol>
+    </nav>
+  </PageHero>
+
+  <!-- the network -->
+  <section class="section" id="network" aria-labelledby="network-title">
+    <div class="container">
+      <div class="split net-split">
+        <div class="section-head" data-reveal>
+          <p class="eyebrow">Who does the work</p>
+          <h2 id="network-title">The network</h2>
+          <p class="lead">
+            Viaclin draws on a bank of senior consultants across the EU, US and UK, each with a distinct specialism and
+            their own industry history. Your engagement gets one accountable lead, and the lead gets the whole bench.
+          </p>
+        </div>
+        <NetworkVisual />
+      </div>
+      <Blocks items={network} cols={3} />
+    </div>
+  </section>
+
+  <!-- the method -->
+  <Section id="method" tone="mist" eyebrow="Method" title="Diagnose, Embed, Deliver">
+    <Steps items={method} row />
+  </Section>
+
+  <!-- principles -->
+  <Section id="principles" eyebrow="Principles" title="Three principles behind every engagement">
+    <Blocks items={principles} cols={3} />
+  </Section>
+
+  <!-- coverage -->
+  <Section id="coverage" tone="mist" eyebrow="Coverage" title="Three regulatory jurisdictions">
+    <Blocks items={coverage} cols={3} />
+  </Section>
+
+  <!-- what we do not do -->
+  <section class="section" id="what-we-do-not-do" aria-labelledby="what-we-do-not-do-title">
+    <div class="container lead-split">
+      <div class="lead-split__copy" data-reveal>
+        <p class="eyebrow">Out of scope</p>
+        <h2 id="what-we-do-not-do-title">What we do not do</h2>
+        <p class="lead lead--measure">
+          We do not administer plans, produce status reports or fill seats with generalists. We do not run market
+          access, enterprise change programmes or IT integration outside the supply chain. If your need sits there, we
+          will say so on the first call.
+        </p>
+      </div>
+      <div class="nots" aria-hidden="true" data-pagefind-ignore>
+        {outOfScope.map((group, index) => (
+          <div class="nots__group" data-reveal style={`--d:${index * 120}ms`}>
+            <p class="nots__label">{group.label}</p>
+            <ul role="list">
+              {group.items.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <ContactBand />
+</Base>
+
+<style>
+  /* hero: numbered jump links to the five parts of the page */
+  .onpage {
+    margin-top: clamp(40px, 6vw, 72px);
+  }
+
+  .onpage ol {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(12px, 2vw, 28px);
+    margin: 0;
+    counter-reset: onpage;
+  }
+
+  .onpage li {
+    counter-increment: onpage;
+  }
+
+  .onpage a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 64px;
+    padding-top: var(--space-3);
+    color: var(--fg);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .onpage a::before {
+    content: counter(onpage, decimal-leading-zero);
+    color: var(--link);
+    font-size: var(--text-xs);
+    font-weight: 700;
+  }
+
+  /* the block rule: grey track, green segment that runs the full width on hover */
+  .onpage a::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 2px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent) 0 50%, var(--rule) 50% 100%);
+    background-size: 200% 100%;
+    background-position: 84% 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .onpage a {
+      transition: color var(--dur-1) var(--ease);
+    }
+
+    .onpage a::after {
+      transition: background-position 600ms var(--ease);
+    }
+  }
+
+  .onpage a:hover,
+  .onpage a:focus-visible {
+    color: var(--link);
+  }
+
+  .onpage a:hover::after,
+  .onpage a:focus-visible::after {
+    background-position: 0 0;
+  }
+
+  /* network: intro beside the diagram, the three columns beneath */
+  .net-split {
+    margin-bottom: clamp(40px, 6vw, 72px);
+  }
+
+  .net-split .section-head {
+    margin-bottom: 0;
+  }
+
+  .net-split :global(.netviz) {
+    width: 100%;
+    max-width: 480px;
+    justify-self: center;
+  }
+
+  /* a single paragraph set as a lead, with a quiet companion beside it */
+  .lead-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: clamp(32px, 6vw, 88px);
+    align-items: center;
+  }
+
+  .lead-split__copy > * + * {
+    margin-top: var(--space-5);
+  }
+
+  .lead--measure {
+    max-width: 56ch;
+    color: var(--fg-2);
+  }
+
+  .nots {
+    display: grid;
+    gap: var(--space-6);
+  }
+
+  .nots__label {
+    padding-bottom: var(--space-3);
+    border-bottom: 2px solid var(--rule);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--link);
+    letter-spacing: 0.01em;
+  }
+
+  .nots ul {
+    margin: 0;
+  }
+
+  .nots li {
+    position: relative;
+    padding: 12px 0 12px 34px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--fg);
+    font-weight: 600;
+  }
+
+  /* a small cross: two strokes in the ink colour */
+  .nots li::before,
+  .nots li::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: calc(12px + 0.8em);
+    width: 16px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--fg-3);
+  }
+
+  .nots li::before {
+    transform: rotate(45deg);
+  }
+
+  .nots li::after {
+    transform: rotate(-45deg);
+  }
+
+  @media (max-width: 900px) {
+    .onpage ol {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px 20px;
+    }
+
+    .lead-split {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 339px) {
+    .onpage ol {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .onpage a {
+      min-height: 56px;
+    }
+  }
+</style>
