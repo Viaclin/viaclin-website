@@ -118,8 +118,7 @@ const schema = [
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-      { '@type': 'ListItem', position: 2, name: 'Services', item: `${site.url}/#services` },
-      { '@type': 'ListItem', position: 3, name: 'Operations Excellence', item: `${site.url}${path}` },
+      { '@type': 'ListItem', position: 2, name: 'Operations Excellence', item: `${site.url}${path}` },
     ],
   },
 ];
@@ -128,7 +127,8 @@ const schema = [
 <Base title={title} description={description} path={path} schema={schema}>
   <PageHero
     title="Operations Excellence"
-    lead={`Supply operations rebuilt for the operations evolution: automated lines, self-running depots and AI oversight, with your people in charge. Next-gen ready, delivered with ${partner}.`}
+    lead={`Supply chains rebuilt for the operations evolution: automated lines, self-running depots and AI oversight, with your people in charge. Next-gen ready, delivered with ${partner}.`}
+    eyebrow="Service area"
     crumbs={[{ title: 'Services', href: '/#services' }, { title: 'Operations Excellence' }]}
     cta={{ label: 'Start a conversation' }}
     video="robot"
@@ -196,9 +196,9 @@ const schema = [
             <p class="eyebrow">Where it starts</p>
             <h3>The <span class="nb">next-gen</span> readiness assessment</h3>
             <p>
-              The entry point is the Diagnose step: a short, fixed-fee assessment. We score your systems, data,
-              partners and people against where the industry is heading, and return a written plan that shows where
-              you stand, what to fix first and who owns each move.
+              The entry point is the Diagnose step: a short, fixed-fee assessment. We score your use cases, systems,
+              data, partners and people for value and risk, against where the industry is heading, and return a
+              written plan that shows where you stand, what to fix first and who owns each move.
             </p>
           </div>
           <div class="actions">
@@ -250,11 +250,13 @@ const schema = [
           {partner} is Viaclin's sister brand for AI products in regulated industries. Viaclin runs the programme and
           answers for the outcome; {partner} supplies the agents. One contract, one accountable lead.
         </p>
-        <p>
-          <a class="text-link partner-link" href={site.sisterBrand.url} rel="noopener" target="_blank">
-            Visit {partner}<span class="sr-only"> (opens in a new tab)</span>
-          </a>
-        </p>
+        {site.sisterBrand.url && (
+          <p>
+            <a class="text-link partner-link" href={site.sisterBrand.url} rel="noopener" target="_blank">
+              Visit {partner}<span class="sr-only"> (opens in a new tab)</span>
+            </a>
+          </p>
+        )}
       </div>
       <div class="pair card" data-reveal="scale">
         <div class="pair__row">

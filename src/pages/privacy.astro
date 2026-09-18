@@ -198,11 +198,16 @@ const registration =
 
   <h2 id="retention">How long we keep it</h2>
   <ul>
-    <li><strong>Enquiries:</strong> 24 months, or longer where the enquiry becomes part of an engagement record.</li>
     <li>
-      <strong>Analytics and insights:</strong> the settings of each provider decide. Google Analytics 4 is set to keep
-      user and event data for 14 months. Microsoft Clarity keeps recordings and heatmap data for the periods in its own
-      documentation.
+      <strong>Enquiries:</strong>{' '}
+      {site.enquiryRetention
+        ? `${site.enquiryRetention}, or longer where the enquiry becomes part of an engagement record.`
+        : 'for as long as it takes to answer you and, where work follows, for as long as the engagement record is kept.'}
+    </li>
+    <li>
+      <strong>Analytics and insights:</strong> the settings of each provider decide. We set Google Analytics 4 to its
+      14 month option for user and event data. Microsoft Clarity keeps recordings and heatmap data for the periods in
+      its own documentation.
     </li>
     <li><strong>Server logs:</strong> held by our hosting provider under its own schedule.</li>
     <li><strong>Browser storage:</strong> the <a href="/cookies">cookie policy</a> gives the life of each item.</li>

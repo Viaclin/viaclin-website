@@ -12,7 +12,8 @@ export interface Client {
 }
 
 // Logo files came from Wikimedia Commons (Special:FilePath) on 18 September 2026 and were converted
-// to a single colour without any change of shape. Companies without a clean vector source stay typeset.
+// to a single colour without any change of shape (Amicus keeps its second tone as a tint of the same colour).
+// Companies without a clean vector source stay typeset.
 export const clients: Client[] = [
   { name: 'Roche', file: 'roche.svg', scale: 1.15 },
   { name: 'Novartis', file: 'novartis.svg', scale: 0.85 },
@@ -30,6 +31,6 @@ export const clients: Client[] = [
   { name: 'Dark Blue Therapeutics' },
   { name: 'Amolyt Pharma' },
   { name: 'Johnson & Johnson', file: 'jnj.svg', scale: 0.5 },
-  { name: 'Amicus Therapeutics' },
+  { name: 'Amicus Therapeutics', file: 'amicus.svg', scale: 1.25 },
   { name: 'Carmot Therapeutics' },
 ];

@@ -16,7 +16,7 @@ export const serviceCards = [
   },
   {
     title: 'Operations Excellence',
-    body: 'Operations rebuilt to scale, cut risk and run with AI oversight, delivered with SupplyAI. Next-gen ready for the operations evolution.',
+    body: 'Operations rebuilt to scale, cut risk and run with AI oversight, delivered with SupplyAI. Supply chains made next-gen ready for the operations evolution.',
     href: '/services/operations-excellence',
     linkLabel: 'See the service',
   },

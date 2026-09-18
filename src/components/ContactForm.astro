@@ -1,6 +1,8 @@
 ---
 // Contact form, used in the dialog and on /contact. Posts to Web3Forms and works without JavaScript.
 // Without a key, contact.ts composes an email to the company address instead.
+// The form has no novalidate attribute: without JavaScript the browser checks the required fields.
+// contact.ts sets form.noValidate when it runs and shows its own messages.
 import { site } from '../data/site';
 
 interface Props {
@@ -20,7 +22,6 @@ const hasKey = site.web3formsKey !== '';
     method="POST"
     action={hasKey ? 'https://api.web3forms.com/submit' : `mailto:${site.email}`}
     enctype={hasKey ? undefined : 'text/plain'}
-    novalidate
   >
     {hasKey && <input type="hidden" name="access_key" value={site.web3formsKey} />}
     <input type="hidden" name="subject" value="Website enquiry: viaclin.com" />
@@ -33,6 +34,8 @@ const hasKey = site.web3formsKey !== '';
     <input type="hidden" name="utm_term" data-utm />
     <input type="hidden" name="utm_content" data-utm />
     <input type="hidden" name="landing_page" data-utm />
+    <input type="hidden" name="gclid" data-utm />
+    <input type="hidden" name="msclkid" data-utm />
 
     <div class="form__summary" role="alert" tabindex="-1" data-summary></div>
 

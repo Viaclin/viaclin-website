@@ -13,7 +13,12 @@ export const site = {
   strapline: 'We push the project.',
   summary:
     'Life sciences supply chain consultancy: supply chain consultancy, project management and operations excellence, delivered by senior operators with one accountable lead per engagement.',
-  sisterBrand: { name: 'SupplyAI', url: 'https://supplyai.eu' },
+  // The address on the previous site (supplyai.eu) now serves a parking page, so nothing links until the owner confirms one.
+  sisterBrand: { name: 'SupplyAI', url: '' },
+  // How long enquiry data is kept, for example '24 months'. Empty renders a neutral sentence on /privacy.
+  enquiryRetention: '',
+  // Legal pages carry a "Draft for solicitor review" line while this is true (owner's spec, section 8.9).
+  legalDraft: true,
   ga4: import.meta.env.PUBLIC_GA4_ID ?? '',
   clarity: import.meta.env.PUBLIC_CLARITY_ID ?? '',
   gsc: import.meta.env.PUBLIC_GSC_VERIFICATION ?? '',

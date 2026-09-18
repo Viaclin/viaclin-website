@@ -1,5 +1,6 @@
 // Site search on Pagefind. One controller per search box, shared by the dialog and the /search page.
-// States: idle (hint and suggested pages), loading (skeleton), results, empty, unavailable (no index on the dev server).
+// States: idle (hint and suggested pages), loading (skeleton), results, empty, unavailable (the index did not load;
+// the dev server never has one, so its status line says so, and the built site uses visitor wording).
 import { openDialog, closeDialog } from './dialog';
 import { track } from './analytics';
 
@@ -190,7 +191,10 @@ function createSearch(root: HTMLElement): Controller | null {
   };
 
   const unavailable = () => {
-    status.textContent = 'Search works on the built site.';
+    // The dev server has no index, so the developer gets the reason. A visitor gets plain words.
+    status.textContent = import.meta.env.DEV
+      ? 'This preview has no search index. Search works on the built site.'
+      : 'Search is not available right now.';
     setState('unavailable');
   };
 

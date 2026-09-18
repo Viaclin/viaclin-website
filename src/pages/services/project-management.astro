@@ -11,7 +11,7 @@ import { site } from '../../data/site';
 const path = '/services/project-management';
 const pageName = 'Project Management';
 const description =
-  'End-to-end project management ownership for life sciences: tech transfer, CDMO programmes, packaging and serialisation, cross-border logistics and launch readiness under one accountable owner.';
+  'End-to-end project management for life sciences: tech transfer, CDMO programmes, serialisation, logistics and launch readiness under one accountable owner.';
 
 const takeOn = [
   {
@@ -86,8 +86,7 @@ const schema = [
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-      { '@type': 'ListItem', position: 2, name: 'Services', item: `${site.url}/#services` },
-      { '@type': 'ListItem', position: 3, name: pageName, item: `${site.url}${path}` },
+      { '@type': 'ListItem', position: 2, name: pageName, item: `${site.url}${path}` },
     ],
   },
 ];

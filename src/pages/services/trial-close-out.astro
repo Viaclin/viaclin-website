@@ -10,10 +10,11 @@ import { closeoutSteps } from '../../data/closeout';
 const path = '/services/trial-close-out';
 const title = 'The nine-step trial close-out: Viaclin';
 const description =
-  'A fixed-fee nine-step clinical trial close-out for supply chain: inventory reconciliation, IRT decommissioning, CMO close-out, cold chain, customs and destruction.';
+  'A fixed-fee nine-step trial close-out: inventory reconciliation, IRT decommissioning, CMO close-out, cold chain, customs, data custody and destruction.';
 
-// The H1 uses non-breaking hyphens (U+2011) so "nine-step" and "close-out" never split across two lines.
-const heading = 'The nine‑step close‑out no one plans for.';
+// The H1 markup keeps "nine-step" and "close-out" whole, so neither splits across two lines.
+const heading = 'The nine-step close-out no one plans for.';
+const headingHtml = 'The <span class="nowrap">nine-step</span> <span class="nowrap">close-out</span> no one plans for.';
 
 const steps = closeoutSteps.map((step) => ({ title: step.title, body: step.body }));
 
@@ -43,8 +44,7 @@ const schema = [
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-      { '@type': 'ListItem', position: 2, name: 'Services', item: `${site.url}/#services` },
-      { '@type': 'ListItem', position: 3, name: 'Trial close-out', item: `${site.url}${path}` },
+      { '@type': 'ListItem', position: 2, name: 'Trial close-out', item: `${site.url}${path}` },
     ],
   },
 ];
@@ -53,7 +53,9 @@ const schema = [
 <Base title={title} description={description} path={path} schema={schema}>
   <PageHero
     title={heading}
+    titleHtml={headingHtml}
     lead="Trial close-out is the most under-resourced phase in clinical supply. Our fixed-fee programme leaves no financial, regulatory or compliance liability open."
+    eyebrow="Fixed-fee entry product"
     crumbs={[{ title: 'Services', href: '/#services' }, { title: 'Trial close-out' }]}
     cta={{ label: 'Book the close-out', topic: 'close-out' }}
     video="warehouse"

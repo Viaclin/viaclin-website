@@ -80,21 +80,22 @@ const inServices = path.startsWith('/services');
 
 <div class="mobile-menu" id="mobile-menu" aria-label="Menu" role="region">
   <nav aria-label="Mobile">
-    <h2>Services</h2>
-    <ul>
+    {/* Labels, not headings: this block sits before the page H1 in the markup. Each list takes its name from its label. */}
+    <p class="mobile-menu__label" id="mobile-menu-services">Services</p>
+    <ul role="list" aria-labelledby="mobile-menu-services">
       {services.map((item) => (
         <li><a href={item.href} aria-current={current(item.href)}>{item.title}</a></li>
       ))}
     </ul>
-    <h2>Company</h2>
-    <ul>
+    <p class="mobile-menu__label" id="mobile-menu-company">Company</p>
+    <ul role="list" aria-labelledby="mobile-menu-company">
       {primary.map((item) => (
         <li><a href={item.href} aria-current={current(item.href)}>{item.title}</a></li>
       ))}
       <li><a href="/search">Search</a></li>
     </ul>
-    <h2>Legal</h2>
-    <ul>
+    <p class="mobile-menu__label" id="mobile-menu-legal">Legal</p>
+    <ul role="list" aria-labelledby="mobile-menu-legal">
       {legal.slice(0, 3).map((item) => (
         <li><a href={item.href} aria-current={current(item.href)}>{item.title}</a></li>
       ))}

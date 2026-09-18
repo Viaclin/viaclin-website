@@ -322,6 +322,7 @@ const material = [
     width: 1280,
     height: 440,
     ground: 'white',
+    // The size comes from the .html file on disk. The link drops the extension, because Vercel clean URLs serve the page there.
     files: [{ tag: 'HTML', info: fileInfo('/brand/viaclin-email-signature.html'), open: true }],
   },
   {
@@ -1001,7 +1002,7 @@ const material = [
             <p>{item.body}</p>
             <p class="files__links">
               {item.files.map((file) => file.info && (
-                <a class="file-chip" href={file.info.href} download={file.open ? undefined : true}>
+                <a class="file-chip" href={file.open ? file.info.href.replace(/\.html$/, '') : file.info.href} download={file.open ? undefined : true}>
                   <span class="sr-only">{item.title}, </span>{file.open ? `Open the ${file.tag} page` : file.tag}<span class="file-chip__size">{file.info.size}</span>
                 </a>
               ))}
@@ -1012,10 +1013,13 @@ const material = [
     </Section>
   </div>
 
-  <ContactBand
-    title="Need a file that is not here?"
-    line="Tell us what it is for and we will send the right format."
-  />
+  <!-- its own wrapper keeps the band out of the search index; inside the wrapper above, the sticky section links would ride over it -->
+  <div data-pagefind-ignore="all">
+    <ContactBand
+      title="Need a file that is not here?"
+      line="Tell us what it is for and we will send the right format."
+    />
+  </div>
 </Base>
 
 <script>

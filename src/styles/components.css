@@ -617,10 +617,12 @@
   transition-delay: 0s;
 }
 
-.mobile-menu h2 {
+/* a paragraph, not a heading: the menu sits before the page H1 in the markup */
+.mobile-menu__label {
   margin: 20px 0 6px;
   font-size: var(--text-xs);
   font-weight: 600;
+  line-height: var(--leading-heading);
   color: var(--fg-3);
   letter-spacing: 0.02em;
 }
@@ -1906,7 +1908,8 @@ dialog.dialog::backdrop {
   width: 100%;
 }
 
-@media (max-width: 900px) {
+/* Same breakpoint as the header, where the "Start a conversation" button gives way to the menu button. */
+@media (max-width: 1000px) {
   .mobile-cta {
     display: block;
   }
@@ -1914,6 +1917,16 @@ dialog.dialog::backdrop {
   .to-top {
     bottom: calc(80px + env(safe-area-inset-bottom));
   }
+}
+
+/* Controls that need JavaScript stay out of sight without it. The footer lists every page, so nothing is out of reach. */
+.no-js [data-search-open],
+.no-js [data-theme-toggle],
+.no-js #menu-btn,
+.no-js [data-consent-open],
+.no-js .to-top,
+.no-js .mobile-cta {
+  display: none;
 }
 
 /* ───────── prose (legal pages) ───────── */

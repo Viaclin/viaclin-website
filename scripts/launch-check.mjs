@@ -39,6 +39,20 @@ function siteValue(key) {
   return match ? match[2].trim() : null;
 }
 
+/** The string value of a key inside an object literal in site.ts, such as sisterBrand.url, or null when it is not there. */
+function siteNestedValue(parent, key) {
+  const block = new RegExp(`\\b${parent}\\s*:\\s*\\{([\\s\\S]*?)\\}`).exec(siteSource);
+  if (!block) return null;
+  const match = new RegExp(`\\b${key}\\s*:\\s*(['"\`])([\\s\\S]*?)\\1`).exec(block[1]);
+  return match ? match[2].trim() : null;
+}
+
+/** The value of a true or false key in site.ts, or null when the key is not there. */
+function siteFlag(key) {
+  const match = new RegExp(`\\b${key}\\s*:\\s*(true|false)\\b`).exec(siteSource);
+  return match ? match[1] === 'true' : null;
+}
+
 if (siteSource) {
   const cro = siteValue('croNumber');
   if (cro) ok(`Company number set: ${cro}`);
@@ -63,6 +77,19 @@ if (siteSource) {
 
   const updated = siteValue('legalUpdated');
   if (updated) advice(`Legal pages carry the date ${updated}`, 'Move legalUpdated in src/data/site.ts forward whenever a legal page changes.');
+
+  const retention = siteValue('enquiryRetention');
+  if (retention) ok(`Enquiry retention period set: ${retention}`);
+  else blocker('The privacy notice gives no retention period for enquiries', 'Set enquiryRetention in src/data/site.ts, for example 24 months.');
+
+  const sisterName = siteNestedValue('sisterBrand', 'name') || 'The sister brand';
+  const sisterUrl = siteNestedValue('sisterBrand', 'url');
+  if (sisterUrl) ok(`${sisterName} web address set: ${sisterUrl}`);
+  else advice(`${sisterName} has no web address in site.ts, so nothing links to it`, 'The address on the previous site now serves a parking page. Set sisterBrand.url in src/data/site.ts once the owner confirms an address.');
+
+  const legalDraft = siteFlag('legalDraft');
+  if (legalDraft) advice('Legal pages show a draft line', 'Set legalDraft to false in src/data/site.ts once a solicitor has reviewed them.');
+  else if (legalDraft === false) ok('Legal pages show no draft line (legalDraft is false)');
 }
 
 // --- environment: .env and the process environment ----------------------------------------------
@@ -83,6 +110,7 @@ const ga4 = envValue('PUBLIC_GA4_ID');
 if (ga4 && /^G-[A-Z0-9]+$/i.test(ga4)) ok(`PUBLIC_GA4_ID is set: ${ga4}`);
 else if (ga4) advice(`PUBLIC_GA4_ID does not look like a measurement ID: ${ga4}`, 'A GA4 measurement ID starts with G- followed by letters and digits.');
 else advice('PUBLIC_GA4_ID is empty', 'No Google Analytics until it is set. Create a GA4 property, copy the G- measurement ID and add it in Vercel. The README has the steps.');
+if (ga4) advice('GA4 data retention', 'Set GA4 data retention to 14 months (Admin, Data retention) to match /privacy.');
 
 if (envValue('PUBLIC_CLARITY_ID')) ok('PUBLIC_CLARITY_ID is set');
 else advice('PUBLIC_CLARITY_ID is empty', 'No heatmaps and no A/B tests until it is set. Create a Microsoft Clarity project and add its ID in Vercel.');
@@ -157,7 +185,9 @@ try {
 // --- reminders that a script cannot close -------------------------------------------------------
 
 advice('Legal pages are drafts until a solicitor has read them', 'Send /privacy, /terms, /cookies, /accessibility and /legal to a solicitor who knows Irish company law, GDPR and the ePrivacy Regulations. Update legalUpdated after any change.');
-advice('Professional indemnity insurance', 'Confirm that cover is in place before the site invites enquiries. A consultancy that advises on regulated supply chains should not trade without it.');
+advice('Regulatory position on /legal', "Confirm the regulatory position paragraph on /legal matches the company's licences and partners.");
+advice('Data processing agreement with the form provider', 'Confirm a data processing agreement with Web3Forms (or the form provider you choose) and note which transfer safeguard it relies on.');
+advice('Professional indemnity insurance','Confirm that cover is in place before the site invites enquiries. A consultancy that advises on regulated supply chains should not trade without it.');
 advice('Test the contact form after deploy', 'Send one enquiry from the live site and confirm that it arrives at info@viaclin.com and that /thanks renders.');
 
 // --- report -------------------------------------------------------------------------------------

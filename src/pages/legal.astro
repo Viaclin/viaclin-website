@@ -50,8 +50,10 @@ const details = [
     companies.
   </p>
   <ul>
-    <li>Viaclin does not hold a manufacturing, import or wholesale distribution licence.</li>
-    <li>Viaclin does not release, store or distribute medicinal product.</li>
+    <li>
+      Viaclin works as a consultancy. Where a programme needs a licence holder, for example a manufacturer, a
+      wholesaler or an importer of record, the client or a contracted partner provides it under its own authorisation.
+    </li>
     <li>
       Our work runs inside the client's quality system and under the client's licences, or those of the client's
       contracted partners. The licence holder keeps its regulatory duties at every stage.
@@ -79,7 +81,9 @@ const details = [
   <h2 id="ai">Our position on AI</h2>
   <p>
     Operations Excellence work can include oversight agents, delivered with
-    {' '}<a href={site.sisterBrand.url} rel="noopener noreferrer">{site.sisterBrand.name}</a>. The position is simple:
+    {' '}{site.sisterBrand.url
+      ? <a href={site.sisterBrand.url} rel="noopener noreferrer">{site.sisterBrand.name}</a>
+      : site.sisterBrand.name}. The position is simple:
     agents advise, people decide.
   </p>
   <ul>

@@ -9,19 +9,29 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 type Field = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
 
+function isCheckbox(field: Field): field is HTMLInputElement {
+  return field instanceof HTMLInputElement && field.type === 'checkbox';
+}
+
+/** Every error begins with the label the visitor can see. A label that ends in a question mark takes no colon. */
+function withLabel(label: string, text: string): string {
+  if (label.endsWith('?')) return `${label} ${text.charAt(0).toUpperCase()}${text.slice(1)}`;
+  return `${label}: ${text}`;
+}
+
 function messageFor(field: Field): string {
   const label = field.dataset.label ?? field.name;
-  if (field instanceof HTMLInputElement && field.type === 'checkbox') {
-    return field.checked ? '' : `${label}: tick the box so we can reply to you.`;
+  if (isCheckbox(field)) {
+    return field.checked ? '' : withLabel(label, 'tick the box so we can reply to you.');
   }
   const value = field.value.trim();
   if (!value) {
-    if (field instanceof HTMLSelectElement) return `${label}: choose the stage that fits best.`;
-    if (field.name === 'message') return 'Message: tell us a little about the programme.';
-    return `${label}: this field is empty.`;
+    if (field instanceof HTMLSelectElement) return withLabel(label, 'choose the stage that fits best.');
+    if (field.name === 'message') return withLabel(label, 'tell us a little about the programme.');
+    return withLabel(label, 'this field is empty.');
   }
   if (field.name === 'email' && !EMAIL_PATTERN.test(value)) {
-    return `${label}: enter an address like name@company.com.`;
+    return withLabel(label, 'enter an address like name@company.com.');
   }
   return '';
 }
@@ -44,6 +54,9 @@ function applyTopic(root: HTMLElement, topic: string | undefined | null): void {
 function wireForm(root: HTMLElement): void {
   const form = root.querySelector<HTMLFormElement>('form');
   if (!form) return;
+  // The markup carries no novalidate, so the browser checks the form when this script never runs.
+  // With the script running, the messages below take over.
+  form.noValidate = true;
   const fields = Array.from(form.querySelectorAll<Field>('[required]'));
   const summary = root.querySelector<HTMLElement>('[data-summary]');
   const submit = root.querySelector<HTMLButtonElement>('[data-submit]');
@@ -54,7 +67,9 @@ function wireForm(root: HTMLElement): void {
 
   fields.forEach((field) => {
     field.addEventListener('blur', () => {
-      if (field.value || field.getAttribute('aria-invalid')) showError(field, messageFor(field));
+      // A checkbox always has a value ("yes"), so it counts as touched once it is ticked.
+      const touched = isCheckbox(field) ? field.checked : field.value !== '';
+      if (touched || field.getAttribute('aria-invalid')) showError(field, messageFor(field));
     });
     field.addEventListener('input', () => {
       if (!started) {
@@ -109,6 +124,11 @@ function wireForm(root: HTMLElement): void {
 
     if (!hasKey) {
       // No form service configured: hand the enquiry to the visitor's email app.
+      // Campaign values that have something in them follow the message as one line.
+      const campaign = Object.entries(utm)
+        .filter(([, value]) => value)
+        .map(([name, value]) => `${name}=${value}`)
+        .join(', ');
       const body = [
         `Name: ${data.name}`,
         `Company: ${data.company}`,
@@ -116,6 +136,7 @@ function wireForm(root: HTMLElement): void {
         `Programme stage: ${data.stage}`,
         '',
         data.message,
+        ...(campaign ? ['', `Campaign: ${campaign}`] : []),
       ].join('\n');
       window.location.href = `mailto:${email}?subject=${encodeURIComponent('Website enquiry: viaclin.com')}&body=${encodeURIComponent(body)}`;
       finish('mailto-done');

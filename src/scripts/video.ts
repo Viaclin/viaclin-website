@@ -8,6 +8,8 @@ interface Film {
   video: HTMLVideoElement;
   toggle: HTMLButtonElement | null;
   name: string;
+  /** "film" for a framed film, "background film" for a full band. Set by data-film-kind on the button. */
+  kind: string;
   userPaused: boolean;
   inView: boolean;
 }
@@ -26,7 +28,7 @@ export function initVideos(): void {
   const label = (film: Film, paused: boolean) => {
     if (!film.toggle) return;
     film.toggle.setAttribute('aria-pressed', String(paused));
-    film.toggle.setAttribute('aria-label', `${paused ? 'Play' : 'Pause'} background film: ${film.name}`);
+    film.toggle.setAttribute('aria-label', `${paused ? 'Play' : 'Pause'} ${film.kind}: ${film.name}`);
   };
 
   const load = (film: Film) => {
@@ -70,6 +72,7 @@ export function initVideos(): void {
       video,
       toggle,
       name: toggle?.dataset.filmName ?? 'film',
+      kind: toggle?.dataset.filmKind ?? 'film',
       userPaused: calm(),
       inView: false,
     };

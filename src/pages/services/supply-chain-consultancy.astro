@@ -10,7 +10,7 @@ import { site } from '../../data/site';
 const path = '/services/supply-chain-consultancy';
 const pageName = 'Supply Chain Consultancy';
 const description =
-  'Bespoke life sciences supply chain expertise for clinical-phase and pre-launch programmes: planning and forecasting, clinical trial supply, CMO oversight, greenfield set-up and interim senior support.';
+  'Bespoke life sciences supply chain expertise for clinical-phase and pre-launch programmes: planning, clinical trial supply, CMO oversight, greenfield set-up.';
 
 const takeOn = [
   {
@@ -74,8 +74,7 @@ const schema = [
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-      { '@type': 'ListItem', position: 2, name: 'Services', item: `${site.url}/#services` },
-      { '@type': 'ListItem', position: 3, name: pageName, item: `${site.url}${path}` },
+      { '@type': 'ListItem', position: 2, name: pageName, item: `${site.url}${path}` },
     ],
   },
 ];

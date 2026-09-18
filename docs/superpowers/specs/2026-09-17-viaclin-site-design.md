@@ -29,7 +29,7 @@ Rule for every optional value: an empty value renders nothing. No square-bracket
 ## 3. Brand system
 
 - The V mark and the VIACLIN wordmark stay as artwork. They are vector-traced from the owner's 1760 px PNG into an SVG set: lockup (mark, wordmark, descriptor), wordmark (mark and VIACLIN without the descriptor, used in the header), mark alone, each in colour, reversed and mono.
-- Light palette: spec section 3. Dark palette (new): ground `#061A2E`, raised `#0B2540`, text `#F2F6F9`, body `#B9C7D6`, rule `#1E3A57`, link and accent `#6ECB93`, action `#2E9A64`.
+- Light palette: spec section 3. Dark palette (new): ground `#061A2E`, raised `#0B2540`, text `#F2F6F9`, body `#B9C7D6`, rule `#1E3A57`, link and accent `#6ECB93`. The action colour stays `#258253` in both themes (white text holds 4.8:1); `#2E9A64` is used for the logo's green stroke on dark grounds alone. `src/styles/tokens.css` is the source of truth.
 - Typeface: Noto Sans 400, 600, 700, self-hosted.
 - Liquid glass: the owner's `.liquid-glass` CSS is the base. Brand version `.glass` adds a navy tint layer for text contrast over footage and a green-light top highlight. Used on: video caption cards, header once scrolled, modals, cookie banner, chips.
 - Motion language, "the route": lines draw, nodes light, content rises 18 px and fades in. Durations 400 to 900 ms, ease `cubic-bezier(.2,.7,.2,1)`. Everything is off under `prefers-reduced-motion`.
@@ -64,7 +64,7 @@ Video rules: H.264 MP4 without audio, 1280 px and 720 px variants, poster image,
 ## 6. Kept from the old site
 
 - Spinning dot-sphere (`index (1).html`): same Fibonacci-sphere canvas, brand colours per theme, paused off screen.
-- Descriptor docking: the hero descriptor glides to a slot beside the header logo as the page scrolls. Works from 1024 px up; below that the header shows the full lockup.
+- Descriptor docking: the hero descriptor glides to a slot beside the header logo as the page scrolls. Works from 1240 px up; below that the header keeps the compact logo and the descriptor stays in the hero.
 - Popup: `.js-convo` on any element opens the contact dialog. Upgraded to a real form.
 
 ## 7. Contact form

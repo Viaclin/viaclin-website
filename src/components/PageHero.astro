@@ -1,5 +1,8 @@
 ---
 // Inner page hero: breadcrumb, H1, lead, optional action and optional framed film.
+// title is the plain-text heading and is always required. titleHtml is optional: when set, the H1 renders
+// that markup instead (a line break or an emphasised word, for example). The markup must come from the
+// page author, never from user input, because it is placed in the page as written.
 import VideoFrame from './VideoFrame.astro';
 import type { VideoKey } from '../data/videos';
 
@@ -9,7 +12,10 @@ interface Crumb {
 }
 
 interface Props {
+  /** The heading as plain text. */
   title: string;
+  /** Author-written markup for the H1. Never pass user input. */
+  titleHtml?: string;
   lead: string;
   eyebrow?: string;
   crumbs?: Crumb[];
@@ -17,7 +23,7 @@ interface Props {
   video?: VideoKey;
 }
 
-const { title, lead, eyebrow, crumbs, cta, video } = Astro.props;
+const { title, titleHtml, lead, eyebrow, crumbs, cta, video } = Astro.props;
 const href = cta?.topic ? `/contact?topic=${cta.topic}` : '/contact';
 ---
 
@@ -37,7 +43,7 @@ const href = cta?.topic ? `/contact?topic=${cta.topic}` : '/contact';
     <div class:list={[video && 'split']}>
       <div class="page-hero__copy">
         {eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
-        <h1 data-reveal style="--d:60ms">{title}</h1>
+        {titleHtml ? <h1 data-reveal style="--d:60ms" set:html={titleHtml} /> : <h1 data-reveal style="--d:60ms">{title}</h1>}
         <p class="lead" data-reveal style="--d:140ms">{lead}</p>
         {cta && (
           <div class="actions" data-reveal style="--d:220ms">

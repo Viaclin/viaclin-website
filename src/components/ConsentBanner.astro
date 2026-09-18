@@ -4,7 +4,10 @@
 // never shows a banner whose buttons cannot work (and never loads a tracker either).
 // The banner is a region, not a modal: no focus trap, and the page stays usable behind it.
 // Any element with [data-consent-open] opens the preferences dialog.
+// data-trackers says whether a tracker ID is configured. With none, consent.ts never shows the banner:
+// there is nothing to ask about.
 import Icon from './Icon.astro';
+import { site } from '../data/site';
 
 const categories = [
   {
@@ -28,7 +31,15 @@ const categories = [
 ];
 ---
 
-<div class="consent glass is-out" id="consent-banner" role="region" aria-label="Cookie choices" data-pagefind-ignore hidden>
+<div
+  class="consent glass is-out"
+  id="consent-banner"
+  role="region"
+  aria-label="Cookie choices"
+  data-trackers={site.ga4 || site.clarity ? 'true' : 'false'}
+  data-pagefind-ignore
+  hidden
+>
   <div class="consent__copy">
     <p class="consent__title">Cookie choices</p>
     <p class="consent__text">
@@ -51,7 +62,7 @@ const categories = [
     <p class="eyebrow">Cookie settings</p>
     <h2 id="consent-title">Choose what this site may store.</h2>
     <p class="dialog__intro">
-      Optional items stay off until you switch them on. Cookie settings in the footer brings this panel back.
+      Optional items stay off until you switch them on. The "Cookie settings" button in the footer brings this panel back.
     </p>
 
     <ul class="prefs" role="list">

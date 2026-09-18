@@ -94,7 +94,7 @@ Astro reads these at build time and writes them into the pages. After a change i
 6. Prove it: open the live site in a private window, choose "Accept all" in the cookie banner, click around, and watch the Realtime report in GA4. A visit shows within a minute.
 7. Once the first enquiry has come through, open Admin, then Key events, and mark `generate_lead` as a key event. That makes it the conversion in every report.
 8. For A/B tests, open Admin, then Custom definitions, and register two event-scoped custom dimensions: `experiment` and `variant`.
-9. Under Admin, Data retention, pick the period that matches the privacy notice.
+9. Open Admin, then Data retention, and set data retention to 14 months for user and event data. The privacy notice states 14 months, so the two must match.
 
 Google signals and ad personalisation are switched off in the site code. The site never sends advertising consent.
 
@@ -133,7 +133,9 @@ The key is public by design (it sits in the page source) and can send to the one
 
 ## How consent gates each tool
 
-On a first visit a banner offers three buttons of equal weight: "Accept all", "Reject all" and "Choose". "Choose" opens a dialog with three categories. The choice is stored in the browser under `viaclin-consent` and asked again after six months. The "Cookie settings" link in the footer reopens the dialog at any time.
+The cookie banner appears once `PUBLIC_GA4_ID` or `PUBLIC_CLARITY_ID` has a value. While both are empty there is nothing to ask about, so no banner shows. On a first visit the banner offers three buttons of equal weight: "Accept all", "Reject all" and "Choose". "Choose" opens a dialog with three categories. The choice is stored in the browser under `viaclin-consent` and asked again after six months. The "Cookie settings" link in the footer opens the dialog at any time, banner or no banner.
+
+To preview the banner on the dev server, put a test value in `.env`, such as `PUBLIC_GA4_ID=G-XXXXXXXXXX`, restart the dev server and open the site in a private window. Take the test value out when you have finished.
 
 | Category | Covers | Default |
 | --- | --- | --- |
@@ -243,6 +245,7 @@ linkedin: '',           // full URL of the company page: 'https://www.linkedin.c
 - `croNumber` and `registeredOffice` show in the footer, on `/legal`, `/privacy` and `/terms`, and in the structured data. Irish company law expects both on a company website, so `npm run launch-check` lists them as blockers.
 - `linkedin` shows in the footer, on `/contact` and in the structured data. Use the company page, never a personal profile.
 - Never type a guess. Copy each value from the CRO record.
+- The same file holds `enquiryRetention`, `sisterBrand.url` and the `legalDraft` flag. "Before launch", under the launch checklist, covers all three.
 - When a legal page changes, move `legalUpdated` in the same file to the new date.
 
 After an edit, run `npm run launch-check` and `npm run build`.
@@ -335,14 +338,27 @@ The owner carries out these steps; the repository is ready for them.
 6. Wait for the certificate to issue, then load `https://viaclin.com` and run Lighthouse once more.
 7. Retire the old single-file site. Do not share the old-identity video after this point.
 
-`vercel.json` already sets clean URLs, security headers, a long cache life for `/video` and `/_astro`, and a redirect from `/services` to the services section of the home page. Vercel picks the Node version from `engines` in `package.json`.
+`vercel.json` already sets clean URLs, security headers, a long cache life for `/_astro`, a one-day cache for `/video` (those file names carry no content hash), a noindex header for the files under `/brand`, and a redirect from `/services` to the services section of the home page. Vercel picks the Node version from `engines` in `package.json`.
 
 ## Launch checklist
+
+### Before launch
+
+`npm run launch-check` reports five confirmations that the owner alone can give:
+
+- The retention period for enquiries: set `enquiryRetention` in `src/data/site.ts`, for example `'24 months'`. While it is empty the privacy notice gives no period, so the check lists it as a blocker.
+- The SupplyAI web address: set `sisterBrand.url` in `src/data/site.ts`. While it is empty nothing links to SupplyAI. The address on the previous site now serves a parking page.
+- The legal draft flag: legal pages show the line "Draft for solicitor review" while `legalDraft` is `true`. Set it to `false` once a solicitor has reviewed them.
+- The regulatory position: confirm that the paragraph on `/legal` matches the company's licences and partners.
+- The form provider agreement: confirm a data processing agreement with Web3Forms, or the form provider you choose, and note which transfer safeguard it relies on.
+
+### Checks
 
 - [ ] `npm run qa` passes
 - [ ] `npm run build` passes
 - [ ] `npm run qa:links`, `npm run qa:visual` and `npm run qa:a11y` pass against `npm run preview`
-- [ ] `npm run launch-check` shows no blocker: company number, registered office and Web3Forms key are in
+- [ ] `npm run launch-check` shows no blocker: company number, registered office, enquiry retention period and Web3Forms key are in
+- [ ] The five owner confirmations under "Before launch" are closed
 - [ ] LinkedIn company page URL is in `site.ts`, or the owner accepts launching without it
 - [ ] A solicitor has read `/privacy`, `/terms`, `/cookies`, `/accessibility` and `/legal`, and `legalUpdated` carries the right date
 - [ ] Professional indemnity insurance is in place

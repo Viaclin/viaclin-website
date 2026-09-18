@@ -113,6 +113,15 @@ export function initConsent(): void {
 
   const layoutChanged = () => document.dispatchEvent(new CustomEvent('viaclin:layout'));
 
+  const focusMain = () => document.getElementById('main')?.focus({ preventScroll: true });
+
+  // The preferences dialog returns focus to its opener when its close event fires, a moment after the choice
+  // is saved. When the opener is the banner's "Choose" button, the banner has begun to leave by then, so focus
+  // that lands in a leaving banner goes on to the main element.
+  banner?.addEventListener('focusin', () => {
+    if (!bannerOpen) focusMain();
+  });
+
   const showBanner = () => {
     if (!banner || bannerOpen) return;
     bannerOpen = true;
@@ -145,6 +154,8 @@ export function initConsent(): void {
     const finish = () => {
       if (!bannerOpen) banner.hidden = true;
     };
+    // The button that was pressed is about to leave. Hand focus to the main element so it does not fall back to <body>.
+    if (banner.contains(document.activeElement)) focusMain();
     banner.classList.add('is-out');
     if (still()) {
       finish();
@@ -204,5 +215,9 @@ export function initConsent(): void {
   // Ask on the first visit, after six months and after a version change.
   // With storage blocked the answer cannot be kept, so the banner stays away and nothing is switched on;
   // the footer button still opens the preferences for this page view.
-  if (!stored && storageWorks()) showBanner();
+  // The banner names Google Analytics and Microsoft Clarity. ConsentBanner.astro sets data-trackers to "true"
+  // when one of the two has an ID in the site config. With neither configured there is nothing to ask about,
+  // so the banner stays quiet, nothing is switched on, and [data-consent-open] still opens the preferences.
+  const trackers = banner?.dataset.trackers === 'true';
+  if (!stored && trackers && storageWorks()) showBanner();
 }
