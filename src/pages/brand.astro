@@ -1062,6 +1062,22 @@ const material = [
       const section = document.getElementById(link.hash.slice(1));
       if (section) observer.observe(section);
     }
+
+    // Above the first section no section is current, and the observer has nothing to report there,
+    // so the pill is cleared while the first section's top sits below the band.
+    const first = links.length ? document.getElementById(links[0].hash.slice(1)) : null;
+
+    if (first) {
+      window.addEventListener(
+        'scroll',
+        () => {
+          if (first.getBoundingClientRect().top <= window.innerHeight * 0.36) return;
+          current = '';
+          for (const link of links) link.removeAttribute('aria-current');
+        },
+        { passive: true },
+      );
+    }
   }
 
   document.querySelectorAll<HTMLButtonElement>('[data-replay]').forEach((button) => {
@@ -1106,8 +1122,9 @@ const material = [
     gap: var(--space-4);
   }
 
+  /* a reference card holds still: the lift on .card now runs on the independent property */
   .guide-card:hover {
-    transform: none;
+    translate: none;
   }
 
   /* rule lists: the V tick for guidance, a cross for misuse */
@@ -1915,7 +1932,7 @@ const material = [
   }
 
   .demo:hover {
-    transform: none;
+    translate: none;
   }
 
   .demo__stage {
@@ -2083,7 +2100,7 @@ const material = [
   }
 
   .voice:hover {
-    transform: none;
+    translate: none;
   }
 
   .voice__cols {
@@ -2232,7 +2249,7 @@ const material = [
   }
 
   .pack:hover {
-    transform: none;
+    translate: none;
   }
 
   .pack h3 {
@@ -2265,8 +2282,11 @@ const material = [
     border-top: 1px solid var(--rule);
   }
 
+  /* one track each way, both able to shrink, so a near-square mark stays inside the box */
   .files__thumb {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
     place-items: center;
     flex: none;
     width: 60px;
@@ -2298,6 +2318,7 @@ const material = [
   .files__thumb img {
     width: 100%;
     height: 100%;
+    min-height: 0;
     object-fit: contain;
   }
 

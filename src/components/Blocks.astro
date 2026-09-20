@@ -46,9 +46,19 @@ const Heading = `h${level}` as 'h2' | 'h3';
     margin-bottom: var(--space-3);
   }
 
+  /* a column with the link pushed to the foot, so links sit on one line across a row of blocks */
+  .block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* 44px target, with the padding trimmed so the gap above the link reads the same as before */
   .block .text-link {
-    display: inline-block;
-    margin-top: var(--space-4);
-    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    margin-top: auto;
+    padding-top: var(--space-2);
+    min-height: 44px;
   }
 </style>

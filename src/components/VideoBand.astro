@@ -22,7 +22,10 @@ const film = videos[video];
   data-film
 >
   <div class="vband__media" aria-hidden="true">
-    <img src={`${film.base}.jpg`} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+    <picture>
+      <source srcset={`${film.base}.webp`} type="image/webp" />
+      <img src={`${film.base}.jpg`} alt="" width="1280" height="720" loading="lazy" decoding="async" />
+    </picture>
     <video
       muted
       loop
@@ -48,7 +51,6 @@ const film = videos[video];
       aria-pressed="false"
       aria-label={`Pause background film: ${film.chip}`}
       data-film-toggle
-      data-film-kind="background film"
       data-film-name={film.chip}
     >
       <Icon name="pause" class="icon-pause" />

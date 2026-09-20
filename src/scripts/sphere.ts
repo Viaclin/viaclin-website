@@ -25,17 +25,25 @@ export function initSphere(): void {
   let angle = 0;
   let colourA = '37 130 83';
   let colourB = '10 41 72';
+  // Comma form, built once per theme rather than once per point per frame.
+  let rgbA = '37,130,83';
+  let rgbB = '10,41,72';
 
   const readColours = () => {
     const style = getComputedStyle(document.documentElement);
     colourA = style.getPropertyValue('--sphere-a').trim() || colourA;
     colourB = style.getPropertyValue('--sphere-b').trim() || colourB;
+    rgbA = colourA.split(' ').join(',');
+    rgbB = colourB.split(' ').join(',');
   };
 
   const resize = () => {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const css = host.getBoundingClientRect().width || SIZE;
-    canvas.width = canvas.height = Math.round(css * dpr);
+    const next = Math.round(css * dpr);
+    // Writing canvas.width clears the bitmap, so skip the write when the backing size is unchanged.
+    if (next === canvas.width) return;
+    canvas.width = canvas.height = next;
     ctx.setTransform(canvas.width / SIZE, 0, 0, canvas.width / SIZE, 0, 0);
   };
 
@@ -49,13 +57,12 @@ export function initSphere(): void {
       const z = x0 * sa + z0 * ca;
       const y = y0 * ct - z * st;
       const depth = (y0 * st + z * ct + 1) / 2;
-      const rgb = (i % 5 === 0 ? colourB : colourA).split(' ').join(',');
+      const rgb = i % 5 === 0 ? rgbB : rgbA;
       ctx.beginPath();
       ctx.arc(R + x * radius, R + y * radius, 0.8 + depth * 1.9, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${rgb},${(0.1 + depth * 0.8).toFixed(3)})`;
       ctx.fill();
     }
-    angle += 0.0032;
   };
 
   readColours();
@@ -65,8 +72,14 @@ export function initSphere(): void {
   const frozen = () => reduce.matches || document.documentElement.classList.contains('static');
   let frame = 0;
   let visible = false;
+  let last = 0;
 
-  const tick = () => {
+  // The spin is paced by elapsed time, so a 120 Hz screen turns the sphere at the same rate as a
+  // 60 Hz one. A long gap (a background tab, a slow frame) is capped so the sphere never jumps.
+  const tick = (now: number) => {
+    const dt = last ? Math.min(now - last, 50) : 16.7;
+    last = now;
+    angle += 0.000192 * dt;
     draw();
     frame = requestAnimationFrame(tick);
   };
@@ -76,6 +89,7 @@ export function initSphere(): void {
     if (!run && frame) {
       cancelAnimationFrame(frame);
       frame = 0;
+      last = 0;
     }
     if (!run) draw();
   };

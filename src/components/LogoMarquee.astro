@@ -79,11 +79,11 @@ const trademark = hasLogos ? 'Names and logos are trademarks of their owners.' :
   banners.forEach((banner) => {
     const toggle = banner.querySelector<HTMLButtonElement>('[data-marquee-toggle]');
 
+    // The button keeps the name it was given in the markup; aria-pressed carries the state,
+    // so a screen reader never hears a name and a state that disagree.
     const setPaused = (paused: boolean) => {
       banner.toggleAttribute('data-paused', paused);
-      if (!toggle) return;
-      toggle.setAttribute('aria-pressed', String(paused));
-      toggle.setAttribute('aria-label', `${paused ? 'Play' : 'Pause'} the moving banner of company names`);
+      toggle?.setAttribute('aria-pressed', String(paused));
     };
 
     toggle?.addEventListener('click', () => setPaused(!banner.hasAttribute('data-paused')));
@@ -154,8 +154,10 @@ const trademark = hasLogos ? 'Names and logos are trademarks of their owners.' :
     text-wrap: balance;
   }
 
+  /* in the grid a wide wordmark has to stay inside its cell; the moving banner lets it run at full width */
   .marquee__logo {
     display: block;
+    max-width: 100%;
     line-height: 0;
   }
 
@@ -163,7 +165,7 @@ const trademark = hasLogos ? 'Names and logos are trademarks of their owners.' :
     display: block;
     width: auto;
     height: calc(var(--band) * var(--s, 1));
-    max-width: none;
+    max-width: 100%;
     fill: currentColor;
   }
 
@@ -290,6 +292,11 @@ const trademark = hasLogos ? 'Names and logos are trademarks of their owners.' :
 
     :global(.js:not(.static)) .marquee__item:hover {
       opacity: 1;
+    }
+
+    :global(.js:not(.static)) .marquee__logo,
+    :global(.js:not(.static)) .marquee__logo :global(svg) {
+      max-width: none;
     }
 
     :global(.js:not(.static)) .marquee__name {

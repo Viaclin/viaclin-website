@@ -75,7 +75,7 @@ const schema = [
           <text class="trace__text" x="0" y="15">8°C</text>
           <text class="trace__text" x="0" y="86">2°C</text>
           <path class="trace__area" d="M34 48 L80 44 L126 50 L172 46 L218 52 L250 27 L282 52 L330 48 L380 45 L430 50 L506 47 L506 70 L34 70 Z"></path>
-          <path class="trace__line" d="M34 48 L80 44 L126 50 L172 46 L218 52 L250 27 L282 52 L330 48 L380 45 L430 50 L506 47"></path>
+          <path class="trace__line" d="M34 48 L80 44 L126 50 L172 46 L218 52 L250 27 L282 52 L330 48 L380 45 L430 50 L506 47" pathLength="560"></path>
           <line class="trace__flag" x1="250" y1="27" x2="250" y2="10"></line>
           <circle class="trace__dot" cx="250" cy="27" r="5"></circle>
         </svg>
@@ -194,6 +194,12 @@ const schema = [
   }
 
   /* the axis labels scale with the drawing, so they grow on a narrow card to stay readable */
+  @media (min-width: 901px) and (max-width: 1100px) {
+    .trace__text {
+      font-size: 15px;
+    }
+  }
+
   @media (max-width: 520px) {
     .trace__text {
       font-size: 19px;

@@ -15,19 +15,26 @@ export function initReveal(): void {
     return;
   }
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-in');
-          observer.unobserve(entry.target);
-        }
+  const seen: IntersectionObserverCallback = (entries, self) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-in');
+        self.unobserve(entry.target);
       }
-    },
-    { threshold: 0.12, rootMargin: '0px 0px -6% 0px' },
-  );
+    }
+  };
 
-  items.forEach((item) => observer.observe(item));
+  const observer = new IntersectionObserver(seen, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+  // Tall drawings, such as the route in its mobile column, wait until half of the shape is in view.
+  // Starting at the first edge would leave the drawing finished before the reader reaches it.
+  const halfway = new IntersectionObserver(seen, { threshold: 0.5 });
+
+  items.forEach((item) => {
+    // An element taller than the viewport can never show half of itself, which would hold the
+    // threshold shut for good, so anything that tall keeps the default watch.
+    const wantsHalf = item.dataset.revealAt === 'half' && item.offsetHeight <= window.innerHeight * 0.9;
+    (wantsHalf ? halfway : observer).observe(item);
+  });
 
   // Anything still hidden after a print request is shown, so printouts are complete.
   window.addEventListener('beforeprint', () => items.forEach((item) => item.classList.add('is-in')));

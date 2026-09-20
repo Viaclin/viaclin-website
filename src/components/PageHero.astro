@@ -31,7 +31,7 @@ const href = cta?.topic ? `/contact?topic=${cta.topic}` : '/contact';
   <div class="hero__bg" aria-hidden="true"></div>
   <div class="container">
     {crumbs && (
-      <nav aria-label="Breadcrumb" data-reveal="fade">
+      <nav class="rise" aria-label="Breadcrumb">
         <ol class="breadcrumb">
           <li><a href="/">Home</a></li>
           {crumbs.map((crumb) => (
@@ -42,11 +42,11 @@ const href = cta?.topic ? `/contact?topic=${cta.topic}` : '/contact';
     )}
     <div class:list={[video && 'split']}>
       <div class="page-hero__copy">
-        {eyebrow && <p class="eyebrow" data-reveal>{eyebrow}</p>}
-        {titleHtml ? <h1 data-reveal style="--d:60ms" set:html={titleHtml} /> : <h1 data-reveal style="--d:60ms">{title}</h1>}
-        <p class="lead" data-reveal style="--d:140ms">{lead}</p>
+        {eyebrow && <p class="eyebrow rise">{eyebrow}</p>}
+        {titleHtml ? <h1 class="rise" style="--d:60ms" set:html={titleHtml} /> : <h1 class="rise" style="--d:60ms">{title}</h1>}
+        <p class="lead rise" style="--d:140ms">{lead}</p>
         {cta && (
-          <div class="actions" data-reveal style="--d:220ms">
+          <div class="actions rise" style="--d:220ms">
             <a class="btn btn--primary js-convo" href={href} data-topic={cta.topic} data-track="cta_click" data-track-place="page-hero">
               {cta.label}
             </a>

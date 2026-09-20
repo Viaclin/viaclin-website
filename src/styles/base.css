@@ -382,10 +382,14 @@ main {
     transform: scale(0.96);
   }
 
+  /* the end state carries the transitions a component needs for hover, which the reveal list would otherwise replace */
   .js [data-reveal].is-in {
     opacity: 1;
     transform: none;
     will-change: auto;
+    transition: opacity var(--dur-3) var(--ease) var(--d, 0ms), transform var(--dur-3) var(--ease) var(--d, 0ms),
+      translate var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease),
+      background-color var(--dur-2) var(--ease);
   }
 
   .js [data-reveal] .eyebrow::before,
@@ -397,6 +401,20 @@ main {
   .js [data-reveal].is-in .eyebrow::before,
   .js .eyebrow[data-reveal].is-in::before {
     transform: scaleX(1);
+  }
+
+  /* First-screen entrance. It moves and never hides, so the text paints at once and the
+     Largest Contentful Paint does not wait for the script bundle. Transform alone, so no
+     layout and no paint cost. Below the first screen, [data-reveal] still does the work. */
+  .js:not(.static) .rise {
+    animation: rise 700ms var(--ease) backwards;
+    animation-delay: var(--d, 0ms);
+  }
+
+  @keyframes rise {
+    from {
+      transform: translate3d(0, 18px, 0);
+    }
   }
 }
 

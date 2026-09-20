@@ -26,7 +26,7 @@ const href = topic ? `/contact?topic=${topic}` : '/contact';
     <div class="cband-film glass glass--film" data-reveal>
       <p class="eyebrow eyebrow--on-film">The last mile</p>
       <h2 id="contact-band-title">{title}</h2>
-      <p>{line} <a class="text-link text-link--on-film" href={`mailto:${site.email}`}>{site.email}</a></p>
+      <p>{line} <a class="text-link text-link--inline text-link--on-film" href={`mailto:${site.email}`}>{site.email}</a></p>
       <div class="actions">
         <a class="btn btn--primary js-convo" href={href} data-topic={topic} data-track="cta_click" data-track-place="contact-band">{label}</a>
       </div>

@@ -13,7 +13,7 @@ const spokes = [
 <div class="netviz" data-reveal="scale" aria-hidden="true">
   <svg viewBox="0 0 480 384" xmlns="http://www.w3.org/2000/svg" focusable="false">
     <circle class="netviz__orbit" cx="240" cy="190" r="158"></circle>
-    {spokes.map((s, i) => <line class="netviz__spoke" x1="240" y1="190" x2={s.x} y2={s.y} style={`--i:${i}`}></line>)}
+    {spokes.map((s, i) => <line class="netviz__spoke" x1="240" y1="190" x2={s.x} y2={s.y} pathLength="180" style={`--i:${i}`}></line>)}
     {spokes.map((s, i) => <circle class="netviz__node" cx={s.x} cy={s.y} r="9" style={`--i:${i}`}></circle>)}
     <circle class="netviz__ring" cx="240" cy="190" r="10">
       <animate attributeName="r" values="10;36" dur="2.8s" repeatCount="indefinite"></animate>
@@ -21,7 +21,7 @@ const spokes = [
     </circle>
     <circle class="netviz__lead" cx="240" cy="190" r="12"></circle>
     {spokes.map((s) => <text class="netviz__label" x={s.lx} y={s.ly} text-anchor="middle">{s.label}</text>)}
-    <text class="netviz__label netviz__label--lead" x="240" y="232" text-anchor="middle">Your lead</text>
+    <text class="netviz__label netviz__label--lead" x="280" y="195" text-anchor="start">Your lead</text>
   </svg>
 </div>
 
@@ -74,7 +74,7 @@ const spokes = [
     fill: var(--fg-2);
   }
 
-  /* halo keeps the label clear of the spoke beneath it */
+  /* the label sits to the right of the hub, clear of the ring; the halo keeps it clear of the spokes it crosses */
   .netviz__label--lead {
     fill: var(--link);
     paint-order: stroke;
@@ -109,9 +109,18 @@ const spokes = [
   }
 
   @media (max-width: 900px) {
+    /* margin-inline: auto stops the grid item stretching, so the width has to be stated for the SVG to fill it */
     .netviz {
+      width: 100%;
       max-width: 440px;
       margin-inline: auto;
+    }
+  }
+
+  /* the labels scale with the drawing, so they grow on a narrow screen to stay readable */
+  @media (max-width: 520px) {
+    .netviz__label {
+      font-size: 20px;
     }
   }
 </style>

@@ -6,9 +6,9 @@ const xs = [40, 224, 408, 592, 776, 960];
 const ys = [30, 118, 206, 294, 382, 470];
 ---
 
-<div class="route" data-reveal="fade">
+<div class="route" data-reveal="fade" data-reveal-at="half">
   <svg class="route--desktop" viewBox="0 0 1000 132" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-    <line class="route__line" x1="40" y1="40" x2="960" y2="40"></line>
+    <line class="route__line" x1="40" y1="40" x2="960" y2="40" pathLength="1000"></line>
     <circle class="route__pulse" r="5" cx="40" cy="40" opacity="0">
       <animate attributeName="cx" values="40;960" dur="7s" begin="2.2s" repeatCount="indefinite"></animate>
       <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.06;0.94;1" dur="7s" begin="2.2s" repeatCount="indefinite"></animate>
@@ -22,7 +22,7 @@ const ys = [30, 118, 206, 294, 382, 470];
 
   <svg class="route--mobile" viewBox="0 0 320 500" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
     <path class="route__bracket" d="M26 30 h-12 v440 h12"></path>
-    <line class="route__line" x1="56" y1="30" x2="56" y2="470"></line>
+    <line class="route__line" x1="56" y1="30" x2="56" y2="470" pathLength="1000"></line>
     <circle class="route__pulse" r="5" cx="56" cy="30" opacity="0">
       <animate attributeName="cy" values="30;470" dur="6s" begin="2.2s" repeatCount="indefinite"></animate>
       <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.06;0.94;1" dur="6s" begin="2.2s" repeatCount="indefinite"></animate>

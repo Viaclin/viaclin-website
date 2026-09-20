@@ -45,9 +45,20 @@ const { title, description, path, noindex = false, schema, docks = false } = Ast
         var query = new URLSearchParams(location.search);
         if (query.get('static')) root.classList.add('static');
         if (query.get('theme') === 'dark' || query.get('theme') === 'light') root.setAttribute('data-theme', query.get('theme'));
+        // Failsafe: .js hides every [data-reveal] before paint. If the script bundle never arrives,
+        // main.ts never marks the page ready, so fall back to the static rules, which show everything.
+        setTimeout(function () {
+          if (!root.classList.contains('is-ready')) root.classList.add('static');
+        }, 4000);
       })();
     </script>
     <Seo title={title} description={description} path={path} noindex={noindex} schema={schema} />
+    <script>
+      // In the head so the browser finds the bundle while it is still parsing the body.
+      // A module script is deferred by definition: it runs after parsing, so every init step
+      // in main.ts finds the DOM in place, the same as when this block sat at the end of body.
+      import '../scripts/main.ts';
+    </script>
   </head>
   <body data-docks={docks ? 'true' : undefined}>
     <a class="skip-link" href="#main">Skip to main content</a>
@@ -74,9 +85,5 @@ const { title, description, path, noindex = false, schema, docks = false } = Ast
     <ConsentBanner />
 
     <div class="sr-only" aria-live="polite" id="live-region"></div>
-
-    <script>
-      import '../scripts/main.ts';
-    </script>
   </body>
 </html>

@@ -11,16 +11,19 @@ export function initNav(): void {
   let ticking = false;
   const update = () => {
     ticking = false;
+    // Every read first, then every write: a style write between two measurements costs a fresh layout.
     const y = window.scrollY;
-    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const viewport = window.innerHeight;
+    const max = document.documentElement.scrollHeight - viewport;
+    const nearFooter = mobileCta && footer ? footer.getBoundingClientRect().top < viewport - 40 : false;
+    const blocked = mobileCta
+      ? document.documentElement.classList.contains('consent-open') || document.querySelector('dialog[open]') !== null
+      : false;
+
     if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
     header?.classList.toggle('is-scrolled', y > 16);
     toTop?.classList.toggle('is-on', y > 700);
-    if (mobileCta) {
-      const nearFooter = footer ? footer.getBoundingClientRect().top < window.innerHeight - 40 : false;
-      const blocked = document.documentElement.classList.contains('consent-open') || document.querySelector('dialog[open]') !== null;
-      mobileCta.classList.toggle('is-on', y > 480 && !nearFooter && !blocked);
-    }
+    mobileCta?.classList.toggle('is-on', y > 480 && !nearFooter && !blocked);
   };
   const onScroll = () => {
     if (!ticking) {
@@ -95,11 +98,20 @@ export function initNav(): void {
   const menuBtn = document.getElementById('menu-btn');
   const menu = document.getElementById('mobile-menu');
   if (menuBtn && menu) {
+    // While the panel is open the rest of the page is inert, so Tab cannot walk out of it.
+    // The header stays out of this list: it holds the menu button and must keep working.
+    // The skip link is in it: it sits before the header in the tab order and points at #main,
+    // which is inert while the panel is open, so it would be a dead stop.
+    // Every close path runs through setMenu, so the attribute is never left behind.
+    const outside = ['.skip-link', '#main', '.site-footer', '#to-top', '#mobile-cta', '.print-brand', '#consent-banner']
+      .map((selector) => document.querySelector<HTMLElement>(selector))
+      .filter((node): node is HTMLElement => node !== null);
     const setMenu = (open: boolean) => {
       menuBtn.setAttribute('aria-expanded', String(open));
       menu.classList.toggle('is-open', open);
       header?.classList.toggle('is-open', open);
       document.documentElement.style.overflow = open ? 'hidden' : '';
+      outside.forEach((node) => node.toggleAttribute('inert', open));
       if (open) menu.querySelector<HTMLElement>('a')?.focus();
     };
     const isOpen = () => menuBtn.getAttribute('aria-expanded') === 'true';

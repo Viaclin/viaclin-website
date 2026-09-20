@@ -129,7 +129,11 @@
   flex: none;
 }
 
+/* A standalone link is a target in its own right, so it carries the 44px minimum (WCAG 2.5.8). */
 .text-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   font-weight: 600;
   color: var(--link);
   text-decoration: underline;
@@ -142,12 +146,21 @@
   text-decoration-color: currentColor;
 }
 
+/* A link inside a sentence takes the inline exception: a tall box would stretch the line. */
+.text-link--inline {
+  display: inline;
+  min-height: 0;
+}
+
+/* glass sits on footage in both themes, so the link keeps one pair of colours */
 .text-link--on-film {
   color: var(--green-light);
+  text-decoration-color: color-mix(in srgb, var(--green-light) 45%, transparent);
 }
 
 .text-link--on-film:hover {
   color: var(--white);
+  text-decoration-color: currentColor;
 }
 
 .chip {
@@ -254,11 +267,13 @@
   background: var(--bg-raised);
   border: 1px solid var(--rule);
   border-radius: var(--radius-lg);
-  transition: transform var(--dur-2) var(--ease), border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+  transition: transform var(--dur-2) var(--ease), translate var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 
+/* the lift uses the independent property: a revealed card holds transform: none, which would cancel a transform here */
 .card:hover {
-  transform: translateY(-3px);
+  translate: 0 -3px;
   border-color: color-mix(in srgb, var(--accent) 55%, var(--rule));
   box-shadow: var(--shadow-card);
 }
@@ -329,11 +344,11 @@
 }
 
 .block--glass {
-  transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+  transition: transform var(--dur-2) var(--ease), translate var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
 }
 
 .block--glass:hover {
-  transform: translateY(-4px);
+  translate: 0 -4px;
 }
 
 /* ───────── header ───────── */
@@ -444,13 +459,29 @@
   transition: opacity var(--dur-2) var(--ease);
 }
 
+/* the divider arrives with the descriptor: dock.ts sets --dock-p from 0 to 1 while the line glides */
+.dock-home .dock-slot {
+  border-left-color: color-mix(in srgb, var(--rule) calc(var(--dock-p, 0) * 100%), transparent);
+}
+
+.dock-home.dock-docked .dock-slot {
+  border-left-color: var(--rule);
+}
+
 .dock-active #hero-descriptor {
   opacity: 0;
 }
 
 @media (prefers-reduced-motion: no-preference) {
+  /* route-fade has no from state, so the clone needs a keyframe that starts it clear */
   .dock-fly {
-    animation: route-fade 700ms var(--ease) both;
+    animation: fly-in 700ms var(--ease) both;
+  }
+
+  @keyframes fly-in {
+    from {
+      opacity: 0;
+    }
   }
 }
 
@@ -790,10 +821,15 @@
     top: -34px;
     right: -64px;
     width: 210px;
-    opacity: 0.55;
     z-index: -1;
   }
 
+  /* the dots fade on the canvas itself, so the reveal end state cannot pull them back to full strength */
+  .hero__sphere canvas {
+    opacity: 0.45;
+  }
+
+  .hero__sphere::before,
   .hero__sphere::after {
     display: none;
   }
@@ -804,6 +840,10 @@
     top: -20px;
     right: -40px;
     width: 320px;
+  }
+
+  .hero .lead {
+    max-width: 40ch;
   }
 }
 
@@ -872,6 +912,13 @@
   }
 }
 
+/* the horizontal artboard shrinks to fit a tablet, so the labels are sized back up to stay readable */
+@media (min-width: 641px) and (max-width: 900px) {
+  .route--desktop .route__label {
+    font-size: 21px;
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .js .route .route__line {
     stroke-dasharray: 1000;
@@ -896,6 +943,21 @@
 
   .js .route.is-in .route__bracket {
     animation: route-fade 600ms var(--ease) 1500ms forwards;
+  }
+
+  /* the travelling pulse waits for the line it runs along; with motion off it keeps the opacity of 0 it carries in the markup */
+  .js .route .route__pulse {
+    visibility: hidden;
+  }
+
+  .js .route.is-in .route__pulse {
+    animation: pulse-on 0s linear 1600ms forwards;
+  }
+
+  @keyframes pulse-on {
+    to {
+      visibility: visible;
+    }
   }
 }
 
@@ -1000,13 +1062,19 @@
 }
 
 .vband .lead {
-  color: var(--on-film-2);
+  color: var(--on-film);
 }
 
 .vband__media {
   position: absolute;
   inset: -8% 0;
   z-index: -2;
+}
+
+/* the poster sits in a picture for the webp source; the wrapper must not add a box of its own */
+.vband__media picture,
+.vframe picture {
+  display: contents;
 }
 
 .vband__media img,
@@ -1036,8 +1104,8 @@
   background: linear-gradient(
       100deg,
       rgba(var(--film-shade), 0.9) 0%,
-      rgba(var(--film-shade), 0.66) 42%,
-      rgba(var(--film-shade), 0.24) 100%
+      rgba(var(--film-shade), 0.7) 42%,
+      rgba(var(--film-shade), 0.45) 100%
     ),
     linear-gradient(0deg, rgba(var(--film-shade), 0.55), transparent 34%),
     linear-gradient(180deg, rgba(var(--film-shade), 0.35), transparent 22%);
@@ -1097,8 +1165,11 @@
 
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
+    /* longhands alone: the minifier folds a shorthand and animation-timeline into one declaration, which Chromium drops */
     .vband__media {
-      animation: film-drift linear both;
+      animation-name: film-drift;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
       animation-timeline: view();
       animation-range: entry 0% exit 100%;
     }
@@ -1612,20 +1683,41 @@ dialog.dialog::backdrop {
   color: var(--fg-2);
 }
 
+/* transitions, not keyframes: these run on the way out as well as the way in */
 @media (prefers-reduced-motion: no-preference) {
+  dialog.dialog {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+    transition: opacity var(--dur-2) var(--ease), transform var(--dur-2) var(--ease),
+      overlay var(--dur-2) allow-discrete, display var(--dur-2) allow-discrete;
+  }
+
   dialog.dialog[open] {
-    animation: dialog-in 380ms var(--ease);
+    opacity: 1;
+    transform: none;
+  }
+
+  @starting-style {
+    dialog.dialog[open] {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+    }
+  }
+
+  dialog.dialog::backdrop {
+    opacity: 0;
+    transition: opacity var(--dur-2) var(--ease), overlay var(--dur-2) allow-discrete,
+      display var(--dur-2) allow-discrete;
   }
 
   dialog.dialog[open]::backdrop {
-    animation: route-fade 300ms var(--ease) forwards;
+    opacity: 1;
   }
-}
 
-@keyframes dialog-in {
-  from {
-    opacity: 0;
-    transform: translateY(16px) scale(0.98);
+  @starting-style {
+    dialog.dialog[open]::backdrop {
+      opacity: 0;
+    }
   }
 }
 
@@ -1715,19 +1807,21 @@ dialog.dialog::backdrop {
   display: none;
 }
 
+/* The label is the target, so the whole row carries the 44px minimum (WCAG 2.5.8). */
 .check {
   display: grid;
   grid-template-columns: 24px minmax(0, 1fr);
   gap: 12px;
-  align-items: start;
+  align-items: center;
+  min-height: 44px;
   font-size: var(--text-sm);
 }
 
 .check input {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   min-height: 0;
-  margin: 1px 0 0;
+  margin: 0;
   accent-color: var(--green);
 }
 
@@ -1892,8 +1986,9 @@ dialog.dialog::backdrop {
   padding: 10px var(--gutter) calc(10px + env(safe-area-inset-bottom));
   border-radius: 0;
   border-top: 1px solid var(--rule);
+  visibility: hidden;
   transform: translateY(110%);
-  transition: transform var(--dur-2) var(--ease);
+  transition: transform var(--dur-2) var(--ease), visibility 0s linear var(--dur-2);
 }
 
 .mobile-cta::before {
@@ -1901,7 +1996,9 @@ dialog.dialog::backdrop {
 }
 
 .mobile-cta.is-on {
+  visibility: visible;
   transform: none;
+  transition-delay: 0s;
 }
 
 .mobile-cta .btn {

@@ -15,7 +15,8 @@
     "qa:visual": "node scripts/visual-qa.mjs",
     "qa:a11y": "node scripts/a11y-qa.mjs",
     "launch-check": "node scripts/launch-check.mjs",
-    "brand": "node scripts/make-brand-assets.mjs"
+    "brand": "node scripts/make-brand-assets.mjs",
+    "posters": "node scripts/make-posters.mjs"
   },
   "type": "module",
   "dependencies": {

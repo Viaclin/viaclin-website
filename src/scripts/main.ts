@@ -37,3 +37,6 @@ for (const [name, run] of steps) {
     console.error(`[viaclin] ${name} failed to start`, error);
   }
 }
+
+// Tells the head failsafe in Base.astro that the bundle arrived and the reveals are in hand.
+document.documentElement.classList.add('is-ready');

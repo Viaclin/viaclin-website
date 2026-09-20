@@ -338,7 +338,7 @@ The owner carries out these steps; the repository is ready for them.
 6. Wait for the certificate to issue, then load `https://viaclin.com` and run Lighthouse once more.
 7. Retire the old single-file site. Do not share the old-identity video after this point.
 
-`vercel.json` already sets clean URLs, security headers, a long cache life for `/_astro`, a one-day cache for `/video` (those file names carry no content hash), a noindex header for the files under `/brand`, and a redirect from `/services` to the services section of the home page. Vercel picks the Node version from `engines` in `package.json`.
+`vercel.json` already sets clean URLs, security headers, a long cache life for `/_astro`, a thirty-day cache for `/video`, `/og` and the root icons and manifest (those file names carry no content hash, so a change needs a new name), a one-week cache for the Pagefind index under `/pagefind`, a noindex header for the files under `/brand`, and a redirect from `/services` to the services section of the home page. Vercel picks the Node version from `engines` in `package.json`.
 
 ## Launch checklist
 
