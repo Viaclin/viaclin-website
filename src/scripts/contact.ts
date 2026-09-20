@@ -145,10 +145,15 @@ function wireForm(root: HTMLElement): void {
 
     setBusy(true);
     try {
+      // Form data with an Accept header is a "simple" cross-origin request: the browser sends no preflight,
+      // so proxies and bot filters that refuse OPTIONS requests cannot block an enquiry.
+      // The redirect field serves the no-JavaScript path; here the answer must come back as JSON.
+      const body = new FormData(form);
+      body.delete('redirect');
       const response = await fetch(form.action, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(data),
+        headers: { Accept: 'application/json' },
+        body,
       });
       const result = (await response.json().catch(() => ({}))) as { success?: boolean };
       if (!response.ok || result.success === false) throw new Error(`Form service answered ${response.status}`);

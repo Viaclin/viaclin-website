@@ -5,8 +5,8 @@ export const site = {
   url: 'https://viaclin.com',
   email: 'info@viaclin.com',
   vat: 'IE4754731LH',
-  croNumber: '',
-  registeredOffice: '',
+  croNumber: '820040',
+  registeredOffice: 'Fenero, Block D, Tyrrelstown Plaza, Dublin 15, D15 K4PY, Ireland',
   linkedin: '',
   country: 'Ireland',
   descriptor: 'Life science consultancy',
@@ -16,7 +16,7 @@ export const site = {
   // The address on the previous site (supplyai.eu) now serves a parking page, so nothing links until the owner confirms one.
   sisterBrand: { name: 'SupplyAI', url: '' },
   // How long enquiry data is kept, for example '24 months'. Empty renders a neutral sentence on /privacy.
-  enquiryRetention: '',
+  enquiryRetention: '30 days',
   // Legal pages carry a "Draft for solicitor review" line while this is true (owner's spec, section 8.9).
   legalDraft: true,
   ga4: import.meta.env.PUBLIC_GA4_ID ?? '',
