@@ -9,7 +9,7 @@ export const site = {
   registeredOffice: 'Fenero, Block D, Tyrrelstown Plaza, Dublin 15, D15 K4PY, Ireland',
   linkedin: '',
   country: 'Ireland',
-  descriptor: 'Life science consultancy',
+  descriptor: 'Life Science Consultancy',
   strapline: 'We push the project.',
   summary:
     'Life sciences supply chain consultancy: supply chain consultancy, project management and operations excellence, delivered by senior operators with one accountable lead per engagement.',

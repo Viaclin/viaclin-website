@@ -11,7 +11,7 @@ import { site } from '../../data/site';
 const path = '/services/project-management';
 const pageName = 'Project Management';
 const description =
-  'End-to-end project management for life sciences: tech transfer, CDMO programmes, serialisation, logistics and launch readiness under one accountable owner.';
+  'End-to-end project management for life sciences: tech transfer, CDMO programmes, serialisation, logistics and launch, with applied AI for full visibility.';
 
 const takeOn = [
   {
@@ -54,8 +54,12 @@ const runSteps = [
     body: 'A weekly decisions log to your leadership, each item with options and a recommendation.',
   },
   {
+    title: 'Applied AI in the plan',
+    body: 'Project management is on the frontier of applied AI. Our tools read the plan, the risk register and the vendor data together, so you get full visibility and a level of management that a status report cannot give.',
+  },
+  {
     title: 'Handover',
-    body: 'Documentation, trained owners and a closed action log. No dependency on us once the project ends.',
+    body: 'Documentation, trained owners and a closed action log. Your team runs it from here.',
   },
 ];
 
@@ -66,7 +70,7 @@ const engage = [
 ];
 
 // Supporting artwork repeats words from the copy beside it, so it stays hidden from assistive tech and search.
-const routeStops = ['Joins your leadership team', 'Pushes the project forward', 'Answers for delivery'];
+const routeStops = ['Coordinates activity', 'Pushes the project forward', 'Answers for delivery'];
 const routeYs = [30, 110, 190];
 
 const schema = [
@@ -108,9 +112,9 @@ const schema = [
       <div class="lead-split__copy" data-reveal>
         <p class="eyebrow">Our role</p>
         <p class="lead lead--intro">
-          We do not administer plans or produce status reports. A Viaclin lead joins as an extension of your leadership
-          team, pushes the project forward and answers for delivery. Documentation and knowledge transfer come as
-          standard, so the capability stays with you.
+          We do not administer plans or produce status reports. A Viaclin lead coordinates the activity, pushes the
+          project forward and answers for delivery. Documentation and knowledge transfer come as standard, so the
+          capability stays with you.
         </p>
       </div>
       <div class="route miniroute" data-reveal="fade" aria-hidden="true" data-pagefind-ignore>
@@ -127,22 +131,22 @@ const schema = [
     </div>
   </Section>
 
-  <!-- what we take on -->
-  <Section id="what-we-take-on" tone="mist" eyebrow="Scope" title="What we take on">
-    <div class="rows"><Blocks items={takeOn} cols={2} /></div>
-  </Section>
-
-  <!-- how we run a project: the heading holds its place while the four steps pass -->
-  <section class="section" id="how-we-run-a-project" aria-labelledby="how-we-run-a-project-title">
+  <!-- how we run a project: the heading holds its place while the five steps pass -->
+  <section class="section section--mist" id="how-we-run-a-project" aria-labelledby="how-we-run-a-project-title">
     <div class="container run-split">
       <div class="run-split__head" data-reveal>
         <p class="eyebrow">Method</p>
         <h2 id="how-we-run-a-project-title">How we run a project</h2>
-        <p class="pull" aria-hidden="true" data-pagefind-ignore>No dependency on us once the project ends.</p>
+        <p class="pull">Full oversight, without the overhead.</p>
       </div>
       <Steps items={runSteps} />
     </div>
   </section>
+
+  <!-- what we take on -->
+  <Section id="what-we-take-on" eyebrow="Scope" title="What we take on">
+    <div class="rows"><Blocks items={takeOn} cols={2} /></div>
+  </Section>
 
   <!-- ways to engage -->
   <Section id="ways-to-engage" tone="mist" eyebrow="Engagement" title="Ways to engage">
@@ -205,7 +209,7 @@ const schema = [
     margin-top: var(--space-4);
   }
 
-  /* pull line lifted from the last step */
+  /* the pull line sums up the method beside the steps */
   .run-split__head .pull {
     max-width: 22ch;
     margin-top: var(--space-6);
@@ -237,8 +241,8 @@ const schema = [
       position: static;
     }
 
-    .pull {
-      display: none;
+    .run-split__head .pull {
+      margin-top: var(--space-5);
     }
 
     .miniroute {

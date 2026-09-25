@@ -1,16 +1,32 @@
 ---
-// Supply Chain Consultancy. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.2.
+// Supply Chain Consultancy. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.2, revised with the owner's hero lead.
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Section from '../../components/Section.astro';
 import Blocks from '../../components/Blocks.astro';
+import ArcDiagram from '../../components/ArcDiagram.astro';
 import ContactBand from '../../components/ContactBand.astro';
 import { site } from '../../data/site';
 
 const path = '/services/supply-chain-consultancy';
 const pageName = 'Supply Chain Consultancy';
 const description =
-  'Bespoke life sciences supply chain expertise for clinical-phase and pre-launch programmes: planning, clinical trial supply, CMO oversight, greenfield set-up.';
+  'Bespoke life sciences supply chain consultancy: planning and forecasting, clinical supply, external manufacturing, procurement and value chain strategy.';
+
+const technology = [
+  {
+    title: 'Simplify your supply',
+    body: 'One supply model from development to commercial, with fewer handoffs between functions and partners and one owner for the whole chain.',
+  },
+  {
+    title: 'Secure your supply',
+    body: 'Risk-based safety stock and dual sourcing. Cold chain control and excursion response. Oversight of the suppliers your programme depends on.',
+  },
+  {
+    title: 'Scale operations',
+    body: 'From first-in-human to launch and post-launch: new product introduction, market rollout and life cycle management.',
+  },
+];
 
 const takeOn = [
   {
@@ -19,11 +35,19 @@ const takeOn = [
   },
   {
     title: 'Clinical trial supply',
-    body: 'Investigational product protected at every step, from first-in-human dosing to final reconciliation. IRT and IXRS set-up, management and decommissioning. Clinical packaging, labelling and booklet design. Cold chain and GDP distribution with excursion response. QP release, QPPV networks and import licences. Pharmacy manuals and site readiness.',
+    body: 'Investigational product protected at every step, from first-in-human dosing to final reconciliation. IRT and IXRS set-up, management and decommissioning. Clinical packaging, labelling and booklet design. Cold chain and GDP distribution with excursion response. QP release, QPPV networks and import licences. Pharmacy manuals and site readiness. Structured trial close-out, from reconciliation to destruction.',
+  },
+  {
+    title: 'External development and manufacturing',
+    body: 'CDMO and CRO scouting and sourcing. RFQ management from specification to award. Product tech transfer into the receiving site. Slot management, batch records and campaign oversight.',
+  },
+  {
+    title: 'Procurement',
+    body: 'Sourcing, contracting and delivery. Supplier performance, savings and compliance. Public tenders prepared and managed. Tariffs, import duties and customs clearance.',
   },
   {
     title: 'Supply network and risk',
-    body: 'Inventory strategy, depot network and FIFO control. CMO and CDMO sourcing, contracts and oversight. Procurement, RFQs and supplier due diligence. Tariffs, import duties and customs clearance.',
+    body: 'Inventory strategy, depot network and FIFO control. Dual sourcing, backup site qualification and safety stock sized to risk.',
   },
   {
     title: 'Greenfield operations set-up',
@@ -31,31 +55,47 @@ const takeOn = [
   },
 ];
 
+const strategy = [
+  {
+    title: 'Value chain strategy',
+    body: 'Where value is made and lost across development, manufacturing and supply, and the choices that follow: what to keep in house, what to place with partners and where to invest.',
+  },
+  {
+    title: 'Target operating model',
+    body: 'The organisation, processes, systems and partners the supply chain needs for its next phase, set out as one model with clear decision rights.',
+  },
+  {
+    title: 'SCM transformation',
+    body: 'Systems, data, roles and partners moved to the target model, with the change managed alongside your team.',
+  },
+  {
+    title: 'New product introduction and post-launch',
+    body: 'NPI planning and launch readiness, then the steady state and the life cycle changes that follow.',
+  },
+];
+
 const engage = [
   {
-    title: 'Diagnose',
-    body: 'A short fixed-fee assessment of your supply chain, systems and risks, returned as a written plan with priorities, owners and timelines.',
+    title: 'Embedded',
+    body: 'A senior operator inside your team for a defined scope and period, in your systems and your meetings.',
   },
   {
-    title: 'Run',
-    body: 'A senior operator embedded in your team for a defined scope and period.',
+    title: 'Fractional',
+    body: 'A set number of days each month for programmes that need a steady hand rather than a full-time hire.',
   },
   {
-    title: 'Retain',
-    body: 'Fractional senior support, a set number of days each month, for programmes that need a steady hand rather than a full-time hire.',
+    title: 'Projectised',
+    body: 'A defined project with a charter, a plan and an end date, owned by a Viaclin lead.',
   },
   {
-    title: 'Close-out',
-    body: 'The nine-step trial close-out at a fixed fee.',
-    href: '/services/trial-close-out',
-    linkLabel: 'See the nine steps',
+    title: 'Ad hoc consulting',
+    body: 'A question answered, a document reviewed or a decision supported, without a retainer.',
   },
 ];
 
 // Supporting artwork repeats words from the copy beside it, so it stays hidden from assistive tech and search.
 const routeStops = ['Planning', 'Procurement', 'Manufacturing oversight'];
 const routeYs = [30, 110, 190];
-const proposal = ['Scope', 'Named lead', 'Network specialists', 'Timeline', 'Fee'];
 
 const schema = [
   {
@@ -83,7 +123,7 @@ const schema = [
 <Base title="Supply Chain Consultancy: Viaclin" description={description} path={path} schema={schema}>
   <PageHero
     title={pageName}
-    lead="Bespoke supply chain expertise for clinical-phase and pre-launch programmes. Senior operators embedded in your team, or on call when a decision needs to be made well."
+    lead="End-to-end bespoke solutions that de-risk and accelerate our partners' and sponsors' drug and device development programmes."
     eyebrow="Service area"
     crumbs={[{ title: 'Services', href: '/#services' }, { title: pageName }]}
     cta={{ label: 'Start a conversation' }}
@@ -96,9 +136,8 @@ const schema = [
       <div class="lead-split__copy" data-reveal>
         <p class="eyebrow">Our role</p>
         <p class="lead lead--intro">
-          We take ownership of planning, procurement and manufacturing oversight, and we answer for the outcome.
-          Engagements run inside your quality system and your tools. Specialist questions route across the Viaclin
-          network and come back answered.
+          We take ownership of planning, procurement and manufacturing oversight. Engagements run inside your quality
+          system and your tools. Specialist questions route across the Viaclin network and come back answered.
         </p>
       </div>
       <div class="route miniroute" data-reveal="fade" aria-hidden="true" data-pagefind-ignore>
@@ -110,9 +149,21 @@ const schema = [
             <text class="route__label" x="84" y={routeYs[i]} dominant-baseline="middle" style={`--i:${i}`}>{stop}</text>
           ))}
         </svg>
-        <p class="route__caption">We answer for the outcome</p>
       </div>
     </div>
+  </Section>
+
+  <!-- perspective: linear, network, value -->
+  <ArcDiagram />
+
+  <!-- technology and expertise -->
+  <Section
+    id="technology"
+    eyebrow="Technology and expertise"
+    title="Transforming supply chains through technology and expertise"
+    intro="Supply chains for clinical and commercial programmes have to be tailored to the product, the phase and the markets. We build them with senior operators and the newest tools in the field, and we run them with your team."
+  >
+    <div class="rows"><Blocks items={technology} cols={3} /></div>
   </Section>
 
   <!-- what we take on -->
@@ -120,28 +171,32 @@ const schema = [
     <div class="rows"><Blocks items={takeOn} cols={2} /></div>
   </Section>
 
+  <!-- strategy -->
+  <Section
+    id="strategy"
+    eyebrow="Strategy"
+    title="Shape the future of your value chain"
+    intro="Value chain strategy and a target operating model, then the transformation programme that gets you there."
+  >
+    <div class="rows"><Blocks items={strategy} cols={4} /></div>
+  </Section>
+
   <!-- ways to engage -->
-  <Section id="ways-to-engage" eyebrow="Engagement" title="Ways to engage">
+  <Section id="ways-to-engage" tone="mist" eyebrow="Engagement" title="Ways to engage">
     <div class="rows"><Blocks items={engage} cols={2} /></div>
   </Section>
 
   <!-- how it starts -->
-  <section class="section section--mist" id="how-it-starts" aria-labelledby="how-it-starts-title">
-    <div class="container lead-split lead-split--card">
-      <div class="lead-split__copy" data-reveal>
+  <section class="section" id="how-it-starts" aria-labelledby="how-it-starts-title">
+    <div class="container">
+      <div class="section-head start" data-reveal>
         <p class="eyebrow">First step</p>
         <h2 id="how-it-starts-title">How it starts</h2>
-        <p class="lead lead--measure">
+        <p class="lead start__lead">
           A thirty-minute call. We ask about the programme, the phase, the systems and the deadline. If we can help,
           you get a written proposal: scope, named lead, network specialists, timeline and fee. If we cannot, we say
           so and point you to someone who can.
         </p>
-      </div>
-      <div class="card proposal" data-reveal="scale" aria-hidden="true" data-pagefind-ignore>
-        <p class="proposal__label">The written proposal</p>
-        <ul class="ticks" role="list">
-          {proposal.map((item) => <li>{item}</li>)}
-        </ul>
       </div>
     </div>
   </section>
@@ -158,10 +213,6 @@ const schema = [
     align-items: center;
   }
 
-  .lead-split--card {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-  }
-
   .lead-split__copy > * + * {
     margin-top: var(--space-5);
   }
@@ -171,11 +222,6 @@ const schema = [
     font-size: clamp(1.25rem, 1.9vw, 1.5rem);
     line-height: 1.45;
     letter-spacing: -0.005em;
-  }
-
-  .lead--measure {
-    max-width: 56ch;
-    color: var(--fg-2);
   }
 
   /* a short vertical route segment, drawn with the shared route classes */
@@ -189,65 +235,22 @@ const schema = [
     font-size: 18px;
   }
 
-  .miniroute .route__caption {
-    margin-top: var(--space-2);
-    padding-left: 14px;
-    text-align: left;
-  }
-
-  .proposal {
-    padding: clamp(24px, 3vw, 36px);
-  }
-
-  .proposal__label {
-    margin-bottom: var(--space-5);
-    padding-bottom: var(--space-4);
-    border-bottom: 1px solid var(--rule);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--link);
-    letter-spacing: 0.01em;
-  }
-
-  .ticks {
-    display: grid;
-    gap: 14px;
-    margin: 0;
-  }
-
-  .ticks li {
-    position: relative;
-    padding-left: 34px;
-    color: var(--fg);
-    font-weight: 600;
-  }
-
-  /* the V mark's green stroke, used as a tick */
-  .ticks li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0.2em;
-    width: 22px;
-    height: 22px;
-    background: var(--accent);
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='110 20 245 345'%3E%3Cpath d='M126 272C157 218 190 166 226 115C254 75.3 296 42 346 27V131C280 160 229.6 260 179 358Z'/%3E%3C/svg%3E") center / contain no-repeat;
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='110 20 245 345'%3E%3Cpath d='M126 272C157 218 190 166 226 115C254 75.3 296 42 346 27V131C280 160 229.6 260 179 358Z'/%3E%3C/svg%3E") center / contain no-repeat;
-  }
-
-  /* two-column block grids run to several rows: open the rows up so each rule reads as a new start */
+  /* block grids that run to several rows, stacked on a phone or two by two: open the rows up so each rule reads as a new start */
   .rows :global(.grid) {
     row-gap: clamp(36px, 4.4vw, 56px);
   }
 
-  /* dark theme: the mist ground and the contact band share a colour, so a hairline marks the seam */
-  :global(:root[data-theme='dark'] .section--mist + .cband) {
-    border-top: 1px solid var(--rule);
+  /* the last section before the band: the heading and one paragraph, so no space is held for a grid below */
+  .start {
+    margin-bottom: 0;
+  }
+
+  .start__lead {
+    max-width: 52ch;
   }
 
   @media (max-width: 900px) {
-    .lead-split,
-    .lead-split--card {
+    .lead-split {
       grid-template-columns: minmax(0, 1fr);
     }
 

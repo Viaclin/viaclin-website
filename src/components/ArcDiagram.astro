@@ -1,0 +1,508 @@
+---
+// A different view of the supply chain: one row of nodes, three ways of joining them.
+// The button group switches the view and arcs.ts runs it; the arcs draw and undraw in CSS.
+// The drawing is decorative. The paragraph beside it says what each view means, in words.
+
+type ViewKey = 'linear' | 'network' | 'value';
+
+const views: Array<{ key: ViewKey; label: string; text: string }> = [
+  {
+    key: 'linear',
+    label: 'Linear',
+    text: 'Traditional supply chain models reduce reality to a sequence of isolated steps, and miss how each decision moves every other.',
+  },
+  {
+    key: 'network',
+    label: 'Network',
+    text: 'Model the enterprise as a connected value chain: the relationships, constraints and dependencies that drive performance across functions.',
+  },
+  {
+    key: 'value',
+    label: 'Value',
+    text: 'Bring cross-functional trade-offs into one decision framework and reveal the opportunities that stay hidden when each function optimises alone.',
+  },
+];
+
+// Without script, under reduced motion and in a still capture, the network view shows complete.
+const first: ViewKey = 'network';
+const firstText = views.find((view) => view.key === first)?.text ?? '';
+
+// The board is 1000 by 520 with the baseline across the middle and twelve nodes along it.
+// Arcs are half ellipses, flattened by the same ratio, so the longest span still fits the board.
+const BASE = 260;
+const SQUASH = 0.66;
+const nodes = Array.from({ length: 12 }, (_, i) => 70 + (i * 860) / 11);
+const round = (n: number) => Math.round(n * 10) / 10;
+
+const half = (a: number, b: number, up: boolean) => {
+  const rx = (nodes[b] - nodes[a]) / 2;
+  return `A${round(rx)} ${round(rx * SQUASH)} 0 0 ${up ? 1 : 0} ${round(nodes[b])} ${BASE}`;
+};
+const arcPath = (a: number, b: number, up: boolean) => `M${round(nodes[a])} ${BASE} ${half(a, b, up)}`;
+
+// The pool: each arc is drawn once and every view switches a set of them on.
+// Span-one arcs above the line make the linear view. "n" puts an arc in the network view;
+// "v" makes it one of the long value arcs, which the value view lifts out in green.
+const pool: Array<[number, number, 'up' | 'down', string]> = [
+  [0, 1, 'up', 'n'], [1, 2, 'up', ''], [2, 3, 'up', 'n'], [3, 4, 'up', ''], [4, 5, 'up', ''], [5, 6, 'up', 'n'],
+  [6, 7, 'up', ''], [7, 8, 'up', 'n'], [8, 9, 'up', ''], [9, 10, 'up', 'n'], [10, 11, 'up', ''],
+  [0, 3, 'up', 'n'], [4, 6, 'up', 'n'], [2, 7, 'up', 'n'], [5, 11, 'up', 'nv'], [1, 10, 'up', 'nv'],
+  [0, 4, 'down', 'n'], [3, 5, 'down', 'n'], [1, 8, 'down', 'n'], [6, 10, 'down', 'n'], [8, 11, 'down', 'n'],
+  [2, 11, 'down', 'nv'],
+];
+
+const arcs = pool.map(([a, b, side, tags], i) => {
+  const up = side === 'up';
+  return { i, a, b, up, d: arcPath(a, b, up), linear: up && b - a === 1, network: tags.includes('n'), value: tags.includes('v') };
+});
+
+// Arrival order in each view, as a delay: left to right along the line, the network from the
+// left and short spans first, the value arcs one after another with the faint trace close behind.
+const byNetwork = arcs.filter((arc) => arc.network).sort((p, q) => p.a - q.a || p.b - p.a - (q.b - q.a));
+const byValue = arcs.filter((arc) => arc.value);
+const delays = new Map(
+  arcs.map((arc) => {
+    const n = byNetwork.indexOf(arc);
+    const v = byValue.indexOf(arc);
+    return [arc.i, `--dl:${arc.a * 70}ms;--dn:${(n < 0 ? 0 : n) * 45}ms;--dv:${v < 0 ? arc.a * 20 : 120 + v * 160}ms`];
+  }),
+);
+const valueNodes = new Set(byValue.flatMap((arc) => [arc.a, arc.b]));
+
+// Travelling dots, each on an arc of its view. The linear dot runs the whole chain of steps.
+const chain = `M${round(nodes[0])} ${BASE} ${nodes.slice(1).map((_, k) => half(k, k + 1, true)).join(' ')}`;
+const dots: Record<ViewKey, Array<{ d: string; t: number; wait: number; back?: boolean }>> = {
+  linear: [
+    { d: chain, t: 8, wait: 1.6 },
+    { d: chain, t: 8, wait: 5.6 },
+  ],
+  network: [
+    { d: arcPath(0, 3, true), t: 3.4, wait: 1.4 },
+    { d: arcPath(1, 8, false), t: 4.6, wait: 1.9 },
+    { d: arcPath(4, 6, true), t: 2.8, wait: 2.6, back: true },
+    { d: arcPath(6, 10, false), t: 3.6, wait: 1.6, back: true },
+    { d: arcPath(5, 11, true), t: 4.8, wait: 3.2 },
+  ],
+  value: [
+    { d: arcPath(1, 10, true), t: 5.2, wait: 1.5 },
+    { d: arcPath(2, 11, false), t: 5.6, wait: 2.3, back: true },
+    { d: arcPath(5, 11, true), t: 4.2, wait: 3.1 },
+  ],
+};
+---
+
+<section class="section section--mist persp" id="perspective" aria-labelledby="perspective-title" data-arcs data-state={first}>
+  <div class="container persp__grid">
+    <div class="persp__copy" data-reveal data-arcs-hold>
+      <p class="eyebrow">Perspective</p>
+      <h2 id="perspective-title">A different view of your supply chain</h2>
+      <div class="persp__say">
+        <p class="lead persp__text" id="perspective-text" aria-live="polite" data-arcs-live data-pagefind-ignore>{firstText}</p>
+        {views.map((view) => <p class="lead persp__ghost" data-arcs-text={view.key}>{view.text}</p>)}
+      </div>
+      <div class="persp__control" role="group" aria-label="View">
+        {views.map((view, index) => (
+          <>
+            {index > 0 && <span class="persp__join" aria-hidden="true"></span>}
+            <button
+              class="persp__btn"
+              type="button"
+              aria-pressed={view.key === first ? 'true' : 'false'}
+              aria-controls="perspective-text"
+              data-arcs-view={view.key}
+            >
+              {view.label}
+              <span class="persp__bar" aria-hidden="true"></span>
+            </button>
+          </>
+        ))}
+      </div>
+    </div>
+
+    <div class="persp__art" data-reveal="fade" style="--d:120ms" aria-hidden="true" data-arcs-art data-pagefind-ignore>
+      <svg class="arcs" viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" focusable="false">
+        <defs>
+          {arcs.map((arc) => (
+            <mask id={`arcs-mask-${arc.i}`} maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="520">
+              <path
+                class="arcs__draw"
+                d={arc.d}
+                pathLength="1"
+                data-l={arc.linear ? '' : undefined}
+                data-n={arc.network ? '' : undefined}
+                data-v={arc.value ? '' : undefined}
+                style={delays.get(arc.i)}
+              ></path>
+            </mask>
+          ))}
+        </defs>
+
+        <line class="arcs__base" x1="24" y1={BASE} x2="976" y2={BASE}></line>
+
+        <g class="arcs__pool">
+          {arcs.map((arc) => (
+            <path
+              class="arcs__arc"
+              d={arc.d}
+              mask={`url(#arcs-mask-${arc.i})`}
+              data-l={arc.linear ? '' : undefined}
+              data-n={arc.network ? '' : undefined}
+              data-v={arc.value ? '' : undefined}
+              style={delays.get(arc.i)}
+            ></path>
+          ))}
+        </g>
+
+        {(Object.keys(dots) as ViewKey[]).map((key) => (
+          <g class="arcs__dots" data-for={key}>
+            {dots[key].map((dot) => (
+              <path
+                class="arcs__dot"
+                d={dot.d}
+                pathLength="1"
+                style={`--t:${dot.t}s;--wait:${dot.wait}s;--dir:${dot.back ? 'reverse' : 'normal'}`}
+              ></path>
+            ))}
+          </g>
+        ))}
+
+        {nodes.map((x, i) => (
+          <circle class="arcs__node" cx={round(x)} cy={BASE} r="5.5" data-v={valueNodes.has(i) ? '' : undefined}></circle>
+        ))}
+      </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* copy left, about 38 per cent, the drawing right; stacked below 1000 px */
+  .persp__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 38fr) minmax(0, 62fr);
+    gap: clamp(32px, 5vw, 72px);
+    align-items: center;
+  }
+
+  .persp__copy > * + * {
+    margin-top: var(--space-4);
+  }
+
+  .persp__copy > .persp__control {
+    margin-top: var(--space-6);
+  }
+
+  /* every view's text sits in one cell, so the column keeps the height of the longest */
+  .persp__say {
+    display: grid;
+  }
+
+  .persp__say > * {
+    grid-area: 1 / 1;
+  }
+
+  .persp__text {
+    color: var(--fg-2);
+  }
+
+  .persp__ghost {
+    visibility: hidden;
+  }
+
+  /* a segmented control: three buttons joined by short rules, like stops on a route */
+  .persp__control {
+    display: flex;
+    align-items: center;
+  }
+
+  .persp__join {
+    flex: 0 1 22px;
+    min-width: 10px;
+    height: 2px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--fg) 30%, transparent);
+  }
+
+  .persp__btn {
+    --bar: var(--green-light);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    min-height: 44px;
+    padding: 0 18px;
+    border: 1.5px solid color-mix(in srgb, var(--fg) 34%, transparent);
+    border-radius: var(--radius);
+    background: transparent;
+    color: var(--fg);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    line-height: 1;
+    transition: background-color var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease), color var(--dur-1) var(--ease);
+  }
+
+  :global(:root[data-theme='dark']) .persp__btn {
+    --bar: var(--green);
+  }
+
+  .persp__btn:hover {
+    border-color: var(--fg);
+    background: var(--accent-soft);
+  }
+
+  .persp__btn[aria-pressed='true'] {
+    border-color: var(--fg);
+    background: var(--fg);
+    color: var(--bg);
+  }
+
+  .persp__btn:focus-visible {
+    border-radius: var(--radius);
+  }
+
+  /* the count to the next view, shown in the pressed button while the views advance on their own */
+  .persp__bar {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 5px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--bar);
+    opacity: 0;
+    transform: scaleX(0);
+    transform-origin: left center;
+    pointer-events: none;
+  }
+
+  /* without script the buttons cannot switch anything, so they stay out of sight */
+  :global(.no-js) .persp__control {
+    display: none;
+  }
+
+  /* ───────── the drawing ───────── */
+  .persp__art {
+    overflow: clip;
+  }
+
+  .arcs {
+    --arc-w: 3px;
+    --arc-gap: 8px;
+    --arc-w-strong: 5px;
+    --arc-gap-strong: 10px;
+    --base-w: 1.6px;
+    --node-r: 5.5px;
+    --dot-w: 7.5px;
+    --reveal-w: 18px;
+    width: 100%;
+    height: auto;
+  }
+
+  .arcs__base {
+    stroke: var(--fg);
+    stroke-opacity: 0.3;
+    stroke-width: var(--base-w);
+    stroke-linecap: round;
+  }
+
+  .arcs__node {
+    r: var(--node-r);
+    fill: var(--fg);
+    stroke: var(--bg-alt);
+    stroke-width: 3px;
+  }
+
+  /* each arc is a dotted line, uncovered by the solid stroke in its mask: the mask draws and undraws */
+  .arcs__arc {
+    fill: none;
+    stroke: var(--fg-3);
+    stroke-width: var(--arc-w);
+    stroke-linecap: round;
+    stroke-dasharray: 0 var(--arc-gap);
+    opacity: 0;
+  }
+
+  .arcs__draw {
+    fill: none;
+    stroke: var(--white);
+    stroke-width: var(--reveal-w);
+    stroke-dasharray: 1 2;
+    stroke-dashoffset: 1;
+  }
+
+  .persp[data-state='linear'] .arcs__draw[data-l],
+  .persp[data-state='network'] .arcs__draw[data-n],
+  .persp[data-state='value'] .arcs__draw {
+    stroke-dashoffset: 0;
+  }
+
+  .persp[data-state='linear'] .arcs__arc[data-l],
+  .persp[data-state='network'] .arcs__arc[data-n],
+  .persp[data-state='value'] .arcs__arc[data-v] {
+    opacity: 1;
+  }
+
+  /* the value view: a few long arcs in green, the rest of the pool a faint trace */
+  .persp[data-state='value'] .arcs__arc:not([data-v]) {
+    opacity: 0.26;
+  }
+
+  .persp[data-state='value'] .arcs__arc[data-v] {
+    stroke: var(--accent);
+    stroke-width: var(--arc-w-strong);
+    stroke-dasharray: 0 var(--arc-gap-strong);
+  }
+
+  .persp[data-state='value'] .arcs__node[data-v] {
+    fill: var(--accent);
+  }
+
+  /* travelling dots: a single round dot on a dash pattern, moved along the arc by the offset */
+  .arcs__dot {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: var(--dot-w);
+    stroke-linecap: round;
+    stroke-dasharray: 0 2;
+  }
+
+  /* on the heavier green arcs the dot grows, so it still reads as something moving along the line */
+  .arcs__dots[data-for='value'] .arcs__dot {
+    stroke-width: calc(var(--dot-w) * 1.45);
+  }
+
+  .arcs__dots {
+    display: none;
+  }
+
+  /* stacked, the drawing keeps to a comfortable width and sits in the middle, as the network drawing does */
+  @media (max-width: 999px) {
+    .persp__grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .persp__art {
+      width: 100%;
+      max-width: 760px;
+      margin-inline: auto;
+    }
+  }
+
+  /* marks drawn at the scale of the board grow on a narrow screen, so they stay visible */
+  @media (max-width: 640px) {
+    .arcs {
+      --arc-w: 4.4px;
+      --arc-gap: 12px;
+      --arc-w-strong: 7px;
+      --arc-gap-strong: 14px;
+      --base-w: 2.8px;
+      --node-r: 8px;
+      --dot-w: 12px;
+      --reveal-w: 26px;
+    }
+
+    .arcs__node {
+      stroke-width: 4.5px;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    /* leaving arcs undraw at once; arriving arcs wait a beat, then follow one another */
+    :global(.js:not(.static)) .arcs__draw {
+      transition: stroke-dashoffset 600ms var(--ease-in-out);
+    }
+
+    :global(.js:not(.static)) .arcs__arc {
+      transition: opacity 600ms var(--ease), stroke 600ms var(--ease), stroke-width 600ms var(--ease),
+        stroke-dasharray 600ms var(--ease);
+    }
+
+    :global(.js:not(.static)) .arcs__node {
+      transition: fill 600ms var(--ease);
+    }
+
+    :global(.js:not(.static)) .persp[data-state='linear'] :is(.arcs__draw, .arcs__arc)[data-l] {
+      transition-duration: 900ms;
+      transition-delay: calc(160ms + var(--dl, 0ms));
+    }
+
+    :global(.js:not(.static)) .persp[data-state='network'] :is(.arcs__draw, .arcs__arc)[data-n] {
+      transition-duration: 900ms;
+      transition-delay: calc(160ms + var(--dn, 0ms));
+    }
+
+    :global(.js:not(.static)) .persp[data-state='value'] :is(.arcs__draw, .arcs__arc) {
+      transition-duration: 900ms;
+      transition-delay: calc(160ms + var(--dv, 0ms));
+    }
+
+    :global(.js:not(.static)) .persp[data-state='value'] .arcs__node[data-v] {
+      transition-delay: 400ms;
+    }
+
+    /* the dots of the view in hand join once its arcs are drawn, and rest while the drawing is out of view */
+    :global(.js:not(.static)) .arcs__dots {
+      display: inline;
+      opacity: 0;
+      transition: opacity 300ms var(--ease);
+    }
+
+    :global(.js:not(.static)) .persp[data-state='linear'] .arcs__dots[data-for='linear'],
+    :global(.js:not(.static)) .persp[data-state='network'] .arcs__dots[data-for='network'],
+    :global(.js:not(.static)) .persp[data-state='value'] .arcs__dots[data-for='value'] {
+      opacity: 1;
+      transition-duration: 500ms;
+      transition-delay: 900ms;
+    }
+
+    :global(.js:not(.static)) .persp[data-state='linear'] .arcs__dots[data-for='linear'] .arcs__dot,
+    :global(.js:not(.static)) .persp[data-state='network'] .arcs__dots[data-for='network'] .arcs__dot,
+    :global(.js:not(.static)) .persp[data-state='value'] .arcs__dots[data-for='value'] .arcs__dot {
+      animation: arcs-travel var(--t, 4s) linear var(--wait, 1s) infinite var(--dir, normal) both;
+      animation-play-state: var(--arcs-play, running);
+    }
+
+    .persp:not(.is-live) {
+      --arcs-play: paused;
+    }
+
+    :global(.js:not(.static)) .persp.is-counting .persp__btn[aria-pressed='true'] .persp__bar {
+      opacity: 1;
+      animation: arcs-count var(--arcs-step, 5000ms) linear forwards;
+    }
+
+    :global(.js:not(.static)) .persp__text.is-new {
+      animation: arcs-text 500ms var(--ease);
+    }
+  }
+
+  @keyframes arcs-travel {
+    0% {
+      stroke-dashoffset: 0;
+      opacity: 0;
+    }
+
+    8%,
+    92% {
+      opacity: 1;
+    }
+
+    100% {
+      stroke-dashoffset: -1;
+      opacity: 0;
+    }
+  }
+
+  @keyframes arcs-count {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes arcs-text {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 6px, 0);
+    }
+  }
+</style>

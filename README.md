@@ -203,7 +203,7 @@ Rules: lower case, hyphens between words, no spaces, no capitals, no underscores
 | `utm_term` (optional) | The paid search keyword | `clinical-supply-consultancy` |
 
 ```
-https://viaclin.com/services/trial-close-out?utm_source=linkedin&utm_medium=social&utm_campaign=2026-q4-close-out&utm_content=carousel
+https://viaclin.com/services/supply-chain-consultancy?utm_source=linkedin&utm_medium=social&utm_campaign=2026-q4-supply&utm_content=carousel
 ```
 
 The site also reads `gclid` and `msclkid` from paid clicks, and records the landing page. The first set of values in a session wins. They travel with the enquiry as hidden fields, so each email from the form shows which campaign brought the visitor. Keep one shared sheet of campaign names so that two people never invent two spellings for the same push.
@@ -315,7 +315,7 @@ Flags for both browser scripts, after `--`:
 | Flag | Effect |
 | --- | --- |
 | `--all` | Use the route list inside the script even when `dist` exists |
-| `--routes=home,contact,services/trial-close-out` | Test chosen routes; `home` means `/` |
+| `--routes=home,contact,services/project-management` | Test chosen routes; `home` means `/` |
 | `--verbose` | Print each view as it finishes |
 | `--motion` | Visual QA alone: leave animation on |
 | `--no-banner` | Visual QA alone: store a "reject all" choice first, so the cookie banner stays out of the screenshots |

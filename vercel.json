@@ -2,7 +2,8 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
-    { "source": "/services", "destination": "/#services", "permanent": false }
+    { "source": "/services", "destination": "/#services", "permanent": false },
+    { "source": "/services/trial-close-out", "destination": "/services/supply-chain-consultancy", "permanent": true }
   ],
   "headers": [
     {

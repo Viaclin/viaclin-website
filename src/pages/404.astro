@@ -5,8 +5,8 @@ import Icon from '../components/Icon.astro';
 import { services } from '../data/nav';
 
 const links = [
-  ...services.filter((item) => item.href !== '/services/trial-close-out'),
-  { title: 'Contact', href: '/contact', summary: 'Tell us where the programme is stuck.' },
+  ...services,
+  { title: 'Contact', href: '/contact', summary: "Let's connect: a short call, then a written plan." },
 ];
 
 // The route from the home page, with one stop missing from the line.

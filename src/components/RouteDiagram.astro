@@ -1,9 +1,10 @@
 ---
-// The route, molecule to patient. Two artboards: horizontal from 641 px up, vertical below.
+// The route, discovery to patient. Two artboards: horizontal from 641 px up, vertical below.
 // Decorative SVG; the caption beneath carries the meaning as text.
-const stops = ['Molecule', 'Manufacture', 'QP release', 'Depot', 'Site', 'Patient'];
-const xs = [40, 224, 408, 592, 776, 960];
-const ys = [30, 118, 206, 294, 382, 470];
+const stops = ['Discovery', 'Clinical', 'Production', 'Launch', 'Patient'];
+const xs = [40, 270, 500, 730, 960];
+const ys = [30, 140, 250, 360, 470];
+const last = stops.length - 1;
 ---
 
 <div class="route" data-reveal="fade" data-reveal-at="half">
@@ -15,7 +16,7 @@ const ys = [30, 118, 206, 294, 382, 470];
     </circle>
     {xs.map((x, i) => <circle class="route__node" cx={x} cy="40" r="9" style={`--i:${i}`}></circle>)}
     {stops.map((stop, i) => (
-      <text class="route__label" x={xs[i]} y="76" text-anchor={i === 0 ? 'start' : i === 5 ? 'end' : 'middle'} dx={i === 0 ? -9 : i === 5 ? 9 : 0} style={`--i:${i}`}>{stop}</text>
+      <text class="route__label" x={xs[i]} y="76" text-anchor={i === 0 ? 'start' : i === last ? 'end' : 'middle'} dx={i === 0 ? -9 : i === last ? 9 : 0} style={`--i:${i}`}>{stop}</text>
     ))}
     <path class="route__bracket" d="M40 104 v14 h920 v-14"></path>
   </svg>
@@ -33,7 +34,7 @@ const ys = [30, 118, 206, 294, 382, 470];
     ))}
   </svg>
 
-  <p class="route__caption">One accountable owner, molecule to patient</p>
+  <p class="route__caption">Your operations, our expertise</p>
 </div>
 
 <style>

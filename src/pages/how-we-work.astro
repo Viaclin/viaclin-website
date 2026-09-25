@@ -19,13 +19,6 @@ const onPage = [
   { id: 'method', label: 'The method' },
   { id: 'principles', label: 'Principles' },
   { id: 'coverage', label: 'Coverage' },
-  { id: 'what-we-do-not-do', label: 'What we do not do' },
-];
-
-// Supporting lists repeat words from the paragraph beside them, so they stay hidden from assistive tech and search.
-const outOfScope = [
-  { label: 'We do not', items: ['Administer plans', 'Produce status reports', 'Fill seats with generalists'] },
-  { label: 'We do not run', items: ['Market access', 'Enterprise change programmes', 'IT integration outside the supply chain'] },
 ];
 
 const schema = {
@@ -86,31 +79,6 @@ const schema = {
   <Section id="coverage" tone="mist" eyebrow="Coverage" title="Three regulatory jurisdictions">
     <Blocks items={coverage} cols={3} />
   </Section>
-
-  <!-- what we do not do -->
-  <section class="section" id="what-we-do-not-do" aria-labelledby="what-we-do-not-do-title">
-    <div class="container lead-split">
-      <div class="lead-split__copy" data-reveal>
-        <p class="eyebrow">Out of scope</p>
-        <h2 id="what-we-do-not-do-title">What we do not do</h2>
-        <p class="lead lead--measure">
-          We do not administer plans, produce status reports or fill seats with generalists. We do not run market
-          access, enterprise change programmes or IT integration outside the supply chain. If your need sits there, we
-          will say so on the first call.
-        </p>
-      </div>
-      <div class="nots" aria-hidden="true" data-pagefind-ignore>
-        {outOfScope.map((group, index) => (
-          <div class="nots__group" data-reveal style={`--d:${index * 120}ms`}>
-            <p class="nots__label">{group.label}</p>
-            <ul role="list">
-              {group.items.map((item) => <li>{item}</li>)}
-            </ul>
-          </div>
-        ))}
-      </div>
-    </div>
-  </section>
 
   <ContactBand />
 </Base>

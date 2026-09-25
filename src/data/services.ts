@@ -16,7 +16,7 @@ export const serviceCards = [
   },
   {
     title: 'Operations Excellence',
-    body: 'Operations rebuilt to scale, cut risk and run with AI oversight, delivered with SupplyAI. Supply chains made next-gen ready for the operations evolution.',
+    body: 'Operations rebuilt leaner, faster and stronger: every part of the business linked to one goal, with AI where it earns its place. Next-gen ready, delivered with SupplyAI.',
     href: '/services/operations-excellence',
     linkLabel: 'See the service',
   },
@@ -38,16 +38,16 @@ export const projectPoints = [
 
 export const evolutionCards = [
   {
-    title: 'Automated lines',
-    body: 'Fill, finish, labelling and packing are moving from hands to machines. We rebuild planning, batch flow and partner oversight to match that pace.',
+    title: 'One connected operation',
+    body: 'Planning, procurement, manufacturing, quality and logistics linked to one goal, so a decision in one function moves the others with it, not against them.',
   },
   {
-    title: 'Live oversight',
-    body: 'Monthly reports give way to agents that watch every lane and flag risk as it forms. Your people stay in charge of each decision.',
+    title: 'Leaner, faster, stronger',
+    body: 'Processes, capacity and cost rebuilt for the phase ahead and measured against a baseline, so the operation runs with confidence at every stage.',
   },
   {
-    title: 'Validated AI',
-    body: 'AI earns a place in GxP work once intended use, risk, controls and evidence are written down. We carry it from pilot to validated practice.',
+    title: 'AI where it earns its place',
+    body: 'Validated in your quality system and in use on the engagement, not just built into the pitch. Your people stay in charge of every decision.',
   },
 ];
 
@@ -66,18 +66,19 @@ export const method = [
   },
 ];
 
+// The three pillars. Every engagement rests on at least one of them.
 export const principles = [
   {
-    title: 'Predictive planning',
-    body: 'We own S&OP end to end, with forecasting built on SAP and Anaplan, so clinical demand, commercial rollout and manufacturing capacity line up. Buffer stock is sized to risk, overproduction stops, and capital stays where it belongs.',
+    title: 'Forecasting',
+    body: 'Future-proof planning. We own S&OP end to end, with forecasting built on SAP and Anaplan, so clinical demand, commercial rollout and manufacturing capacity line up. Buffer stock is sized to risk, overproduction stops, and capital stays where it belongs.',
   },
   {
-    title: 'Complete oversight',
-    body: 'Packaging definitions, cross-border logistics, CDMO tech transfers and global site readiness run under one owner. No handoffs between siloed teams. No gaps between functions.',
+    title: 'Owning supply',
+    body: 'Interim, project or full-time S&OE management. Packaging, cross-border logistics, CDMO programmes and site readiness run under one owner. No handoffs between siloed teams. No gaps between functions.',
   },
   {
-    title: 'AI integration',
-    body: 'Our own purpose-built agents watch activity and guide decisions for supply professionals and leaders. They sit between manual work and full autonomy: guidance and insight that de-risks the supply chain, with your people in charge.',
+    title: 'AI',
+    body: 'We build the bridge between now and next. Purpose-built agents watch activity and guide decisions for supply professionals and leaders, validated in your quality system, with your people in charge.',
   },
 ];
 

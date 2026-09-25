@@ -1,6 +1,8 @@
 ---
-// Operations Excellence. The page pitches next-gen ready supply chains for the operations evolution.
-// Blocks, steps and the partnership copy come from VIACLIN_WEBSITE_SPEC.md section 8.4.
+// Operations Excellence. Transformation first: every part of the business linked to one goal, rebuilt
+// leaner, faster and stronger, next-gen ready for the operations evolution. AI is one part of it.
+// The scope, steps and partnership copy started from VIACLIN_WEBSITE_SPEC.md section 8.4 and follow
+// the owner's reframe of September 2026. The word "agents" belongs to the AI parts alone.
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Section from '../../components/Section.astro';
@@ -13,48 +15,50 @@ import { site } from '../../data/site';
 const path = '/services/operations-excellence';
 const title = 'Operations Excellence: Viaclin';
 const description =
-  'Supply chains made next-gen ready for the operations evolution: automated lines and depots, live AI oversight with SupplyAI, GxP validation and AI training.';
+  'Operations made next-gen ready for the operations evolution: every function linked to one goal, run leaner and faster, with AI where it earns its place.';
 const partner = site.sisterBrand.name;
 
+// The operations evolution: four shifts, each a short "from X to Y" heading.
 const shifts = [
   {
-    title: 'From manual lines to automated lines',
-    body: 'Fill, finish, labelling and packing are moving from hands to robots. Planning, batch flow and partner oversight have to run at the pace of the machine.',
-  },
-  {
-    title: 'From staffed depots to self-running depots',
-    body: 'Automated warehouses store, pick and ship around the clock, with shuttles where forklifts used to be. Inventory strategy, depot contracts and system links need a redesign to match.',
+    title: 'From silos to one connected operation',
+    body: 'Planning, procurement, manufacturing, quality, logistics and finance work to one plan and one set of numbers. A change in demand reaches the plant, the warehouse and the budget on the same day.',
   },
   {
     title: 'From periodic reports to live oversight',
-    body: 'The monthly report gives way to AI agents that watch every lane and every supplier tier, and flag risk as it forms. Your people make each decision, with the whole network in view.',
+    body: 'The monthly report gives way to live visibility across every function, site and supplier tier. Analytics turn into action while there is still time to act, and your people decide with the whole operation in view.',
   },
   {
-    title: 'From AI pilots to validated AI',
-    body: 'AI is moving out of side projects and into GxP work. It earns that place once intended use, risk, controls, evidence and change control are written down.',
+    title: 'From firefighting to planned capacity and cost',
+    body: 'Shortages, expedites and overtime stop setting the agenda. Capacity, stock and cost to serve are planned for the phase ahead and measured against a baseline.',
+  },
+  {
+    title: 'From local fixes to one goal for the whole business',
+    body: 'Gains stop landing in one function at the cost of the next. One goal, set at the top and tracked in every function, keeps the business pulling the same way.',
   },
 ];
 
+// Five signs of a next-gen ready operation. The linked operation leads; AI comes in at the last point.
 const readiness = [
   {
-    title: 'Data a machine can act on',
-    body: 'Master data, batch records and inventory held in one structure, clean and current.',
+    title: 'Data the whole operation can act on',
+    body: 'Master data, batch records, inventory and cost held in one structure, clean and current.',
   },
   {
     title: 'Systems that connect',
-    body: 'ERP, IRT, planning and depot systems that pass data to each other, with no retyping.',
+    body: 'ERP, IRT, planning, quality and depot systems that pass data to each other, with no retyping.',
   },
   {
     title: 'Partners at the same pace',
-    body: 'CMOs, packagers and 3PLs assessed for automation and data sharing, with visibility down the supplier tiers.',
-  },
-  {
-    title: 'Validation that holds',
-    body: 'A written route for AI in GxP work: intended use, risk, controls, evidence and change control.',
+    body: 'CMOs, packagers and 3PLs working to your plan and sharing data, with visibility down the supplier tiers.',
   },
   {
     title: 'People in charge',
-    body: 'Teams trained to work with agents and automation, with clear rules on who decides.',
+    body: 'Clear roles, hand-offs and decision rights, with teams trained on the tools they run.',
+  },
+  {
+    title: 'Validation that holds',
+    body: 'A written route for change in GxP work, AI included: intended use, risk, controls, evidence and change control.',
   },
 ];
 
@@ -66,14 +70,30 @@ const scored = [
   { name: 'People', note: 'Skills, roles and decision rights' },
 ];
 
-const takeOn = [
+// What we take on, in two groups under one heading: the transformation work, then where AI fits.
+const transforming = [
   {
     title: 'Clinical-to-commercial scaling',
     body: 'The transition from clinical-phase supply to a resilient commercial distribution network: depots, 3PLs, serialisation, demand signals and launch stock.',
   },
   {
+    title: 'Target operating model and process',
+    body: 'Roles, hand-offs, KPIs and cost rebuilt for the phase ahead, so the operation runs leaner and faster, with one goal every function can see.',
+  },
+  {
+    title: 'Supplier network visibility',
+    body: 'Multi-tier visibility across your supplier network, with due diligence and sustainability reporting where you need it.',
+  },
+  {
+    title: 'Capacity, cost and resilience',
+    body: 'Planned capacity, cost to serve, dual sourcing and buffer stock sized to risk, all measured against a baseline.',
+  },
+];
+
+const aiFits = [
+  {
     title: 'AI use-case discovery',
-    body: 'Where AI earns a place in your operation, mapped to real pain points, with a data readiness and systems assessment.',
+    body: 'Where AI earns a place in your operation, mapped to real pain points, with a data readiness and systems assessment. We bridge the gap between low or no use, external tools and unverifiable output, and a validated practice your supervisors trust.',
   },
   {
     title: 'Validation for GxP',
@@ -84,21 +104,21 @@ const takeOn = [
     body: 'Purpose-built agents that watch activity, flag risk and guide decisions for supply professionals and leaders. They sit between manual work and full autonomy, and they never act alone.',
   },
   {
-    title: 'Supplier network visibility',
-    body: 'Multi-tier visibility across your supplier network, with due diligence and sustainability reporting where you need it.',
-  },
-  {
     title: 'AI training for supply and procurement teams',
     body: 'Practical use across RFQs, supplier communications, contract summaries, clause analysis, spend analytics, forecasting and workflow redesign. Governance covered in the same room: data privacy, hallucination risk, supplier use of AI and regulatory exposure.',
   },
 ];
 
 const howItRuns = [
-  { title: 'Assess', body: 'Use cases, data and systems, scored for value and risk.' },
+  { title: 'Assess', body: 'Functions, processes, systems, data and use cases, scored for value and risk.' },
+  { title: 'Design', body: 'The linked operation and the target model: roles, hand-offs, KPIs and cost for the phase ahead.' },
   { title: 'Pilot', body: 'One workflow, one team, measured against a baseline.' },
-  { title: 'Validate', body: 'Controls and evidence that satisfy your quality system and your regulators.' },
+  {
+    title: 'Validate',
+    body: 'Controls and evidence that satisfy your quality system and your regulators. Where AI is in scope, its intended use is written down too.',
+  },
   { title: 'Adopt', body: 'Training, SOP updates and change management for the teams who run it.' },
-  { title: 'Oversee', body: 'Agents in place, dashboards live, people in charge.' },
+  { title: 'Oversee', body: 'Dashboards live and people in charge, with agents in place where AI is used.' },
 ];
 
 const schema = [
@@ -107,7 +127,7 @@ const schema = [
     '@type': 'Service',
     '@id': `${site.url}${path}#service`,
     name: 'Operations Excellence',
-    serviceType: 'Life sciences supply chain operations and AI oversight',
+    serviceType: 'Life sciences operations transformation, with AI oversight where it fits',
     description,
     url: `${site.url}${path}`,
     provider: { '@id': `${site.url}/#organisation` },
@@ -127,7 +147,7 @@ const schema = [
 <Base title={title} description={description} path={path} schema={schema}>
   <PageHero
     title="Operations Excellence"
-    lead={`Supply chains rebuilt for the operations evolution: automated lines, self-running depots and AI oversight, with your people in charge. Next-gen ready, delivered with ${partner}.`}
+    lead={`Operations rebuilt leaner, faster and stronger, with every part of the business linked to one goal and run with confidence. AI where it earns its place. Next-gen ready, delivered with ${partner}.`}
     eyebrow="Service area"
     crumbs={[{ title: 'Services', href: '/#services' }, { title: 'Operations Excellence' }]}
     cta={{ label: 'Start a conversation' }}
@@ -138,13 +158,20 @@ const schema = [
   <Section tight>
     <div class="intro" data-reveal>
       <p class="intro__statement">
-        Most supply operations were built for the phase they were in, and for an industry that ran on manual lines,
-        staffed depots and the monthly report.
+        Most operations were built for the phase they were in, and grew one function at a time, each with its own
+        plan, its own data and its own idea of success.
       </p>
-      <p>
-        That industry is being rebuilt around automation and AI. We rebuild your operation for the phase ahead and the
-        industry ahead, then add oversight that watches the work and guides the decisions, with your people in charge.
-      </p>
+      <div class="intro__body">
+        <p>
+          We link planning, procurement, manufacturing, quality, logistics and finance into one operation with one
+          goal, then rebuild processes, capacity and cost for the phase ahead.
+        </p>
+        <p>
+          Operations excellence is different now. Technology has moved the work forward: analytics turn into action,
+          oversight is live across the whole operation, and the tools are in use on every engagement, not just built
+          into the pitch.
+        </p>
+      </div>
     </div>
   </Section>
 
@@ -154,8 +181,8 @@ const schema = [
       <p class="eyebrow eyebrow--on-film">The industry ahead</p>
       <h2 id="evolution-title">The operations evolution</h2>
       <p class="lead">
-        Four shifts are changing how medicines are made, stored, moved and watched. Each one changes what a supply
-        chain has to be able to do.
+        Four shifts are changing how life sciences operations are planned, run and measured. Each one asks the whole
+        business to move as one.
       </p>
     </div>
     <div class="shifts">
@@ -174,13 +201,12 @@ const schema = [
           <p class="eyebrow">Next-gen ready</p>
           <h2 id="next-gen-ready-title">What <span class="nb">next-gen</span> ready means</h2>
           <p class="lead ready-lead">
-            A next-gen ready supply chain can take on automated lines, self-running depots and AI oversight without a
-            rebuild each time. Its data is clean enough for a machine to act on, its systems pass that data to each
-            other with no retyping, its partners run at the same standard, and its people know how to work with the
-            tools and when to overrule them.
+            A next-gen ready operation works as one, and takes on the next change without a rebuild each time. Its
+            data is clean enough to act on, its systems pass that data to each other with no retyping, its partners
+            keep the same pace, its people know who decides, and its validation holds as the work changes.
           </p>
         </div>
-        <ul class="ready" role="list" aria-label="Five signs of a next-gen ready supply chain">
+        <ul class="ready" role="list" aria-label="Five signs of a next-gen ready operation">
           {readiness.map((item, index) => (
             <li data-reveal style={`--d:${index * 80}ms`}>
               <strong>{item.title}</strong>
@@ -224,8 +250,22 @@ const schema = [
   </section>
 
   <!-- what we take on -->
-  <Section id="take-on" tone="mist" eyebrow="Scope" title="What we take on">
-    <Blocks items={takeOn} cols={2} />
+  <Section
+    id="take-on"
+    tone="mist"
+    eyebrow="Scope"
+    title="What we take on"
+    intro="Transformation first, then AI where it earns its place."
+  >
+    <!-- two groups under the one H2; the labels are text, not headings, so the block H3s keep their level -->
+    <div class="take-group" role="group" aria-labelledby="take-on-transforming">
+      <p class="eyebrow take-group__label" id="take-on-transforming" data-reveal>Transforming operations</p>
+      <Blocks items={transforming} cols={2} />
+    </div>
+    <div class="take-group" role="group" aria-labelledby="take-on-ai">
+      <p class="eyebrow take-group__label" id="take-on-ai" data-reveal>Where AI fits</p>
+      <Blocks items={aiFits} cols={2} />
+    </div>
   </Section>
 
   <!-- how it runs -->
@@ -234,7 +274,7 @@ const schema = [
       <div class="section-head runs__head" data-reveal>
         <p class="eyebrow">Method</p>
         <h2 id="how-it-runs-title">How it runs</h2>
-        <p class="lead">Five stages, from the first assessment to agents in place.</p>
+        <p class="lead">Six stages, from the first assessment to an operation that runs as one.</p>
       </div>
       <Steps items={howItRuns} />
     </div>
@@ -247,9 +287,14 @@ const schema = [
         <p class="eyebrow">Partnership</p>
         <h2 id="partnership-title">Viaclin and {partner}</h2>
         <p class="measure">
-          {partner} is Viaclin's sister brand for AI products in regulated industries. Viaclin runs the programme and
-          answers for the outcome; {partner} supplies the agents. One contract, one accountable lead.
+          Where AI is in scope, we deliver it with {partner}, Viaclin's sister brand for AI products in regulated
+          industries. Viaclin runs the programme and answers for the outcome; {partner} supplies the agents. One
+          contract, one accountable lead.
         </p>
+        <ul class="roles" role="list">
+          <li><strong>AI integration partner:</strong> we design, validate and run the agents inside your quality system.</li>
+          <li><strong>AI trainer:</strong> we teach supply and procurement teams to use the tools well and to know when to overrule them.</li>
+        </ul>
         {site.sisterBrand.url && (
           <p>
             <a class="text-link partner-link" href={site.sisterBrand.url} rel="noopener" target="_blank">
@@ -292,11 +337,18 @@ const schema = [
     color: var(--fg);
   }
 
-  .intro p:not(.intro__statement) {
+  .intro__body {
     padding-left: var(--space-5);
     border-left: 2px solid var(--accent);
+  }
+
+  .intro__body p {
     font-size: var(--text-lg);
     line-height: 1.55;
+  }
+
+  .intro__body > * + * {
+    margin-top: var(--space-4);
   }
 
   /* band heading: the home page pattern, restated here because those styles are scoped to the home page */
@@ -367,7 +419,8 @@ const schema = [
   }
 
   /* the V mark's green stroke, used as a tick */
-  .ready li::before {
+  .ready li::before,
+  .roles li::before {
     content: '';
     position: absolute;
     left: 0;
@@ -554,6 +607,24 @@ const schema = [
     }
   }
 
+  /* what we take on: each group opens with its label and a hairline that runs to the edge */
+  .take-group + .take-group {
+    margin-top: clamp(44px, 6vw, 72px);
+  }
+
+  .take-group__label {
+    display: flex;
+    margin-bottom: clamp(20px, 2.6vw, 32px);
+    color: var(--fg);
+  }
+
+  .take-group__label::after {
+    content: '';
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--rule);
+  }
+
   /* how it runs: heading left, steps right */
   .runs {
     display: grid;
@@ -573,7 +644,22 @@ const schema = [
     white-space: nowrap;
   }
 
-  /* partnership */
+  /* partnership: the two roles, ticked with the V mark */
+  .roles {
+    display: grid;
+    gap: 14px;
+    max-width: var(--measure);
+  }
+
+  .roles li {
+    position: relative;
+    padding-left: 34px;
+  }
+
+  .roles li::before {
+    top: 0.2em;
+  }
+
   .partner-link {
     display: inline-flex;
     align-items: center;

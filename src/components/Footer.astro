@@ -1,6 +1,7 @@
 ---
 // Footer: reversed lockup, service and company links, legal set, company details, last update.
 import Logo from './Logo.astro';
+import Icon from './Icon.astro';
 import { services, company, legal } from '../data/nav';
 import { site, builtOn, formatDate } from '../data/site';
 
@@ -9,6 +10,16 @@ const year = builtOn.slice(0, 4);
 
 <footer class="site-footer" data-pagefind-ignore>
   <div class="container">
+    <div class="site-footer__tools">
+      <button class="icon-btn site-footer__tool" type="button" data-search-open aria-label="Search the site">
+        <Icon name="search" /><span>Search</span>
+      </button>
+      <button class="icon-btn site-footer__tool" type="button" data-theme-toggle aria-label="Switch to dark theme" aria-pressed="false">
+        <Icon name="moon" class="theme-icon--moon" />
+        <Icon name="sun" class="theme-icon--sun" />
+        <span>Theme</span>
+      </button>
+    </div>
     <div class="site-footer__grid">
       <div>
         <Logo variant="lockup" label="Viaclin, life science consultancy" />
@@ -68,5 +79,30 @@ const year = builtOn.slice(0, 4);
     margin-top: var(--space-3);
     font-weight: 600;
     color: var(--white);
+  }
+
+  /* search and the theme switch sit here, out of the header */
+  .site-footer__tools {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding-top: clamp(20px, 3vw, 28px);
+  }
+
+  .site-footer__tool {
+    color: var(--white);
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .site-footer__tool:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  @media (max-width: 520px) {
+    .site-footer__tools {
+      justify-content: flex-start;
+    }
   }
 </style>

@@ -66,7 +66,8 @@ const JARGON = [
 
 // Check 3. Phrases that contain a jargon stem and are allowed. They are blanked before the check runs.
 //   'navigator' is the browser API name and turns up in comments about the clipboard and the network.
-const JARGON_ALLOW = ['navigator'];
+//   'end-to-end bespoke solutions' is the owner's own line for the Supply Chain Consultancy hero.
+const JARGON_ALLOW = ['navigator', 'end-to-end bespoke solutions'];
 
 // Check 4. American spellings. Warnings, never failures.
 const AMERICAN = [

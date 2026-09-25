@@ -18,12 +18,7 @@ export const services: NavLink[] = [
   {
     title: 'Operations Excellence',
     href: '/services/operations-excellence',
-    summary: 'Next-gen ready operations, with AI oversight.',
-  },
-  {
-    title: 'Trial close-out',
-    href: '/services/trial-close-out',
-    summary: 'The nine-step close-out at a fixed fee.',
+    summary: 'Leaner, faster, stronger operations, next-gen ready.',
   },
 ];
 

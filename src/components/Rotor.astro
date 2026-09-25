@@ -1,0 +1,167 @@
+---
+// Statement band: one display line whose last word turns over, "Operations; enhanced." and on.
+// Screen readers hear the lead and the first word as one stable heading; the turning word and its
+// full stop are hidden from them. rotor.ts reserves the width of the widest word, so the line never
+// reflows, and runs the cycle while the line is in view. Reduced motion or a static capture keeps
+// the first word. The pause button covers WCAG 2.2.2, the same as the banner and the films.
+import Icon from './Icon.astro';
+
+interface Props {
+  /** The fixed part of the line, set before the turning word. */
+  lead?: string;
+  /** The words that turn over, in order. The first is the one screen readers hear. */
+  words?: string[];
+  /** Pass an empty string to leave the eyebrow out. */
+  eyebrow?: string;
+}
+
+const {
+  lead = 'Operations;',
+  words = [
+    'enhanced', 'maximised', 'optimised', 'visible', 'organised', 'transformed',
+    'reliable', 'better', 'stronger', 'faster', 'cheaper', 'safer',
+  ],
+  eyebrow = 'Operations Excellence',
+} = Astro.props;
+
+const first = words[0] ?? '';
+---
+
+<section class="section rotor-band" aria-labelledby="rotor-title" data-reveal data-rotor>
+  <div class="container">
+    <div class="rotor-band__head">
+      {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+      <button
+        class="rotor-band__toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Pause the changing word"
+        data-rotor-toggle
+      >
+        <Icon name="pause" />
+        <Icon name="play" />
+      </button>
+    </div>
+    <h2 class="display display--hero rotor-band__title" id="rotor-title" aria-label={`${lead} ${first}.`}>
+      {lead} <span class="rotor" aria-hidden="true" data-rotor-slot data-words={JSON.stringify(words)}><span class="rotor__word" data-rotor-word><span class="rotor__text" data-rotor-text>{first}</span><span class="rotor__stop">.</span></span><span class="rotor__probe" data-rotor-probe></span></span>
+    </h2>
+  </div>
+</section>
+
+<style>
+  .rotor-band {
+    padding-block: calc(var(--section-y) * 1.35);
+  }
+
+  .rotor-band__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+
+  /* each item carries the gap to the line, so a row with nothing shown takes no room */
+  .rotor-band__head > * {
+    margin-bottom: clamp(20px, 2.4vw, 32px);
+  }
+
+  /* the reserved width is set by rotor.ts; the word sits on the lead's baseline */
+  .rotor {
+    position: relative;
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  .rotor__word {
+    display: inline-block;
+  }
+
+  .rotor__text {
+    color: var(--link);
+  }
+
+  .rotor__stop {
+    color: var(--fg);
+  }
+
+  /* measures each word in the heading's own type, out of sight and out of the flow */
+  .rotor__probe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: max-content;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* pause and play: the banner's toggle, shown while the word can move */
+  .rotor-band__toggle {
+    display: none;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  .rotor-band__toggle:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  .rotor-band__toggle:focus-visible {
+    border-radius: 50%;
+  }
+
+  .rotor-band__toggle :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .rotor-band__toggle :global(.icon-play),
+  .rotor-band__toggle[aria-pressed='true'] :global(.icon-pause) {
+    display: none;
+  }
+
+  .rotor-band__toggle[aria-pressed='true'] :global(.icon-play) {
+    display: block;
+  }
+
+  @media screen and (prefers-reduced-motion: no-preference) {
+    :global(.js:not(.static)) .rotor-band__toggle {
+      display: inline-flex;
+      transition: transform var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease),
+        border-color var(--dur-1) var(--ease);
+    }
+
+    :global(.js:not(.static)) .rotor-band__toggle:hover {
+      transform: scale(1.06);
+    }
+
+    /* the next word eases in from below */
+    :global(.js:not(.static)) .rotor__word {
+      transition: opacity var(--dur-3) var(--ease), transform var(--dur-3) var(--ease);
+    }
+
+    /* the current word lifts and fades; rotor.ts reads this duration before it sets the next word */
+    :global(.js:not(.static)) .rotor__word.is-out {
+      opacity: 0;
+      transform: translate3d(0, -0.32em, 0);
+      transition-duration: var(--dur-2);
+      transition-timing-function: var(--ease-in-out);
+    }
+
+    /* the next word waits below the line, placed without a transition */
+    :global(.js:not(.static)) .rotor__word.is-pre {
+      opacity: 0;
+      transform: translate3d(0, 0.32em, 0);
+      transition: none;
+    }
+  }
+</style>

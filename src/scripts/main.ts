@@ -12,6 +12,8 @@ import { initAnalytics } from './analytics';
 import { initUtm } from './utm';
 import { initExperiments } from './ab';
 import { initSearch } from './search';
+import { initArcs } from './arcs';
+import { initRotor } from './rotor';
 
 const steps: Array<[string, () => void]> = [
   ['theme', initTheme],
@@ -27,6 +29,8 @@ const steps: Array<[string, () => void]> = [
   ['contact', initContact],
   ['copy', initCopy],
   ['search', initSearch],
+  ['arcs', initArcs],
+  ['rotor', initRotor],
 ];
 
 // One failing module must never take the rest of the page down with it.
