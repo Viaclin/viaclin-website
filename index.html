@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viaclin | Life Sciences Supply Chain Consultancy</title>
+<meta name="description" content="Specialist supply chain support, clinical trial supply expertise, greenfield operations setup and forecasting for life sciences companies across the EU, US and UK.">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23222f30'/%3E%3Cpath d='M14 20 L32 46 L50 20' stroke='%23ffffff' stroke-width='5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='46' r='6' fill='%23cef79e'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+<script>
+document.documentElement.classList.add('js');
+// capture hooks: ?static=1 freezes motion, ?fit=1 releases viewport-height sizing (headless full-page shots)
+const __q = new URLSearchParams(location.search);
+if (__q.get('static')) document.documentElement.classList.add('static');
+if (__q.get('fit')) document.documentElement.classList.add('fit');
+</script>
+<style>
+  /* ─────────────────────────────────────────────
+     VIACLIN · darkroom-laboratory system
+     Tokens from the Integrated Biosciences
+     style reference. One weight. One accent.
+     ───────────────────────────────────────────── */
+  :root {
+    /* ── Canonical tokens:Refero extraction of integratedbiosciences.com (tokens/variables.css) ── */
+    --color-bioluminescent-lime: #cef79e;
+    --color-abyssal-ink: #222f30;
+    --color-bone-white: #f7f7f5;
+    --color-paper: #ffffff;
+    --color-graphite: #4d5757;
+    --color-lichen: #c9cbbe;
+    --color-tissue: #e7e8e1;
+    --color-frost: #eeeeee;
+    --color-void: #000000;
+
+    /* 'Inter Tight' inserted after Aspekta:Aspekta is not web-hosted, Inter Tight is its documented substitute */
+    --font-aspekta: 'Aspekta', 'Inter Tight', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-roboto-mono: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+    --text-caption: 13px;   --leading-caption: 1.23;   --tracking-caption: -0.26px;
+    --text-body: 18px;      --leading-body: 1.3;       --tracking-body: -0.018px;
+    --text-body-lg: 22px;   --leading-body-lg: 1.3;    --tracking-body-lg: -0.13px;
+    --text-subheading: 24px;   --leading-subheading: 1.2;   --tracking-subheading: -0.14px;
+    --text-heading-sm: 36px;   --leading-heading-sm: 1.2;   --tracking-heading-sm: -0.22px;
+    --text-heading-lg: 58px;   --leading-heading-lg: 1.1;   --tracking-heading-lg: -0.7px;
+    --text-display: 75px;      --leading-display: 1.1;      --tracking-display: -1.5px;
+    --text-display-lg: 89px;   --leading-display-lg: 1.1;   --tracking-display-lg: -1.78px;
+    --text-display-xl: 111px;  --leading-display-xl: 1;     --tracking-display-xl: -2.22px;
+    --text-hero: 158px;        --leading-hero: 1;           --tracking-hero: -4.74px;
+
+    --font-weight-regular: 400;
+
+    --spacing-unit: 4px;
+    --spacing-4: 4px; --spacing-8: 8px; --spacing-12: 12px; --spacing-16: 16px;
+    --spacing-20: 20px; --spacing-24: 24px; --spacing-40: 40px; --spacing-44: 44px;
+    --spacing-48: 48px; --spacing-52: 52px; --spacing-60: 60px; --spacing-88: 88px;
+    --spacing-100: 100px; --spacing-160: 160px;
+
+    --page-max-width: 1200px;
+    --card-padding: 40px;
+
+    --radius-lg: 8px; --radius-xl: 12px; --radius-2xl: 16px; --radius-2xl-2: 20px; --radius-3xl: 40px;
+    --radius-nav: 12px; --radius-tags: 9999px; --radius-buttons: 8px; --radius-largecards: 40px;
+
+    /* ── Short aliases used throughout this stylesheet ── */
+    --lime:     var(--color-bioluminescent-lime);
+    --ink:      var(--color-abyssal-ink);
+    --bone:     var(--color-bone-white);
+    --paper:    var(--color-paper);
+    --graphite: var(--color-graphite);
+    --lichen:   var(--color-lichen);
+    --tissue:   var(--color-tissue);
+    --frost:    var(--color-frost);
+    --void:     var(--color-void);
+    --font-sans: var(--font-aspekta);
+    --font-mono: var(--font-roboto-mono);
+    --w: var(--page-max-width);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font-sans);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-body);
+    overflow-x: hidden;
+  }
+  b, strong, h1, h2, h3, h4 { font-weight: 400; }
+  ::selection { background: var(--lime); color: var(--ink); }
+  :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; }
+  .band-light :focus-visible { outline-color: var(--ink); }
+  .skip-link { position: absolute; left: -9999px; top: 0; z-index: 400; background: var(--paper); color: var(--ink); font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; padding: 10px 16px; border-radius: 0 0 8px 0; text-decoration: none; }
+  .skip-link:focus { left: 0; }
+  a { color: inherit; }
+
+  .wrap { max-width: var(--w); margin: 0 auto; padding: 0 clamp(1.25rem, 4vw, 3rem); }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: -0.02em;
+    line-height: 1.23;
+  }
+
+  /* lime period:the brand's terminal signal */
+  .lp { color: var(--lime); }
+
+  /* ── PROGRESS INDICATOR (sanctioned lime) ── */
+  .progress { position: fixed; top: 0; left: 0; height: 2px; width: 100%; background: var(--lime); transform: scaleX(0); transform-origin: 0 0; z-index: 300; }
+
+  /* ── NAV:persistent banner ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    border-bottom: 1px solid transparent;
+    transition: background .35s, border-color .35s;
+  }
+  .nav.scrolled {
+    background: rgba(34, 47, 48, .85);
+    -webkit-backdrop-filter: blur(14px) saturate(1.15);
+    backdrop-filter: blur(14px) saturate(1.15);
+    border-bottom-color: var(--graphite);
+  }
+  .nav-left { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
+  .nav-tagline {
+    display: inline-flex; align-items: center; gap: .7rem;
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: var(--tracking-caption);
+    text-transform: uppercase; color: var(--lichen); white-space: nowrap;
+  }
+  #tagslot { visibility: hidden; }
+  @media (max-width: 1439px) { #tagslot { display: none; } } /* dock only when the bar has room for slot + pills */
+  #tagfly { position: fixed; left: 0; top: 0; z-index: 210; display: none; pointer-events: none; will-change: transform; }
+  .fly-active #tagfly { display: inline-flex; }
+  .fly-active .hero .tagline { opacity: 0; }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding-top: 1.6rem; padding-bottom: 1.6rem; }
+  .brand { display: inline-flex; align-items: center; gap: .7rem; text-decoration: none; }
+  .brand svg { width: 30px; height: 26px; display: block; }
+  .brand-word { font-family: var(--font-sans); font-size: 22px; letter-spacing: -0.006em; color: var(--paper); }
+  .nav-links { display: flex; align-items: center; gap: .6rem; list-style: none; }
+  .nav-links a:not(.nav-cta) {
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em;
+    color: var(--lichen); text-decoration: none; text-transform: uppercase;
+    border: 1px solid var(--lichen); border-radius: var(--radius-nav); padding: 8px 16px;
+    white-space: nowrap;
+    transition: color .25s, border-color .25s, background .25s;
+  }
+  .nav-links a:not(.nav-cta):hover { color: var(--paper); border-color: var(--paper); }
+  .nav-links a.active:not(.nav-cta),
+  .nav-links a.active:not(.nav-cta):hover { background: var(--lime); border-color: var(--lime); color: var(--ink); }
+  .nav-cta {
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase;
+    text-decoration: none; color: var(--ink); background: var(--paper);
+    padding: 8px 16px; border-radius: var(--radius-buttons); white-space: nowrap; transition: background .25s;
+  }
+  .nav-cta:hover { background: var(--bone); }
+  .burger { display: none; flex-direction: column; justify-content: center; align-items: center; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; min-width: 44px; min-height: 44px; }
+  .burger span { width: 24px; height: 1px; background: var(--paper); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 92vh; min-height: 92svh; /* svh: stable height under iOS dynamic toolbars */
+    display: flex; flex-direction: column; justify-content: space-between; padding-top: clamp(7rem, 12vh, 9rem);
+    background-image:
+      radial-gradient(ellipse 60% 45% at 78% 10%, rgba(206,247,158,.10), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 8% 95%, rgba(206,247,158,.05), transparent 55%),
+      radial-gradient(rgba(255,255,255,.035) 1px, transparent 1.4px);
+    background-size: auto, auto, 26px 26px;
+  }
+  .hero::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 55% 40% at 75% 18%, rgba(206,247,158,.07), transparent 60%); animation: breathe 9s ease-in-out infinite alternate; pointer-events: none; }
+  @keyframes breathe { from { opacity: .35; } to { opacity: 1; } }
+  .hero > .wrap { position: relative; z-index: 1; width: 100%; }
+  .hero-desc { margin-top: 2rem; font-size: clamp(1.1rem, 1.6vw, 1.375rem); line-height: 1.3; letter-spacing: -0.006em; color: var(--paper); opacity: .8; max-width: 52ch; }
+  .hero-sphere { position: absolute; z-index: 0; right: max(3vw, calc((100vw - 1200px) / 2)); top: 41%; transform: translateY(-50%); width: clamp(260px, 30vw, 430px); aspect-ratio: 1; pointer-events: none; }
+  .hero-sphere canvas { width: 100%; height: 100%; display: block; }
+  .hero-sphere::after { content: ''; position: absolute; inset: -6%; border: 1px solid rgba(206,247,158,.16); border-radius: 50%; }
+  .tagline { display: inline-flex; align-items: center; gap: .7rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); }
+  .tagline .dot, .dot6 { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); flex-shrink: 0; }
+  .hero h1 { margin-top: 2.2rem; display: flex; align-items: center; gap: clamp(1.1rem, 2.6vw, 2.2rem); }
+  .lockup-mark { width: clamp(64px, 9.5vw, 128px); height: auto; flex-shrink: 0; display: block; }
+  .lockup-word {
+    font-size: clamp(3.2rem, 10.4vw, 9.875rem); /* caps at the 158px hero token */
+    line-height: var(--leading-hero);
+    letter-spacing: -0.03em; /* -4.74px at 158px, per --tracking-hero */
+    color: var(--paper);
+  }
+  .hero-cycle { margin-top: clamp(1.6rem, 3.4vh, 2.8rem); font-size: clamp(1.3rem, 6.1vw, 3.625rem); line-height: 1.1; letter-spacing: -0.012em; color: var(--paper); }
+  .cycle-word { color: var(--lime); display: inline-block; transition: opacity .26s ease, transform .26s ease; }
+  .cycle-word.out { opacity: 0; transform: translateY(.35em); }
+  /* invisible copy of the longest word reserves the span's width so swapping words never rewraps the line;
+     the live word overlays it absolutely, sharing the sizer's natural baseline */
+  .cycle-word { position: relative; }
+  .cycle-sizer { visibility: hidden; }
+  .cycle-live { position: absolute; left: 0; top: 0; white-space: nowrap; }
+  .visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .hero-lower { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: end; padding-top: clamp(220px, 26vh, 340px); padding-bottom: clamp(3rem, 7vh, 5rem); }
+  .hero-state {
+    font-size: clamp(1.45rem, 2.6vw, 2.25rem);
+    line-height: 1.2;
+    letter-spacing: -0.006em;
+    color: var(--paper); opacity: .62; /* spec asks graphite, but that's 1.9:1 on ink:muted paper keeps it readable */
+    max-width: 24ch;
+  }
+
+  /* buttons:restrained, mono, radius 8 */
+  .btn {
+    display: inline-flex; align-items: center; gap: .55rem;
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase;
+    text-decoration: none; padding: 12px 16px; border-radius: var(--radius-buttons); cursor: pointer;
+    transition: background .25s, color .25s, border-color .25s;
+  }
+  .btn-fill-light { background: var(--paper); color: var(--ink); border: none; }
+  .btn-fill-light:hover { background: var(--bone); }
+  .btn-fill-dark { background: var(--ink); color: var(--paper); border: none; }
+  .btn-fill-dark:hover { background: var(--void); }
+  .btn-ghost { background: transparent; color: var(--paper); border: 1px solid var(--graphite); }
+  .btn-ghost:hover { border-color: var(--paper); }
+  .btn-ghost-light { background: transparent; color: var(--ink); border: 1px solid var(--graphite); }
+  .btn-ghost-light:hover { border-color: var(--ink); }
+
+  /* arrow CTA:the only lime fill, 40×40 exactly */
+  .arrow-btn {
+    width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--radius-buttons);
+    background: var(--lime); border: none; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    text-decoration: none; transition: transform .25s;
+  }
+  .arrow-btn svg { width: 16px; height: 16px; stroke: var(--ink); transition: transform .25s; }
+  .arrow-btn:hover svg { transform: translateX(3px); }
+
+  /* ── ROUTE DIAGRAM (hero instrument) ── */
+  .hero-route { border-top: 1px solid var(--graphite); padding: 2.6rem 0 3.4rem; }
+  .hero-route svg { width: 100%; height: auto; overflow: visible; display: block; }
+  .route-path { fill: none; stroke: var(--graphite); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .route-node { fill: var(--ink); stroke: var(--paper); stroke-width: 2; }
+  .route-core { fill: var(--lime); stroke: none; }
+  .route-lbl { font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; fill: var(--lichen); }
+  .route-lbl.lime { fill: var(--lime); }
+  .route-dot { fill: var(--lime); opacity: 0; animation: dot-in .2s 2.8s forwards; filter: drop-shadow(0 0 5px rgba(206,247,158,.75)); }
+  .drawn .route-path { stroke-dasharray: 1600; stroke-dashoffset: 1600; animation: draw 2.6s .3s cubic-bezier(.4,.1,.2,1) forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes dot-in { to { opacity: 1; } }
+  .route-note { margin-top: 1.4rem; display: flex; align-items: center; gap: .7rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--lichen); text-transform: uppercase; }
+  .route-note .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--lime); animation: pulse 2.4s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+  /* ── CRED STRIP ── */
+  .cred { border-top: 1px solid var(--graphite); border-bottom: 1px solid var(--graphite); }
+  .cred-inner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding-top: 2.2rem; padding-bottom: 2.2rem; }
+  .cred-n { font-size: var(--text-heading-sm); letter-spacing: var(--tracking-heading-sm); line-height: 1.1; color: var(--paper); }
+  .cred-n b { color: var(--lime); }
+  .cred-l { margin-top: .55rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); }
+
+  /* ── SECTIONS ── */
+  section { padding: clamp(5rem, 11vw, 10rem) 0; }
+  .band-light { background: var(--bone); color: var(--graphite); }
+  .band-light h2, .band-light h3 { color: var(--ink); }
+
+  .counter {
+    display: inline-flex; align-items: center;
+    font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em;
+    color: var(--lichen); border: 1px solid var(--graphite);
+    border-radius: var(--radius-tags); padding: 6px 14px;
+  }
+  .band-light .counter { border-color: var(--lichen); color: var(--graphite); }
+  .sec-tag { display: inline-flex; align-items: center; gap: .7rem; margin-left: 14px; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); }
+  .band-light .sec-tag { color: var(--graphite); }
+  .band-light .lp { color: var(--ink); }
+  .sec-head { margin-bottom: clamp(2.8rem, 6vw, 4.5rem); }
+  h2.title {
+    margin-top: 1.6rem;
+    font-size: clamp(2.3rem, 5vw, 3.625rem);
+    line-height: 1.1;
+    letter-spacing: -0.012em;
+    color: var(--paper);
+    max-width: 20ch;
+  }
+  .band-light h2.title { color: var(--ink); }
+  .lead { margin-top: 1.4rem; font-size: var(--text-body-lg); line-height: var(--leading-body-lg); letter-spacing: var(--tracking-body-lg); max-width: 52ch; color: var(--graphite); }
+  .band-dark .lead { color: var(--paper); }
+  .band-light .lead { color: var(--ink); }
+
+  /* ── SERVICES (dark) ── */
+  .services { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .svc {
+    position: relative; overflow: hidden;
+    border: 1px solid var(--graphite); border-radius: var(--radius-2xl-2); padding: var(--card-padding);
+    display: flex; flex-direction: column; transition: border-color .3s;
+  }
+  .svc::before, .region::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--lime); transform: scaleX(0); transform-origin: left; transition: transform .4s cubic-bezier(.2,.7,.2,1); }
+  .svc:hover::before, .region:hover::before { transform: scaleX(1); }
+  .svc:hover { border-color: var(--paper); }
+  .svc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.6rem; }
+  .svc-ico { margin-bottom: 1.3rem; }
+  .svc-ico svg { width: 40px; height: 40px; display: block; }
+  .svc-tag { display: inline-flex; align-items: center; gap: .7rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); }
+  .svc h3 { font-size: var(--text-subheading); line-height: var(--leading-subheading); letter-spacing: var(--tracking-subheading); color: var(--paper); margin-bottom: .9rem; }
+  .svc-b { font-size: 16px; line-height: 1.3; color: var(--paper); margin-bottom: 1.6rem; }
+  .svc-list { list-style: none; display: flex; flex-direction: column; gap: .6rem; margin-top: auto; }
+  .svc-list li { display: flex; align-items: flex-start; gap: .7rem; font-size: 16px; line-height: 1.3; color: var(--paper); }
+  .svc-list li::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); margin-top: .5rem; flex-shrink: 0; }
+
+  /* ── CAPABILITIES (light) ── */
+  .capgroup { margin-bottom: clamp(2.6rem, 5vw, 4rem); }
+  .capgroup:last-child { margin-bottom: 0; }
+  .capgroup-h { display: flex; align-items: center; gap: .8rem; font-size: var(--text-subheading); line-height: var(--leading-subheading); letter-spacing: var(--tracking-subheading); color: var(--ink); margin-bottom: 1.4rem; }
+  .caps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+  .cap { background: var(--paper); border: 1px solid var(--lichen); border-radius: var(--radius-2xl); padding: 1.8rem 1.7rem; }
+  .cap h4 { font-size: 19px; line-height: 1.3; letter-spacing: -0.001em; color: var(--ink); margin-bottom: .5rem; }
+  .cap p { font-size: 16px; line-height: 1.3; color: var(--graphite); }
+
+  /* ── NETWORK (dark) ── */
+  .net-grid { display: grid; grid-template-columns: 1fr .9fr; gap: clamp(2rem, 4vw, 4rem); align-items: center; }
+  .npt { border-top: 1px solid var(--graphite); padding: 1.8rem 0; }
+  .npt:last-child { border-bottom: 1px solid var(--graphite); }
+  .npt h3 { font-size: var(--text-subheading); line-height: var(--leading-subheading); letter-spacing: var(--tracking-subheading); color: var(--paper); margin-bottom: .55rem; }
+  .npt p { font-size: 16px; line-height: 1.3; color: var(--paper); max-width: 48ch; }
+  .net-visual svg { width: 100%; height: auto; overflow: visible; display: block; }
+
+  /* ── METHOD (light) ── */
+  .method { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .step { background: var(--paper); border: 1px solid var(--lichen); border-radius: var(--radius-2xl-2); padding: var(--card-padding); }
+  .step-n { font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--ink); background: var(--lime); border: 1px solid var(--lime); border-radius: var(--radius-tags); padding: 6px 14px; display: inline-block; margin-bottom: 2.6rem; }
+  .step h3 { font-size: var(--text-subheading); line-height: var(--leading-subheading); letter-spacing: var(--tracking-subheading); color: var(--ink); margin-bottom: .7rem; }
+  .step p { font-size: 16px; line-height: 1.3; color: var(--graphite); }
+
+  /* ── COVERAGE (dark) ── */
+  .regions { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: clamp(3rem, 6vw, 5rem); }
+  .region { position: relative; overflow: hidden; border: 1px solid var(--graphite); border-radius: var(--radius-2xl-2); padding: var(--card-padding); transition: border-color .3s; }
+  .region::after { content: ''; position: absolute; right: -42px; bottom: -42px; width: 130px; height: 130px; border: 1px solid rgba(206,247,158,.3); border-radius: 50%; pointer-events: none; }
+  .region:hover { border-color: var(--paper); }
+  .region-code { font-size: var(--text-heading-lg); line-height: var(--leading-heading-lg); letter-spacing: var(--tracking-heading-lg); color: var(--lime); margin-bottom: 1.4rem; }
+  .region h3 { display: inline-flex; align-items: center; gap: .7rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); margin-bottom: .9rem; }
+  .region p { font-size: 16px; line-height: 1.3; color: var(--paper); }
+
+  .marquee { overflow: hidden; border-top: 1px solid var(--graphite); border-bottom: 1px solid var(--graphite); padding: 1.15rem 0; }
+  .marquee-track { display: flex; gap: 2.6rem; width: max-content; animation: slide 36s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  @keyframes slide { to { transform: translateX(calc(-50% - 1.3rem)); } }
+  .mq { display: flex; align-items: center; gap: 2.6rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--lichen); white-space: nowrap; }
+  .mq::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--lime); }
+
+  /* ── GROUP (light) ── */
+  .gbrands { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .gbrand { display: flex; flex-direction: column; background: var(--paper); border: 1px solid var(--lichen); border-radius: var(--radius-2xl-2); padding: var(--card-padding); text-decoration: none; transition: border-color .3s; }
+  a.gbrand:hover { border-color: var(--graphite); }
+  .gbrand.here { background: var(--lime); border-color: var(--lime); }
+  .gbrand.here .gb-b, .gbrand.here .gb-url, .gbrand.here .lp { color: var(--ink); }
+  .gbrand.here .gb-tag { background: var(--ink); color: var(--lime); }
+  .gbrand.here .dot6 { background: var(--ink); }
+  .gb-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+  .gb-name { font-size: var(--text-subheading); letter-spacing: var(--tracking-subheading); color: var(--ink); }
+  .gb-tag { font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--ink); background: var(--lime); border-radius: var(--radius-tags); padding: 4px 11px; white-space: nowrap; }
+  .gb-b { font-size: 16px; line-height: 1.3; color: var(--graphite); margin-bottom: 1.6rem; }
+  .gb-url { display: inline-flex; align-items: center; gap: .7rem; margin-top: auto; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--graphite); text-transform: uppercase; }
+
+  /* ── CONTACT (dark) ── */
+  .cta {
+    position: relative; overflow: hidden;
+    border: 1px solid var(--graphite); border-radius: var(--radius-largecards);
+    padding: clamp(3rem, 6vw, 5.5rem) clamp(2rem, 5vw, 5rem);
+    background-image: radial-gradient(ellipse 55% 60% at 85% 18%, rgba(206,247,158,.10), transparent 60%);
+  }
+  .cta-molecule { position: absolute; right: clamp(1.5rem, 5vw, 4.5rem); top: 2.8rem; width: clamp(150px, 16vw, 230px); pointer-events: none; animation: bob 7s ease-in-out infinite alternate; }
+  @keyframes bob { from { transform: translateY(-8px); } to { transform: translateY(10px); } }
+  .cta h2 {
+    margin-top: 1.6rem;
+    font-size: clamp(2.5rem, 6.4vw, 4.6875rem);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--paper);
+    max-width: 18ch;
+  }
+  .cta-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 3rem; align-items: end; margin-top: 2.6rem; }
+  .cta p { font-size: 22px; line-height: 1.3; letter-spacing: -0.006em; color: var(--paper); max-width: 40ch; }
+  .cta-actions { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
+  .cta-mail { display: inline-flex; align-items: center; gap: .7rem; margin-top: 2.4rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--lime); text-decoration: none; text-transform: uppercase; }
+  .cta-mail:hover { text-decoration: underline; }
+
+  /* ── CONTACT POPUP ── */
+  .modal-backdrop { position: fixed; inset: 0; z-index: 400; background: rgba(0,0,0,.6); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 1rem; }
+  .modal-backdrop[hidden] { display: none; }
+  .modal { position: relative; background: var(--ink); border: 1px solid var(--graphite); border-radius: var(--radius-2xl-2); padding: clamp(1.8rem, 4vw, 2.5rem); width: min(520px, 100%); max-height: min(92vh, 760px); overflow-y: auto; }
+  .modal h3 { font-size: var(--text-subheading); line-height: var(--leading-subheading); letter-spacing: var(--tracking-subheading); color: var(--paper); margin: 1rem 0 .4rem; }
+  .modal-close { position: absolute; top: 14px; right: 14px; width: 40px; height: 40px; background: none; border: 1px solid var(--graphite); border-radius: var(--radius-buttons); color: var(--paper); cursor: pointer; font-size: 18px; line-height: 1; transition: border-color .25s; }
+  .modal-close:hover { border-color: var(--paper); }
+  .f-label { display: block; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); margin: 1.1rem 0 .45rem; }
+  .f-input, .f-select { width: 100%; background: transparent; border: 1px solid var(--graphite); border-radius: var(--radius-buttons); color: var(--paper); font-family: var(--font-sans); font-size: 16px; padding: 11px 14px; transition: border-color .25s; }
+  .f-input:hover, .f-select:hover { border-color: var(--lichen); }
+  .f-input::placeholder { color: var(--graphite); }
+  .f-select { -webkit-appearance: none; appearance: none; padding-right: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5 L6 6.5 L11 1.5' fill='none' stroke='%23c9cbbe' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 13px center; }
+  .f-select option { color: var(--ink); background: var(--paper); }
+  .f-or { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0 .2rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); }
+  .f-or::before, .f-or::after { content: ''; height: 1px; background: var(--graphite); flex: 1; }
+  .f-phone { display: flex; gap: 10px; }
+  .f-phone .f-select { width: auto; flex-shrink: 0; max-width: 150px; }
+  .f-err { margin-top: 1.1rem; font-size: 16px; line-height: 1.3; color: var(--lime); }
+  .modal .btn { margin-top: 1.6rem; border: none; width: 100%; justify-content: center; }
+  .f-note { margin-top: .9rem; font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--lichen); display: flex; align-items: center; gap: .7rem; }
+
+  .hero-desc-cta { margin-top: 1.8rem; }
+  @media (min-width: 721px) {
+    /* clinical card bullets start level with the card to its left */
+    #services .svc-b { min-height: 63px; }
+    #services .svc-list { margin-top: 0; }
+  }
+
+  /* ── FOOTER:pure black ground ── */
+  footer { background: var(--void); padding: 3.4rem 0 3.8rem; }
+  .foot { display: flex; justify-content: space-between; align-items: center; gap: 1.6rem; flex-wrap: wrap; }
+  .foot-brand { display: inline-flex; align-items: center; gap: .6rem; }
+  .foot-brand svg { width: 26px; height: 22px; display: block; }
+  .foot-word { font-size: 19px; letter-spacing: -0.001em; color: var(--paper); }
+  .foot-links { display: flex; gap: 1rem 1.6rem; flex-wrap: wrap; }
+  .foot-links a { font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; text-transform: uppercase; color: var(--paper); text-decoration: none; padding: 8px 0; }
+  .foot-links a:hover { text-decoration: underline; }
+  .foot-meta { font-family: var(--font-mono); font-size: 13px; letter-spacing: -0.02em; color: var(--paper); }
+  .foot-meta a { color: inherit; }
+
+  /* reveal on scroll:hidden state only when JS is actually running */
+  .js .rv { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
+  .rv.in { opacity: 1; transform: none; }
+  .rv-d1 { transition-delay: .08s; } .rv-d2 { transition-delay: .16s; } .rv-d3 { transition-delay: .24s; }
+
+  /* capture hooks */
+  html.static { scroll-behavior: auto; }
+  .static *, .static *::before, .static *::after { animation: none !important; transition: none !important; }
+  .js.static .rv { opacity: 1; transform: none; }
+  .static .drawn .route-path { stroke-dasharray: none; stroke-dashoffset: 0; }
+  .fit .hero { min-height: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .js .rv { opacity: 1; transform: none; }
+    .drawn .route-path { stroke-dasharray: none; stroke-dashoffset: 0; }
+    .marquee-track { animation: none !important; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (min-width: 1440px) {
+    /* compact pills while the docked tagline shares the bar */
+    .nav-links { gap: .5rem; }
+    .nav-links a:not(.nav-cta) { padding: 8px 12px; }
+    .nav-cta { padding: 8px 13px; }
+  }
+  @media (max-width: 1024px) {
+    .hero-lower { grid-template-columns: 1fr; align-items: start; }
+    .services, .method, .regions, .gbrands { grid-template-columns: 1fr 1fr; }
+    .net-grid { grid-template-columns: 1fr; }
+    .net-visual { max-width: 440px; }
+    .cred-inner { grid-template-columns: 1fr 1fr; row-gap: 2rem; }
+    .cta-grid { grid-template-columns: 1fr; }
+    .cta-actions { justify-content: flex-start; }
+    .hero-sphere { display: none; }
+  }
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .burger { display: flex; }
+    .nav-links.open {
+      display: flex; position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; align-items: flex-start; gap: 1rem;
+      background: var(--ink); border-bottom: 1px solid var(--graphite);
+      padding: 1.6rem clamp(1.25rem, 4vw, 3rem) 2rem;
+    }
+    .nav-links.open a { padding: 12px 18px; }
+  }
+  @media (max-width: 900px) {
+    .cta-molecule { display: none; }
+    .hero-route .route-lbl { font-size: 18px; }
+  }
+  @media (max-width: 720px) {
+    body { font-size: 16px; }
+    .hero-lower { padding-top: clamp(4.5rem, 14vh, 8rem); }
+    .services, .method, .regions, .gbrands, .caps { grid-template-columns: 1fr; }
+    .svc, .step, .region, .gbrand { padding: 28px 24px; }
+    .cred-inner { grid-template-columns: 1fr; }
+    .foot { flex-direction: column; align-items: flex-start; }
+    .foot > * { max-width: 100%; }
+    .hero h1 { max-width: none; }
+    .hero-route .route-lbl { font-size: 24px; }
+    .hero-route text:first-of-type { text-anchor: start; }
+    .hero-route text:last-of-type { text-anchor: end; }
+    .net-visual .route-lbl { font-size: 16px; }
+  }
+  @media (max-width: 480px) {
+    .hero-route .route-lbl { font-size: 40px; }
+  }
+</style>
+</head>
+<body class="band-dark">
+
+<a class="skip-link" href="#main">Skip to main content</a>
+<div class="progress" id="prog" aria-hidden="true"></div>
+
+<!-- NAV -->
+<span class="tagline" id="tagfly" aria-hidden="true"><span class="dot"></span>Life sciences supply chain consultancy</span>
+
+<nav class="nav" id="nav" aria-label="Main">
+  <div class="wrap nav-inner">
+    <div class="nav-left">
+    <a href="#" class="brand" aria-label="Viaclin home">
+      <svg viewBox="0 0 64 52" fill="none" aria-hidden="true">
+        <path d="M8 12 L32 42 L56 12" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="8" cy="12" r="5" fill="#222f30" stroke="#ffffff" stroke-width="3"/>
+        <circle cx="32" cy="42" r="5.5" fill="#cef79e"/>
+        <circle cx="56" cy="12" r="5" fill="#222f30" stroke="#ffffff" stroke-width="3"/>
+      </svg>
+      <span class="brand-word">viaclin<span class="lp">.</span></span>
+    </a>
+    <span class="nav-tagline" id="tagslot" aria-hidden="true"><span class="dot6"></span>Life sciences supply chain consultancy</span>
+    </div>
+    <ul class="nav-links" id="navlinks">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#network">Network</a></li>
+      <li><a href="#ai">AI</a></li>
+      <li><a href="#method">Method</a></li>
+      <li><a href="#coverage">Coverage</a></li>
+      <li><a href="#contact" class="nav-cta contact-open">Start a conversation</a></li>
+    </ul>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="navlinks"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<main id="main">
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <span class="tagline" id="herotag"><span class="dot"></span>Life sciences supply chain consultancy</span>
+    <h1>
+      <svg class="lockup-mark" viewBox="0 0 64 52" fill="none" aria-hidden="true">
+        <path d="M8 12 L32 42 L56 12" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="8" cy="12" r="5" fill="#222f30" stroke="#ffffff" stroke-width="3"/>
+        <circle cx="32" cy="42" r="5.5" fill="#cef79e"/>
+        <circle cx="56" cy="12" r="5" fill="#222f30" stroke="#ffffff" stroke-width="3"/>
+      </svg>
+      <span class="lockup-word">viaclin<span class="lp">.</span></span>
+    </h1>
+    <p class="visually-hidden">Your supply chain, stronger, faster, cheaper, simpler, safer, better.</p>
+    <p class="hero-cycle" aria-hidden="true">Your supply chain, <span class="cycle-word" id="cycleword"><span class="cycle-sizer">stronger.</span><span class="cycle-live"><span id="cycletext">stronger</span><span class="lp">.</span></span></span></p>
+    <p class="hero-desc">Strengthen your Supply Operations with the Viaclin network of Expert Consultants. Plan, Protect and Deliver real results.</p>
+    <div class="hero-desc-cta"><a href="#contact" class="btn btn-fill-light contact-open">Start the conversation</a></div>
+  </div>
+  <div class="hero-sphere" aria-hidden="true"><canvas id="spherecv" width="520" height="520"></canvas></div>
+  <div class="wrap hero-lower">
+    <p class="hero-state">Full oversight, without the overhead.</p>
+  </div>
+</header>
+
+<div class="hero-route drawn">
+  <div class="wrap">
+      <svg viewBox="0 0 1140 220" aria-hidden="true">
+        <path id="heropath" class="route-path" d="M20 60 C 210 60, 250 170, 400 170 S 620 60, 760 60 S 1060 170, 1120 170"/>
+        <circle class="route-node" cx="20" cy="60" r="8"/>
+        <circle class="route-core" cx="400" cy="170" r="6"/>
+        <circle class="route-node" cx="760" cy="60" r="8"/>
+        <circle class="route-core" cx="1120" cy="170" r="6"/>
+        <text class="route-lbl" x="20" y="32" text-anchor="middle">MOLECULE</text>
+        <text class="route-lbl" x="400" y="204" text-anchor="middle">MANUFACTURE</text>
+        <text class="route-lbl" x="760" y="32" text-anchor="middle">QP RELEASE</text>
+        <text class="route-lbl lime" x="1120" y="204" text-anchor="middle">PATIENT</text>
+        <circle class="route-dot" r="5">
+          <animateMotion dur="8s" repeatCount="indefinite" rotate="0" begin="2.8s">
+            <mpath href="#heropath"/>
+          </animateMotion>
+        </circle>
+      </svg>
+      <div class="route-note"><span class="pulse"></span>Chain of custody · held end to end</div>
+  </div>
+</div>
+
+<!-- CRED STRIP -->
+<div class="cred">
+  <div class="wrap cred-inner">
+    <div class="rv"><div class="cred-n">Phase <b>I–IV</b></div><div class="cred-l">Trial coverage</div></div>
+    <div class="rv rv-d1"><div class="cred-n">GXP</div><div class="cred-l">Rigorous compliance</div></div>
+    <div class="rv rv-d2"><div class="cred-n">EU · US · UK</div><div class="cred-l">Regulatory reach</div></div>
+    <div class="rv rv-d3"><div class="cred-n">Remote-first</div><div class="cred-l">Global senior network</div></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services" class="band-dark">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">01 / 07</span><span class="sec-tag"><span class="dot6"></span>Services</span>
+      <h2 class="title">Four services. One senior team<span class="lp">.</span></h2>
+      <p class="lead">Every engagement is led and delivered by a dedicated lead. We work inside your quality system, your tools and your timelines.</p>
+    </div>
+    <div class="services">
+      <article class="svc rv">
+        <div class="svc-top">
+          <span class="svc-tag"><span class="dot6"></span>VIA·01</span>
+          <a href="#contact" class="arrow-btn" aria-label="Discuss specialist supply chain support">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="svc-ico" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><path d="M6 28 C 14 28, 16 12, 24 12 S 34 20, 34 20" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/><circle cx="6" cy="28" r="3.2" stroke="#ffffff" stroke-width="1.8"/><circle cx="34" cy="20" r="3.2" fill="#cef79e"/></svg>
+        </div>
+        <h3>Specialist supply chain support.</h3>
+        <p class="svc-b">Senior operators embedded in your supply chain. We take ownership of planning, procurement and manufacturing oversight, and we answer for the outcome.</p>
+        <ul class="svc-list">
+          <li>Inventory strategy, supply network and risk control</li>
+          <li>CMO and CDMO sourcing, contracts and oversight</li>
+          <li>Tech transfer planning and seamless transition</li>
+          <li>Project and program management: budgets, Gantt plans, risk registers, action tracking</li>
+          <li>Procurement, RFQs and supplier due diligence</li>
+          <li>Interim senior support inside your team</li>
+        </ul>
+      </article>
+      <article class="svc rv rv-d1">
+        <div class="svc-top">
+          <span class="svc-tag"><span class="dot6"></span>VIA·02</span>
+          <a href="#contact" class="arrow-btn" aria-label="Discuss clinical trial supply">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="svc-ico" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><path d="M15 5 h10 M17 5 v10 l-7.5 15 a4 4 0 0 0 3.6 5.8 h13.8 a4 4 0 0 0 3.6-5.8 L23 15 V5" stroke="#ffffff" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/><circle cx="20" cy="29" r="2.6" fill="#cef79e"/></svg>
+        </div>
+        <h3>Clinical trial supply expertise.</h3>
+        <p class="svc-b">Investigational product, protected at every step from first-in-human dosing to final reconciliation.</p>
+        <ul class="svc-list">
+          <li>IRT and IXRS setup, management and decommissioning</li>
+          <li>Clinical packaging, labelling and booklet design</li>
+          <li>Cold chain and GDP distribution with excursion response</li>
+          <li>QP release, QPPV networks and import licences</li>
+          <li>Structured trial close-out, from reconciliation to destruction</li>
+        </ul>
+      </article>
+      <article class="svc rv rv-d2">
+        <div class="svc-top">
+          <span class="svc-tag"><span class="dot6"></span>VIA·03</span>
+          <a href="#contact" class="arrow-btn" aria-label="Discuss greenfield operations setup">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="svc-ico" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><rect x="7" y="13" width="26" height="20" rx="2" stroke="#ffffff" stroke-width="1.8"/><path d="M7 19 h26 M15 19 v14" stroke="#ffffff" stroke-width="1.8"/><circle cx="11" cy="16" r="1.8" fill="#cef79e"/></svg>
+        </div>
+        <h3>Greenfield operations setup.</h3>
+        <p class="svc-b">New market, new facility or new function. We build life sciences supply operations from a blank page to a licensed, running capability.</p>
+        <ul class="svc-list">
+          <li>Licensing pathways with HPRA, MHRA, FDA and EMA</li>
+          <li>SOP development, quality systems and GMP readiness</li>
+          <li>ERP selection and implementation</li>
+          <li>CMO network design and backup site qualification</li>
+          <li>Serialisation and packaging line adoption</li>
+        </ul>
+      </article>
+      <article class="svc rv rv-d3">
+        <div class="svc-top">
+          <span class="svc-tag"><span class="dot6"></span>VIA·04</span>
+          <a href="#contact" class="arrow-btn" aria-label="Discuss demand forecasting">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="svc-ico" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><path d="M7 7 v26 h26" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/><path d="M12 27 L19 20 L24 23 L32 12" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="12" r="2.8" fill="#cef79e"/></svg>
+        </div>
+        <h3>Demand Forecasting.</h3>
+        <p class="svc-b">Precision forecasting, engineered by senior supply chain operators. A working model of what is needed, where, and when, built on your programme's own signals.</p>
+        <ul class="svc-list">
+          <li>S&amp;OP ownership and demand planning on SAP and Anaplan</li>
+          <li>Patient-level modelling: recruitment, dosing intervals, dropout</li>
+          <li>Risk based algorithm to calculate optimum safety stock</li>
+          <li>Scenario planning and CMO capacity alignment</li>
+          <li>Launch ramp and market rollout sequencing</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section id="capabilities" class="band-light">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">02 / 07</span><span class="sec-tag"><span class="dot6"></span>Capabilities</span>
+      <h2 class="title">Deep capability, across the entire chain<span class="lp">.</span></h2>
+    </div>
+
+    <div class="capgroup rv">
+      <h3 class="capgroup-h"><span class="dot6"></span>Clinical &amp; Commercial Supply Chain Strategy</h3>
+      <div class="caps">
+        <div class="cap"><h4>End-to-End (E2E) Planning Transformation.</h4><p>Transform your supply chain from a cost center into a strategic asset. We design and optimize end-to-end operating models that perfectly align your demand, supply, and inventory planning for maximum efficiency.</p></div>
+        <div class="cap"><h4>Clinical Trial Supply Management.</h4><p>Ensure your life-saving trials never miss a beat. We optimize your clinical supply chain infrastructure, mastering complexities from patient demand to ultra-cold chain logistics.</p></div>
+        <div class="cap"><h4>Phase Scaling.</h4><p>Scale your operations with confidence and speed. We guide your organization through the critical, high-stakes transition from early clinical phases to a resilient, full-scale commercial distribution network.</p></div>
+        <div class="cap"><h4>Network Collaboration &amp; Visibility.</h4><p>Eliminate blind spots across your global ecosystem. We build multi-tier orchestration and utilize digital twin modeling to give you unprecedented, real-time visibility into your supplier network.</p></div>
+      </div>
+    </div>
+
+    <div class="capgroup rv">
+      <h3 class="capgroup-h"><span class="dot6"></span>Quality Assurance &amp; Regulatory Compliance</h3>
+      <div class="caps">
+        <div class="cap"><h4>Outsourced QP and RP Services.</h4><p>Safeguard your product and your reputation with our trusted experts. We provide highly experienced, contract Qualified Persons (QP) and Responsible Persons (RP) to ensure absolute regulatory compliance.</p></div>
+        <div class="cap"><h4>Batch Release &amp; Certification.</h4><p>Navigate European regulatory complexities with ease. We manage the stringent batch release and certification processes to get your clinical and commercial products to market without delay.</p></div>
+        <div class="cap"><h4>License Management.</h4><p>Streamline your path to operational readiness. We expertly handle your MIA and WDA license applications and management so you can focus on your core business.</p></div>
+        <div class="cap"><h4>GMP/GDP Consulting.</h4><p>Build quality into every link of your supply chain. Our expert consulting ensures your manufacturing, storage, and transport processes maintain flawless GMP and GDP compliance.</p></div>
+        <div class="cap"><h4>Validation &amp; Auditing.</h4><p>Mitigate risk before it impacts your bottom line. We provide rigorous validation and auditing to ensure your systems, processes, and external vendors consistently meet elite pharmaceutical standards.</p></div>
+        <div class="cap"><h4>CMC &amp; Tech Transfer.</h4><p>Accelerate your path to market readiness. We expertly manage your CMC requirements and seamlessly guide your tech transfers through the industry's most complex regulatory hurdles.</p></div>
+      </div>
+    </div>
+
+    <div class="capgroup rv">
+      <h3 class="capgroup-h"><span class="dot6"></span>Digital Transformation &amp; Technology Integration</h3>
+      <div class="caps">
+        <div class="cap"><h4>Advanced System Integration.</h4><p>Unlock the full potential of your operations with the right technology. We guide the strategic selection, design, and seamless rollout of top-tier enterprise supply chain platforms like SAP, Kinaxis, and Anaplan.</p></div>
+        <div class="cap"><h4>Serialization &amp; Traceability.</h4><p>Protect your patients and your brand. We implement robust, global track-and-trace systems that ensure perfect traceability and immediate compliance with EU FMD and US DSCSA mandates.</p></div>
+        <div class="cap"><h4>Proprietary Platform Deployment.</h4><p>Power your decision-making with cutting-edge digital tools. We deploy bespoke platforms for advanced scenario planning and complex lab resource scheduling to keep your operations incredibly agile.</p></div>
+        <div class="cap"><h4>Data Architecture.</h4><p>Turn your fragmented data into a single source of truth. We build the clean architectures, master data management, and robust data governance required to power your digital factory transformation.</p></div>
+      </div>
+    </div>
+
+    <div class="capgroup rv">
+      <h3 class="capgroup-h"><span class="dot6"></span>Market Access &amp; Enterprise Change Management</h3>
+      <div class="caps">
+        <div class="cap"><h4>European Market Entry.</h4><p>Cross borders with absolute confidence. We build the essential operational infrastructure and navigate the complex regulatory pathways required for a successful, compliant European market launch.</p></div>
+        <div class="cap"><h4>Organizational Change Management.</h4><p>Technology only works if your people are ready to use it. We drive organizational change management and training to seamlessly embed new operating models and digital tools into your company's DNA.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NETWORK -->
+<section id="network" class="band-dark">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">03 / 07</span><span class="sec-tag"><span class="dot6"></span>Network</span>
+      <h2 class="title">One lead operator. A network behind them<span class="lp">.</span></h2>
+      <p class="lead">Viaclin draws on a bank of senior consultants across the EU, US and UK, each with a distinct specialism and their own industry history. Your engagement gets one accountable lead, and the lead gets the whole bench.</p>
+    </div>
+    <div class="net-grid">
+      <div class="net-points">
+        <div class="npt rv">
+          <h3>Matched to the problem.</h3>
+          <p>Consultants join per engagement for exact domain fit: IRT, QP release, cold chain, forecasting, packaging, regulatory affairs. No generalists filling seats.</p>
+        </div>
+        <div class="npt rv rv-d1">
+          <h3>Remote-first and global.</h3>
+          <p>No offices, no bench time, no travel padding. You get top-tier expertise at a lean cost, across time zones, on your programme within days.</p>
+        </div>
+        <div class="npt rv rv-d2">
+          <h3>Knowledge that compounds.</h3>
+          <p>Methods and findings move across the network as collective operating knowledge. A problem solved once becomes standard practice for every client after.</p>
+        </div>
+      </div>
+      <div class="net-visual rv rv-d1" aria-hidden="true">
+        <svg viewBox="0 0 480 380">
+          <line x1="240" y1="190" x2="240" y2="52"  stroke="#4d5757" stroke-width="1.5"/>
+          <line x1="240" y1="190" x2="398" y2="118" stroke="#4d5757" stroke-width="1.5"/>
+          <line x1="240" y1="190" x2="398" y2="266" stroke="#4d5757" stroke-width="1.5"/>
+          <line x1="240" y1="190" x2="240" y2="206" stroke="#4d5757" stroke-width="1.5"/>
+          <line x1="240" y1="236" x2="240" y2="330" stroke="#4d5757" stroke-width="1.5"/>
+          <line x1="240" y1="190" x2="82"  y2="266" stroke="#4d5757" stroke-width="1.5"/>
+          <line x1="240" y1="190" x2="82"  y2="118" stroke="#4d5757" stroke-width="1.5"/>
+          <circle cx="240" cy="52"  r="8" fill="#222f30" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="398" cy="118" r="8" fill="#222f30" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="398" cy="266" r="8" fill="#222f30" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="240" cy="330" r="8" fill="#222f30" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="82"  cy="266" r="8" fill="#222f30" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="82"  cy="118" r="8" fill="#222f30" stroke="#ffffff" stroke-width="2"/>
+          <circle cx="240" cy="190" r="6" fill="#cef79e"/>
+          <circle cx="240" cy="190" r="6" fill="none" stroke="#cef79e" stroke-width="1.5" opacity="0">
+            <animate attributeName="r" values="6;30" dur="2.6s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values=".7;0" dur="2.6s" repeatCount="indefinite"/>
+          </circle>
+          <text class="route-lbl" x="240" y="28"  text-anchor="middle">IRT</text>
+          <text class="route-lbl" x="398" y="94"  text-anchor="middle">QP RELEASE</text>
+          <text class="route-lbl" x="398" y="294" text-anchor="middle">COLD CHAIN</text>
+          <text class="route-lbl" x="240" y="360" text-anchor="middle">FORECASTING</text>
+          <text class="route-lbl" x="82"  y="294" text-anchor="middle">PACKAGING</text>
+          <text class="route-lbl" x="82"  y="94"  text-anchor="middle">REGULATORY</text>
+          <text class="route-lbl lime" x="240" y="224" text-anchor="middle">YOUR LEAD</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI -->
+<section id="ai" class="band-dark">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">04 / 07</span><span class="sec-tag"><span class="dot6"></span>AI</span>
+      <h2 class="title">We build the bridge between now and next<span class="lp">.</span></h2>
+      <p class="lead">Industry-leading AI consultancy through our partner SupplyAI. Practical, validated AI for life sciences supply chains, adopted at the pace your quality system allows.</p>
+    </div>
+    <div class="services">
+      <article class="svc rv">
+        <div class="svc-top">
+          <span class="svc-tag"><span class="dot6"></span>Consultancy</span>
+          <a href="#contact" class="arrow-btn" aria-label="Discuss AI consultancy">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="svc-ico" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><path d="M7 30 L17 30 M23 30 L33 30 M17 30 C 19 30, 19 12, 21 12 L23 12" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/><circle cx="7" cy="30" r="2.6" stroke="#ffffff" stroke-width="1.8"/><circle cx="33" cy="30" r="2.6" stroke="#ffffff" stroke-width="1.8"/><circle cx="23" cy="12" r="2.8" fill="#cef79e"/></svg>
+        </div>
+        <h3>AI consultancy, with a partner who ships.</h3>
+        <p class="svc-b">We find where AI genuinely earns a place in your operation and carry it from idea to validated, working practice. One accountable programme, run with your supply chain leads and delivered with SupplyAI.</p>
+        <ul class="svc-list">
+          <li>AI use-case discovery mapped to your real pain points</li>
+          <li>Data readiness and systems assessment</li>
+          <li>Validation strategy for AI in GxP workflows</li>
+          <li>Pilot to production: adoption, training and change management</li>
+          <li>Ongoing oversight through the Viaclin and SupplyAI partnership</li>
+        </ul>
+      </article>
+      <article class="svc rv rv-d1">
+        <div class="svc-top">
+          <span class="svc-tag"><span class="dot6"></span>Platform</span>
+          <a href="https://supplyai.eu" target="_blank" rel="noopener" class="arrow-btn" aria-label="Visit SupplyAI">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <div class="svc-ico" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" rx="4" stroke="#ffffff" stroke-width="1.8"/><path d="M14 20 L18 24 L26 15" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="32" cy="8" r="3" fill="#cef79e"/></svg>
+        </div>
+        <h3>QAI. Expert AI advisors, on your machine.</h3>
+        <p class="svc-b">QAI is SupplyAI's platform of specialist, live AI advisors. They read, listen and check beside your team as it works, turning what they see into constant, expert advice. Every piece of the work stays on your machine, inside your network.</p>
+        <ul class="svc-list">
+          <li>QAI for Supply Chain, Quality, Regulatory and Project Management</li>
+          <li>Runs entirely on your own hardware: no data leaves the building</li>
+          <li>Learns your procedures once, then quotes them back on demand</li>
+          <li>Tamper-evident record of every step, ready for audit</li>
+          <li>Deployed and supported through our partnership</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section id="method" class="band-light">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">05 / 07</span><span class="sec-tag"><span class="dot6"></span>Method</span>
+      <h2 class="title">Bespoke Consultancy<span class="lp">.</span></h2>
+      <p class="lead">Comprehensive supply chain execution, expertly managed from GMP to patient.</p>
+    </div>
+    <div class="method">
+      <div class="step rv">
+        <span class="step-n">01</span>
+        <h3>Diagnose.</h3>
+        <p>A short assessment of your supply chain, systems and risks. You get a written plan with priorities, owners and timelines, in plain language.</p>
+      </div>
+      <div class="step rv rv-d1">
+        <span class="step-n">02</span>
+        <h3>Embed.</h3>
+        <p>A senior operator joins your team, inside your quality system and your tools. Specialist questions route across the network and come back answered. No handover layers between advice and action.</p>
+      </div>
+      <div class="step rv rv-d2">
+        <span class="step-n">03</span>
+        <h3>Deliver.</h3>
+        <p>Agreed outcomes, tracked in the open. Documentation and knowledge transfer come as standard, so the capability stays with you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COVERAGE -->
+<section id="coverage" class="band-dark" style="padding-bottom: 0;">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">06 / 07</span><span class="sec-tag"><span class="dot6"></span>Coverage</span>
+      <h2 class="title">Three regulatory jurisdictions<span class="lp">.</span></h2>
+    </div>
+    <div class="regions">
+      <div class="region rv">
+        <div class="region-code">EU</div>
+        <h3><span class="dot6"></span>Europe</h3>
+        <p>EMA, HPRA and national competent authorities. Clinical supply hubs in Ireland, Germany and the Netherlands. QP-led batch release and QPPV networks.</p>
+      </div>
+      <div class="region rv rv-d1">
+        <div class="region-code">US</div>
+        <h3><span class="dot6"></span>United States</h3>
+        <p>FDA fluency across INDs, 21 CFR Part 11 and import controls. IRT operations and IOR services across major trial clusters.</p>
+      </div>
+      <div class="region rv rv-d2">
+        <div class="region-code">UK</div>
+        <h3><span class="dot6"></span>United Kingdom</h3>
+        <p>Post-Brexit import and export specialism. MHRA-experienced quality and supply consultants for Great Britain and Northern Ireland.</p>
+      </div>
+    </div>
+  </div>
+  <div class="marquee rv" aria-hidden="true">
+    <div class="marquee-track">
+      <span class="mq">GMP</span><span class="mq">GDP</span><span class="mq">21 CFR PART 11</span><span class="mq">ANNEX 11</span><span class="mq">ICH E6</span><span class="mq">EMA</span><span class="mq">FDA</span><span class="mq">HPRA</span><span class="mq">MHRA</span><span class="mq">QP RELEASE</span><span class="mq">QPPV</span><span class="mq">IRT</span><span class="mq">SERIALISATION</span><span class="mq">SAP</span><span class="mq">ANAPLAN</span><span class="mq">ENVIROTAINER</span>
+      <span class="mq">GMP</span><span class="mq">GDP</span><span class="mq">21 CFR PART 11</span><span class="mq">ANNEX 11</span><span class="mq">ICH E6</span><span class="mq">EMA</span><span class="mq">FDA</span><span class="mq">HPRA</span><span class="mq">MHRA</span><span class="mq">QP RELEASE</span><span class="mq">QPPV</span><span class="mq">IRT</span><span class="mq">SERIALISATION</span><span class="mq">SAP</span><span class="mq">ANAPLAN</span><span class="mq">ENVIROTAINER</span>
+    </div>
+  </div>
+</section>
+
+<!-- GROUP -->
+<section id="group" class="band-light">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <span class="counter">07 / 07</span><span class="sec-tag"><span class="dot6"></span>The group</span>
+      <h2 class="title">Three brands. One umbrella group<span class="lp">.</span></h2>
+      <p class="lead">Viaclin shares an umbrella group with SupplyAI and Geoclin, and draws on their expertise and resources. When your programme needs AI tooling or commercial-scale ownership, the answer sits inside the group, one conversation away.</p>
+    </div>
+    <div class="gbrands">
+      <div class="gbrand here rv">
+        <div class="gb-top"><span class="gb-name">viaclin<span class="lp">.</span></span><span class="gb-tag">You are here</span></div>
+        <p class="gb-b">Specialist consultancy for clinical trial supply, supply chain support and greenfield setup.</p>
+        <span class="gb-url"><span class="dot6"></span>viaclin.com</span>
+      </div>
+      <a class="gbrand rv rv-d1" href="https://supplyai.eu" target="_blank" rel="noopener">
+        <div class="gb-top"><span class="gb-name">SupplyAI<span class="lp">.</span></span></div>
+        <p class="gb-b">Secure AI products for life sciences supply chain operations, deployed inside your own network.</p>
+        <span class="gb-url"><span class="dot6"></span>supplyai.eu</span>
+      </a>
+      <a class="gbrand rv rv-d2" href="https://geoclin.com" target="_blank" rel="noopener">
+        <div class="gb-top"><span class="gb-name">Geoclin<span class="lp">.</span></span></div>
+        <p class="gb-b">Total supply chain ownership at commercial scale, from CDMO management to global distribution.</p>
+        <span class="gb-url"><span class="dot6"></span>geoclin.com</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="band-dark">
+<div class="wrap">
+<div class="cta">
+  <svg class="cta-molecule" viewBox="0 0 260 240" fill="none" aria-hidden="true">
+    <path d="M130 40 L191 75 L191 145 L130 180 L69 145 L69 75 Z" stroke="#ffffff" stroke-width="1.6" stroke-linejoin="round"/>
+    <path d="M130 40 V8 M191 145 L222 163 M69 145 L38 163 M130 180 v28" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+    <circle cx="130" cy="40" r="7" fill="#222f30" stroke="#ffffff" stroke-width="1.6"/>
+    <circle cx="191" cy="75" r="7" fill="#cef79e"/>
+    <circle cx="191" cy="145" r="7" fill="#222f30" stroke="#ffffff" stroke-width="1.6"/>
+    <circle cx="130" cy="180" r="7" fill="#222f30" stroke="#ffffff" stroke-width="1.6"/>
+    <circle cx="69" cy="145" r="7" fill="#222f30" stroke="#ffffff" stroke-width="1.6"/>
+    <circle cx="69" cy="75" r="7" fill="#cef79e"/>
+    <circle cx="130" cy="8" r="4" fill="#cef79e"/>
+    <circle cx="222" cy="163" r="4" fill="#222f30" stroke="#ffffff" stroke-width="1.6"/>
+    <circle cx="38" cy="163" r="4" fill="#222f30" stroke="#ffffff" stroke-width="1.6"/>
+    <circle cx="130" cy="208" r="4" fill="#cef79e"/>
+  </svg>
+    <div class="rv">
+      <span class="counter">Contact</span><span class="sec-tag"><span class="dot6"></span>Start a conversation</span>
+      <h2>Our expertise. Your supply chain<span class="lp">.</span></h2>
+    </div>
+    <div class="cta-grid rv rv-d1">
+      <p>A senior operator reads every enquiry and answers within one working day. No sales layer between you and the person who does the work.</p>
+      <div>
+        <div class="cta-actions">
+          <a href="mailto:contact@viaclin.com" class="btn btn-fill-light contact-open">Start a conversation</a>
+          <a href="mailto:contact@viaclin.com" class="arrow-btn" aria-label="Email Viaclin">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+        <a class="cta-mail" href="mailto:contact@viaclin.com"><span class="dot6"></span>contact@viaclin.com</a>
+      </div>
+    </div>
+</div>
+</div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap foot">
+    <div class="foot-brand">
+      <svg viewBox="0 0 64 52" fill="none" aria-hidden="true">
+        <path d="M8 12 L32 42 L56 12" stroke="#ffffff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="8" cy="12" r="5" fill="#000000" stroke="#ffffff" stroke-width="3"/>
+        <circle cx="32" cy="42" r="5.5" fill="#cef79e"/>
+        <circle cx="56" cy="12" r="5" fill="#000000" stroke="#ffffff" stroke-width="3"/>
+      </svg>
+      <span class="foot-word">viaclin<span class="lp">.</span></span>
+    </div>
+    <div class="foot-links">
+      <a href="#services">Services</a><a href="#capabilities">Capabilities</a><a href="#network">Network</a><a href="#ai">AI</a><a href="#method">Method</a><a href="#coverage">Coverage</a><a href="#contact">Contact</a>
+    </div>
+    <div class="foot-meta">© 2026 Viaclin · One group with <a href="https://supplyai.eu">SupplyAI</a> and <a href="https://geoclin.com">Geoclin</a> · EU · US · UK</div>
+  </div>
+</footer>
+
+<!-- CONTACT POPUP -->
+<div class="modal-backdrop" id="contactmodal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modaltitle">
+    <button class="modal-close" id="modalclose" aria-label="Close" type="button">&#10005;</button>
+    <span class="sec-tag" style="margin-left: 0;"><span class="dot6"></span>Contact</span>
+    <h3 id="modaltitle">Let us know how to contact you<span class="lp">.</span></h3>
+    <form id="contactform" novalidate>
+      <label class="f-label" for="cf-email">Email address</label>
+      <input class="f-input" id="cf-email" name="email" type="email" placeholder="you@company.com" autocomplete="email">
+      <div class="f-or">or</div>
+      <label class="f-label" for="cf-name">Name</label>
+      <input class="f-input" id="cf-name" name="name" type="text" autocomplete="name">
+      <label class="f-label" for="cf-org">Organisation</label>
+      <input class="f-input" id="cf-org" name="organisation" type="text" autocomplete="organization">
+      <label class="f-label" for="cf-phone">Phone number</label>
+      <div class="f-phone">
+        <select class="f-select" id="cf-code" aria-label="International dial code">
+          <option value="+353" selected>IE +353</option>
+          <option value="+44">UK +44</option>
+          <option value="+1">US / CA +1</option>
+          <option value="+49">DE +49</option>
+          <option value="+31">NL +31</option>
+          <option value="+33">FR +33</option>
+          <option value="+32">BE +32</option>
+          <option value="+34">ES +34</option>
+          <option value="+39">IT +39</option>
+          <option value="+351">PT +351</option>
+          <option value="+352">LU +352</option>
+          <option value="+41">CH +41</option>
+          <option value="+43">AT +43</option>
+          <option value="+45">DK +45</option>
+          <option value="+46">SE +46</option>
+          <option value="+47">NO +47</option>
+          <option value="+358">FI +358</option>
+          <option value="+48">PL +48</option>
+          <option value="+420">CZ +420</option>
+          <option value="+36">HU +36</option>
+          <option value="+30">GR +30</option>
+          <option value="+90">TR +90</option>
+          <option value="+972">IL +972</option>
+          <option value="+971">AE +971</option>
+          <option value="+966">SA +966</option>
+          <option value="+91">IN +91</option>
+          <option value="+65">SG +65</option>
+          <option value="+852">HK +852</option>
+          <option value="+86">CN +86</option>
+          <option value="+81">JP +81</option>
+          <option value="+82">KR +82</option>
+          <option value="+61">AU +61</option>
+          <option value="+64">NZ +64</option>
+          <option value="+55">BR +55</option>
+          <option value="+52">MX +52</option>
+          <option value="+27">ZA +27</option>
+        </select>
+        <input class="f-input" id="cf-phone" name="phone" type="tel" autocomplete="tel-national" placeholder="86 123 4567">
+      </div>
+      <p class="f-err" id="cf-err" hidden>Please give us an email address, or a name, organisation and phone number.</p>
+      <button type="submit" class="btn btn-fill-light">Send</button>
+      <p class="f-note"><span class="dot6"></span>Goes to contact@viaclin.com</p>
+    </form>
+  </div>
+</div>
+
+<script>
+// progress indicator + persistent banner + tagline docking
+const prog = document.getElementById('prog'), navEl = document.getElementById('nav');
+const herotag = document.getElementById('herotag'), tagslot = document.getElementById('tagslot'), tagfly = document.getElementById('tagfly');
+const rmq = matchMedia('(prefers-reduced-motion: reduce)');
+let tagStart = null;
+
+function updateFly() {
+  const active = innerWidth >= 1440 && !rmq.matches && tagslot.offsetParent !== null;
+  document.documentElement.classList.toggle('fly-active', active);
+  if (!active) return;
+  if (!tagStart) {
+    const r = herotag.getBoundingClientRect();
+    tagStart = { x: r.left, docY: r.top + scrollY };
+  }
+  const e = tagslot.getBoundingClientRect();
+  const D = Math.max(60, tagStart.docY - e.top);
+  let p = Math.min(1, Math.max(0, scrollY / D));
+  p = p * p * (3 - 2 * p); // smoothstep:eases the glide at both ends
+  const naturalY = tagStart.docY - scrollY;
+  const x = tagStart.x + (e.left - tagStart.x) * p;
+  const y = naturalY + (e.top - naturalY) * p;
+  tagfly.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+}
+
+function onScroll() {
+  const h = document.documentElement.scrollHeight - innerHeight;
+  prog.style.transform = 'scaleX(' + (h > 0 ? scrollY / h : 0) + ')';
+  navEl.classList.toggle('scrolled', scrollY > 24);
+  updateFly();
+}
+addEventListener('scroll', onScroll, { passive: true });
+addEventListener('resize', () => { tagStart = null; onScroll(); }, { passive: true });
+rmq.addEventListener('change', () => { tagStart = null; onScroll(); });
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { tagStart = null; onScroll(); });
+onScroll();
+
+// burger
+const burger = document.getElementById('burger'), navlinks = document.getElementById('navlinks');
+function setMenu(open) {
+  navlinks.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
+  burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+}
+burger.addEventListener('click', () => setMenu(!navlinks.classList.contains('open')));
+navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+addEventListener('keydown', e => {
+  if (e.key === 'Escape' && navlinks.classList.contains('open')) { setMenu(false); burger.focus(); }
+});
+
+// reveal on scroll
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: .12 });
+document.querySelectorAll('.rv').forEach(el => io.observe(el));
+
+// nav pill scrollspy:active pill tracks the section in view
+const spy = new IntersectionObserver(es => {
+  es.forEach(e => {
+    const link = document.querySelector('.nav-links a[href="#' + e.target.id + '"]:not(.nav-cta)');
+    if (e.isIntersecting) {
+      document.querySelectorAll('.nav-links a:not(.nav-cta)').forEach(a => { a.classList.remove('active'); a.removeAttribute('aria-current'); });
+      if (link) { link.classList.add('active'); link.setAttribute('aria-current', 'true'); }
+    } else if (link && link.classList.contains('active') && !es.some(x => x.isIntersecting)) {
+      link.classList.remove('active');
+      link.removeAttribute('aria-current');
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+['services', 'network', 'ai', 'method', 'coverage', 'group', 'contact'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) spy.observe(el);
+});
+
+// spinning bioluminescent dot-sphere (hero)
+const cv = document.getElementById('spherecv');
+if (cv) {
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  const cssW = cv.getBoundingClientRect().width || 520;
+  cv.width = cv.height = Math.round(cssW * dpr);
+  const ctx = cv.getContext('2d');
+  const W = 520, R = W / 2, r = R * .84;
+  ctx.setTransform(cv.width / W, 0, 0, cv.width / W, 0, 0);
+  const N = 420, pts = [];
+  const GA = Math.PI * (3 - Math.sqrt(5));
+  for (let i = 0; i < N; i++) {
+    const y = 1 - (i / (N - 1)) * 2;
+    const rad = Math.sqrt(1 - y * y);
+    pts.push([Math.cos(GA * i) * rad, y, Math.sin(GA * i) * rad]);
+  }
+  const tilt = .42, ct = Math.cos(tilt), st = Math.sin(tilt);
+  let ang = 0;
+  function drawSphere() {
+    ctx.clearRect(0, 0, W, W);
+    const ca = Math.cos(ang), sa = Math.sin(ang);
+    for (const [x0, y0, z0] of pts) {
+      const x = x0 * ca - z0 * sa, z = x0 * sa + z0 * ca;
+      const y2 = y0 * ct - z * st, z2 = y0 * st + z * ct;
+      const d = (z2 + 1) / 2;
+      ctx.beginPath();
+      ctx.arc(R + x * r, R + y2 * r, .8 + d * 1.8, 0, 6.2832);
+      ctx.fillStyle = 'rgba(206,247,158,' + (.08 + d * .82).toFixed(3) + ')';
+      ctx.fill();
+    }
+    ang += .0032;
+  }
+  const rm = matchMedia('(prefers-reduced-motion: reduce)');
+  if (rm.matches || document.documentElement.classList.contains('static')) {
+    drawSphere();
+  } else {
+    // draw only while the sphere is actually on screen
+    let rafId = null, vis = false;
+    const tick = () => { drawSphere(); rafId = requestAnimationFrame(tick); };
+    const sync = () => {
+      const run = vis && !rm.matches;
+      if (run && rafId === null) rafId = requestAnimationFrame(tick);
+      else if (!run && rafId !== null) { cancelAnimationFrame(rafId); rafId = null; if (rm.matches) drawSphere(); }
+    };
+    new IntersectionObserver(es => { vis = es[0].isIntersecting; sync(); }).observe(cv.closest('.hero-sphere'));
+    rm.addEventListener('change', sync);
+  }
+}
+
+// hero word cycle
+const cycleWord = document.getElementById('cycleword');
+const cycleText = document.getElementById('cycletext');
+if (cycleWord && cycleText && !rmq.matches && !document.documentElement.classList.contains('static')) {
+  const cycleWords = ['stronger', 'faster', 'cheaper', 'simpler', 'safer', 'better'];
+  let wi = 0;
+  setInterval(() => {
+    cycleWord.classList.add('out');
+    setTimeout(() => {
+      wi = (wi + 1) % cycleWords.length;
+      cycleText.textContent = cycleWords[wi];
+      cycleWord.classList.remove('out');
+    }, 260);
+  }, 2600);
+}
+
+// contact popup: opens from every "start a conversation" trigger, sends via a
+// pre-filled email to contact@viaclin.com (static site, no backend)
+const modal = document.getElementById('contactmodal');
+let lastFocus = null;
+function openModal(e) {
+  e.preventDefault();
+  lastFocus = document.activeElement;
+  modal.hidden = false;
+  document.body.style.overflow = 'hidden';
+  document.getElementById('cf-email').focus();
+}
+function closeModal() {
+  modal.hidden = true;
+  document.body.style.overflow = '';
+  if (lastFocus) lastFocus.focus();
+}
+document.querySelectorAll('.contact-open').forEach(el => el.addEventListener('click', openModal));
+document.getElementById('modalclose').addEventListener('click', closeModal);
+modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+modal.addEventListener('keydown', e => {
+  if (e.key !== 'Tab') return;
+  const f = modal.querySelectorAll('button, input, select');
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+  else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+});
+document.getElementById('contactform').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = id => document.getElementById(id).value.trim();
+  const email = v('cf-email'), name = v('cf-name'), org = v('cf-org'), phone = v('cf-phone');
+  const err = document.getElementById('cf-err');
+  if (!email && !(name && org && phone)) { err.hidden = false; return; }
+  err.hidden = true;
+  const lines = [];
+  if (email) lines.push('Email: ' + email);
+  if (name) lines.push('Name: ' + name);
+  if (org) lines.push('Organisation: ' + org);
+  if (phone) lines.push('Phone: ' + document.getElementById('cf-code').value + ' ' + phone);
+  location.href = 'mailto:contact@viaclin.com?subject=' +
+    encodeURIComponent('New enquiry from viaclin.com') +
+    '&body=' + encodeURIComponent(lines.join('\n'));
+  closeModal();
+});
+
+// reduced motion or static capture: remove the travelling dot and SMIL cycles
+if (matchMedia('(prefers-reduced-motion: reduce)').matches || document.documentElement.classList.contains('static')) {
+  document.querySelectorAll('.route-dot, animateMotion, animate').forEach(a => a.remove());
+}
+</script>
+</body>
+</html>
