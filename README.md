@@ -11,7 +11,7 @@ The marketing site for Viaclin Limited, a life sciences supply chain consultancy
 | Search | Pagefind, indexed from `dist` after each build |
 | Analytics | Google Analytics 4 and Microsoft Clarity, both off until the visitor consents |
 | Contact form | Web3Forms, with an email fallback |
-| Hosting | Vercel |
+| Hosting | GitHub Pages, deployed by GitHub Actions |
 
 The contract for copy, voice and structure is `../VIACLIN_WEBSITE_SPEC.md`. The design decisions that extend it are in `docs/superpowers/specs/2026-09-17-viaclin-site-design.md`.
 
@@ -33,7 +33,7 @@ The contract for copy, voice and structure is `../VIACLIN_WEBSITE_SPEC.md`. The 
 14. [House rules for copy](#house-rules-for-copy)
 15. [Speed testing](#speed-testing)
 16. [QA commands](#qa-commands)
-17. [Deploy to Vercel](#deploy-to-vercel)
+17. [Deploy to GitHub Pages](#deploy-to-github-pages)
 18. [Launch checklist](#launch-checklist)
 
 ## Commands
@@ -45,7 +45,7 @@ Node 22 or newer. Run `npm install` once after cloning.
 | `npm run dev` | Dev server with hot reload at `http://localhost:4321` |
 | `npm run qa` | Copy QA: the house rules, checked across pages, components, data and comments |
 | `npm run build` | Builds the site into `dist`, then writes the Pagefind search index |
-| `npm run preview` | Serves `dist` at `http://localhost:4321`, the way Vercel will |
+| `npm run preview` | Serves `dist` at `http://localhost:4321`, the way the host will |
 | `npm run qa:links` | Link check on `dist`: internal links, fragments, email links |
 | `npm run qa:visual` | Screenshots of every route at three widths in both themes; fails on sideways overflow or a console error |
 | `npm run qa:a11y` | axe-core on every route in both themes; fails on a serious or critical violation |
@@ -73,7 +73,7 @@ Site search has no index on the dev server, because Pagefind reads the built pag
 
 ## Environment variables
 
-Four values, all optional. An empty value switches that feature off and nothing breaks. Copy `.env.example` to `.env` for local work. In Vercel they live under Project Settings, Environment Variables.
+Four values, all optional. An empty value switches that feature off and nothing breaks. Copy `.env.example` to `.env` for local work. On GitHub they live under Settings, Secrets and variables, Actions, Variables, and the deploy workflow passes them to the build.
 
 | Name | What it holds | While empty |
 | --- | --- | --- |
@@ -82,7 +82,7 @@ Four values, all optional. An empty value switches that feature off and nothing 
 | `PUBLIC_GSC_VERIFICATION` | The `content` value from the Search Console HTML tag | No verification tag in the page head |
 | `PUBLIC_WEB3FORMS_KEY` | Web3Forms access key for info@viaclin.com | The form composes an email in the visitor's mail app |
 
-Astro reads these at build time and writes them into the pages. After a change in Vercel, redeploy so the new value reaches the site. Never commit `.env`; the `.gitignore` file keeps it out.
+Astro reads these at build time and writes them into the pages. After a change on GitHub, run the deploy workflow again so the new value reaches the site. Never commit `.env`; the `.gitignore` file keeps it out.
 
 ## Set up Google Analytics 4
 
@@ -90,7 +90,7 @@ Astro reads these at build time and writes them into the pages. After a change i
 2. Go to Admin, then Create, then Property. Name it "Viaclin website". Set the reporting time zone to Ireland and the currency to euro.
 3. Choose Web as the platform. Enter `https://viaclin.com` as the website URL and "viaclin.com" as the stream name. Leave enhanced measurement on.
 4. Copy the measurement ID from the stream details. It starts with `G-`.
-5. In Vercel, open the project, then Settings, then Environment Variables. Add `PUBLIC_GA4_ID` with the ID as its value, for the Production environment. Redeploy.
+5. On GitHub, open the repository, then Settings, Secrets and variables, Actions, Variables. Add `PUBLIC_GA4_ID` with the ID as its value. Run the deploy workflow.
 6. Prove it: open the live site in a private window, choose "Accept all" in the cookie banner, click around, and watch the Realtime report in GA4. A visit shows within a minute.
 7. Once the first enquiry has come through, open Admin, then Key events, and mark `generate_lead` as a key event. That makes it the conversion in every report.
 8. For A/B tests, open Admin, then Custom definitions, and register two event-scoped custom dimensions: `experiment` and `variant`.
@@ -103,7 +103,7 @@ Google signals and ad personalisation are switched off in the site code. The sit
 1. Open `https://search.google.com/search-console` and choose Add property.
 2. Pick the URL prefix type and enter `https://viaclin.com`.
 3. Choose the HTML tag method. Google shows a tag like `<meta name="google-site-verification" content="abc123" />`. Copy the `content` value alone, here `abc123`.
-4. In Vercel, add `PUBLIC_GSC_VERIFICATION` with that value. Redeploy.
+4. On GitHub, add the repository variable `PUBLIC_GSC_VERIFICATION` with that value. Run the deploy workflow.
 5. Back in Search Console, press Verify.
 6. Open Sitemaps in the left menu, enter `sitemap-index.xml` and press Submit. The full address is `https://viaclin.com/sitemap-index.xml`.
 7. Keep the variable in place. Google looks for the tag again from time to time and drops the verification when it has gone.
@@ -115,7 +115,7 @@ The sitemap leaves out `/thanks`, `/404`, `/brand` and `/search`. Each of the fo
 1. Open `https://clarity.microsoft.com`, sign in and create a project. Name it "Viaclin website" and enter `https://viaclin.com`.
 2. Skip the install step that offers a code snippet. The site loads Clarity itself, after consent.
 3. Open Settings, then Overview, and copy the project ID: a short string of letters and digits.
-4. In Vercel, add `PUBLIC_CLARITY_ID` with that value. Redeploy.
+4. On GitHub, add the repository variable `PUBLIC_CLARITY_ID` with that value. Run the deploy workflow.
 5. Prove it: open the live site in a private window, choose "Accept all", visit a few pages. Recordings and heatmaps show in Clarity within a couple of hours.
 6. In Clarity, open Settings, then Masking, and keep the default that masks text typed into forms.
 
@@ -124,12 +124,12 @@ Clarity receives the visitor's choice through its consent API and is stopped, wi
 ## Set up the Web3Forms key
 
 1. Open `https://web3forms.com` and create an access key for info@viaclin.com. Confirm the address from the email Web3Forms sends.
-2. In Vercel, add `PUBLIC_WEB3FORMS_KEY` with the key as its value. Redeploy. For local work, put the same line in `.env`.
+2. On GitHub, add the repository variable `PUBLIC_WEB3FORMS_KEY` with the key as its value (already done for the current key). Run the deploy workflow. For local work, put the same line in `.env`.
 3. Send one enquiry from the live site. It should arrive at info@viaclin.com, and the form should swap to its thanks message in place.
 
 Until the key exists the form still works: it composes an email to info@viaclin.com in the visitor's mail app, with every field filled in. That depends on the visitor having a mail app, so `npm run launch-check` lists the missing key as a blocker.
 
-The key is public by design (it sits in the page source) and can send to the one confirmed address alone. If it is ever abused, create a new key and replace the value in Vercel.
+The key is public by design (it sits in the page source) and can send to the one confirmed address alone. If it is ever abused, create a new key and replace the repository variable on GitHub.
 
 ## How consent gates each tool
 
@@ -326,19 +326,18 @@ Both read the server address from `BASE`, with `http://127.0.0.1:4321` as the de
 
 A sound order before a release: `npm run qa`, `npm run build`, `npm run qa:links`, `npm run preview` in a second terminal, `npm run qa:visual`, `npm run qa:a11y`, `npm run launch-check`.
 
-## Deploy to Vercel
+## Deploy to GitHub Pages
 
-The owner carries out these steps; the repository is ready for them.
+The site is hosted by GitHub Pages from the repository `Viaclin/viaclin-website`, with the custom domain `viaclin.com` (the `public/CNAME` file carries it into every build). Every push to `main` runs `.github/workflows/deploy.yml`, which installs the packages, runs `npm run build` (copy QA, Astro, Pagefind) and publishes `dist`. A copy-rule failure stops the deploy, so run `npm run qa` before you push.
 
-1. Push the repository to GitHub under the owner's account.
-2. In Vercel choose New Project and import the repository. Framework preset: Astro. Build command: `npm run build`. Output directory: `dist`. Add the four environment variables from the table above; any of them can wait.
-3. Deploy. Check the preview URL against the launch checklist below.
-4. Add the domains `viaclin.com` and `www.viaclin.com` in Vercel. Set `www` to redirect to the apex.
-5. At the registrar, add the DNS records Vercel shows: an A record for the apex and a CNAME for `www`. Leave the MX, SPF, DKIM and DMARC records for Google Workspace untouched, or email stops.
-6. Wait for the certificate to issue, then load `https://viaclin.com` and run Lighthouse once more.
-7. Retire the old single-file site. Do not share the old-identity video after this point.
+- Configuration values live under Settings, Secrets and variables, Actions, Variables in the repository: `PUBLIC_WEB3FORMS_KEY` (set), and `PUBLIC_GA4_ID`, `PUBLIC_CLARITY_ID` and `PUBLIC_GSC_VERIFICATION` when those accounts exist. After a change, push a commit or run the workflow by hand (Actions, Deploy to GitHub Pages, Run workflow) so the new value reaches the site.
+- Progress and errors show under the Actions tab. A deploy takes two to three minutes.
+- HTTPS: under Settings, Pages, keep Enforce HTTPS switched on once the certificate for `viaclin.com` shows as issued.
+- DNS stays as it is. Leave the MX, SPF, DKIM and DMARC records for Google Workspace untouched, or email stops.
 
-`vercel.json` already sets clean URLs, security headers, a long cache life for `/_astro`, a thirty-day cache for `/video`, `/og` and the root icons and manifest (those file names carry no content hash, so a change needs a new name), a one-week cache for the Pagefind index under `/pagefind`, a noindex header for the files under `/brand`, and a redirect from `/services` to the services section of the home page. Vercel picks the Node version from `engines` in `package.json`.
+GitHub Pages serves static files alone, so the security headers, cache headers and server redirects in `vercel.json` do not apply here; the file stays in the repository for a move to Vercel later. The old address `/services/trial-close-out` redirects through a small page that Astro writes from the `redirects` entry in `astro.config.mjs`.
+
+If the site ever moves to Vercel: import the repository there (framework preset Astro, build command `npm run build`, output `dist`), add the same four values as environment variables, point the `viaclin.com` DNS at Vercel, and switch Pages off under Settings, Pages.
 
 ## Launch checklist
 

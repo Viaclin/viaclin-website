@@ -10,6 +10,10 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file' },
   devToolbar: { enabled: false },
+  // Static hosts have no server-side redirects, so Astro writes a small redirect page for the old address.
+  redirects: {
+    '/services/trial-close-out': '/services/supply-chain-consultancy',
+  },
   integrations: [
     sitemap({
       filter: (page) => !hidden.some((path) => new URL(page).pathname.replace(/\/$/, '') === path),
