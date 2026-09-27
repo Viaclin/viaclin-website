@@ -1,8 +1,8 @@
 ---
-// Operations Excellence. Transformation first: every part of the business linked to one goal, rebuilt
-// leaner, faster and stronger, next-gen ready for the operations evolution. AI is one part of it.
-// The scope, steps and partnership copy started from VIACLIN_WEBSITE_SPEC.md section 8.4 and follow
-// the owner's reframe of September 2026. The word "agents" belongs to the AI parts alone.
+// Optimised Operations. Proven technology and AI, applied with precision, lead the page: every function linked to
+// one goal, streamlined and next-gen ready for the operations evolution. The scope, steps and partnership copy
+// started from VIACLIN_WEBSITE_SPEC.md section 8.4 and follow the owner's direction of September 2026.
+// The words "agents" and "automation" belong to the AI group and the partnership section alone.
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Section from '../../components/Section.astro';
@@ -12,10 +12,11 @@ import VideoBand from '../../components/VideoBand.astro';
 import ContactBand from '../../components/ContactBand.astro';
 import { site } from '../../data/site';
 
-const path = '/services/operations-excellence';
-const title = 'Operations Excellence: Viaclin';
+const path = '/services/optimised-operations';
+const pageName = 'Optimised Operations';
+const title = `${pageName}: Viaclin`;
 const description =
-  'Operations made next-gen ready for the operations evolution: every function linked to one goal, run leaner and faster, with AI where it earns its place.';
+  'Proven technology and AI, applied with precision: one linked operation, streamlined for the phase ahead and next-gen ready for the operations evolution.';
 const partner = site.sisterBrand.name;
 
 // The operations evolution: four shifts, each a short "from X to Y" heading.
@@ -26,7 +27,7 @@ const shifts = [
   },
   {
     title: 'From periodic reports to live oversight',
-    body: 'The monthly report gives way to live visibility across every function, site and supplier tier. Analytics turn into action while there is still time to act, and your people decide with the whole operation in view.',
+    body: 'The monthly report gives way to live visibility across every function, site and supplier tier. Analytics drive action while there is still time to act, and your people decide with the whole operation in view.',
   },
   {
     title: 'From firefighting to planned capacity and cost',
@@ -70,30 +71,12 @@ const scored = [
   { name: 'People', note: 'Skills, roles and decision rights' },
 ];
 
-// What we take on, in two groups under one heading: the transformation work, then where AI fits.
-const transforming = [
-  {
-    title: 'Clinical-to-commercial scaling',
-    body: 'The transition from clinical-phase supply to a resilient commercial distribution network: depots, 3PLs, serialisation, demand signals and launch stock.',
-  },
-  {
-    title: 'Target operating model and process',
-    body: 'Roles, hand-offs, KPIs and cost rebuilt for the phase ahead, so the operation runs leaner and faster, with one goal every function can see.',
-  },
-  {
-    title: 'Supplier network visibility',
-    body: 'Multi-tier visibility across your supplier network, with due diligence and sustainability reporting where you need it.',
-  },
-  {
-    title: 'Capacity, cost and resilience',
-    body: 'Planned capacity, cost to serve, dual sourcing and buffer stock sized to risk, all measured against a baseline.',
-  },
-];
-
-const aiFits = [
+// Pivotal oversight, in two groups under one heading: applied AI and proven technology first, then the
+// streamlining work that makes the gains hold.
+const applied = [
   {
     title: 'AI use-case discovery',
-    body: 'Where AI earns a place in your operation, mapped to real pain points, with a data readiness and systems assessment. We bridge the gap between low or no use, external tools and unverifiable output, and a validated practice your supervisors trust.',
+    body: 'Where AI and automation earn a place in your operation, mapped to real pain points, with a data readiness and systems assessment. We close the gap between low or no use, external tools and unverifiable output, and a validated practice your supervisors trust.',
   },
   {
     title: 'Validation for GxP',
@@ -109,16 +92,38 @@ const aiFits = [
   },
 ];
 
-const howItRuns = [
+const streamlining = [
+  {
+    title: 'Clinical-to-commercial scaling',
+    body: 'Accelerating the move from clinical-phase supply to a resilient commercial distribution network: depots, 3PLs, serialisation, demand signals and launch stock.',
+  },
+  {
+    title: 'Target operating model and process',
+    body: 'Roles, hand-offs, KPIs and cost streamlined for the phase ahead, so the operation runs leaner and faster, with one goal every function can see.',
+  },
+  {
+    title: 'Supplier network visibility',
+    body: 'Multi-tier visibility across your supplier network, with due diligence and sustainability reporting where you need it.',
+  },
+  {
+    title: 'Capacity, cost and resilience',
+    body: 'Strategic capacity planning, cost to serve, dual sourcing and buffer stock sized to risk, all measured against a baseline.',
+  },
+];
+
+const executeSteps = [
   { title: 'Assess', body: 'Functions, processes, systems, data and use cases, scored for value and risk.' },
-  { title: 'Design', body: 'The linked operation and the target model: roles, hand-offs, KPIs and cost for the phase ahead.' },
-  { title: 'Pilot', body: 'One workflow, one team, measured against a baseline.' },
+  {
+    title: 'Design',
+    body: 'The linked operation and the target model: roles, hand-offs, KPIs, cost and the technology that streamlines each workflow.',
+  },
+  { title: 'Pilot', body: 'One workflow, one team, measured against a baseline before anything scales.' },
   {
     title: 'Validate',
     body: 'Controls and evidence that satisfy your quality system and your regulators. Where AI is in scope, its intended use is written down too.',
   },
   { title: 'Adopt', body: 'Training, SOP updates and change management for the teams who run it.' },
-  { title: 'Oversee', body: 'Dashboards live and people in charge, with agents in place where AI is used.' },
+  { title: 'Oversee', body: 'Live dashboards, clear ownership and your people in charge, with every gain tracked against the baseline.' },
 ];
 
 const schema = [
@@ -126,8 +131,8 @@ const schema = [
     '@context': 'https://schema.org',
     '@type': 'Service',
     '@id': `${site.url}${path}#service`,
-    name: 'Operations Excellence',
-    serviceType: 'Life sciences operations transformation, with AI oversight where it fits',
+    name: pageName,
+    serviceType: 'Life sciences operations optimisation with applied AI and proven technology',
     description,
     url: `${site.url}${path}`,
     provider: { '@id': `${site.url}/#organisation` },
@@ -138,7 +143,7 @@ const schema = [
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-      { '@type': 'ListItem', position: 2, name: 'Operations Excellence', item: `${site.url}${path}` },
+      { '@type': 'ListItem', position: 2, name: pageName, item: `${site.url}${path}` },
     ],
   },
 ];
@@ -146,30 +151,30 @@ const schema = [
 
 <Base title={title} description={description} path={path} schema={schema}>
   <PageHero
-    title="Operations Excellence"
-    lead={`Operations rebuilt leaner, faster and stronger, with every part of the business linked to one goal and run with confidence. AI where it earns its place. Next-gen ready, delivered with ${partner}.`}
+    title={pageName}
+    lead={`Proven technology and AI, applied with precision to streamline how your operation runs. Every function linked to one goal, rebuilt leaner, faster and stronger, and next-gen ready. Delivered with ${partner}.`}
     eyebrow="Service area"
-    crumbs={[{ title: 'Services', href: '/#services' }, { title: 'Operations Excellence' }]}
+    crumbs={[{ title: 'Services', href: '/#services' }, { title: pageName }]}
     cta={{ label: 'Start a conversation' }}
     video="robot"
   />
 
-  <!-- intro -->
+  <!-- intro: the observation, then the answer beside it -->
   <Section tight>
     <div class="intro" data-reveal>
       <p class="intro__statement">
-        Most operations were built for the phase they were in, and grew one function at a time, each with its own
-        plan, its own data and its own idea of success.
+        Operations are grown, not designed. Each function was built for the moment it faced, with its own plan, its
+        own data and its own measure of success. Together they set a ceiling on efficiency, scale and cost.
       </p>
       <div class="intro__body">
         <p>
           We link planning, procurement, manufacturing, quality, logistics and finance into one operation with one
-          goal, then rebuild processes, capacity and cost for the phase ahead.
+          goal, then apply proven technology with precision to streamline how the work flows and rebuild capacity and
+          cost for the phase ahead.
         </p>
         <p>
-          Operations excellence is different now. Technology has moved the work forward: analytics turn into action,
-          oversight is live across the whole operation, and the tools are in use on every engagement, not just built
-          into the pitch.
+          The field has moved on. Analytics drive action, oversight runs live across the whole operation, and our
+          tools are in use on every engagement, not built into the pitch.
         </p>
       </div>
     </div>
@@ -181,8 +186,8 @@ const schema = [
       <p class="eyebrow eyebrow--on-film">The industry ahead</p>
       <h2 id="evolution-title">The operations evolution</h2>
       <p class="lead">
-        Four shifts are changing how life sciences operations are planned, run and measured. Each one asks the whole
-        business to move as one.
+        Four shifts are redefining how life sciences operations are planned, run and measured. Each one demands that
+        the whole business moves as one.
       </p>
     </div>
     <div class="shifts">
@@ -201,9 +206,9 @@ const schema = [
           <p class="eyebrow">Next-gen ready</p>
           <h2 id="next-gen-ready-title">What <span class="nb">next-gen</span> ready means</h2>
           <p class="lead ready-lead">
-            A next-gen ready operation works as one, and takes on the next change without a rebuild each time. Its
-            data is clean enough to act on, its systems pass that data to each other with no retyping, its partners
-            keep the same pace, its people know who decides, and its validation holds as the work changes.
+            A next-gen ready operation works as one and absorbs the next change without a rebuild. Its data is clean
+            enough to act on, its systems pass that data to each other with no retyping, its partners keep the same
+            pace, its people know who decides, and its validation holds as the work changes.
           </p>
         </div>
         <ul class="ready" role="list" aria-label="Five signs of a next-gen ready operation">
@@ -223,8 +228,8 @@ const schema = [
             <h3>The <span class="nb">next-gen</span> readiness assessment</h3>
             <p>
               The entry point is the Diagnose step: a short, fixed-fee assessment. We score your use cases, systems,
-              data, partners and people for value and risk, against where the industry is heading, and return a
-              written plan that shows where you stand, what to fix first and who owns each move.
+              data, partners and people for value and risk, benchmark them against where the industry is heading, and
+              return a written plan that sets out where you stand, what to fix first and who owns each move.
             </p>
           </div>
           <div class="actions">
@@ -249,34 +254,34 @@ const schema = [
     </div>
   </section>
 
-  <!-- what we take on -->
+  <!-- pivotal oversight -->
   <Section
-    id="take-on"
+    id="pivotal-oversight"
     tone="mist"
-    eyebrow="Scope"
-    title="What we take on"
-    intro="Transformation first, then AI where it earns its place."
+    eyebrow="Precision"
+    title="Pivotal oversight"
+    intro="Proven technology and AI applied with precision, then the operating changes that make every gain hold."
   >
     <!-- two groups under the one H2; the labels are text, not headings, so the block H3s keep their level -->
-    <div class="take-group" role="group" aria-labelledby="take-on-transforming">
-      <p class="eyebrow take-group__label" id="take-on-transforming" data-reveal>Transforming operations</p>
-      <Blocks items={transforming} cols={2} />
+    <div class="take-group" role="group" aria-labelledby="oversight-applied">
+      <p class="eyebrow take-group__label" id="oversight-applied" data-reveal>Applied AI and proven technology</p>
+      <Blocks items={applied} cols={2} />
     </div>
-    <div class="take-group" role="group" aria-labelledby="take-on-ai">
-      <p class="eyebrow take-group__label" id="take-on-ai" data-reveal>Where AI fits</p>
-      <Blocks items={aiFits} cols={2} />
+    <div class="take-group" role="group" aria-labelledby="oversight-streamlining">
+      <p class="eyebrow take-group__label" id="oversight-streamlining" data-reveal>Streamlining operations</p>
+      <Blocks items={streamlining} cols={2} />
     </div>
   </Section>
 
-  <!-- how it runs -->
-  <section class="section" id="how-it-runs" aria-labelledby="how-it-runs-title">
+  <!-- how we execute -->
+  <section class="section" id="how-we-execute" aria-labelledby="how-we-execute-title">
     <div class="container runs">
       <div class="section-head runs__head" data-reveal>
-        <p class="eyebrow">Method</p>
-        <h2 id="how-it-runs-title">How it runs</h2>
-        <p class="lead">Six stages, from the first assessment to an operation that runs as one.</p>
+        <p class="eyebrow">Executing</p>
+        <h2 id="how-we-execute-title">How we execute</h2>
+        <p class="lead">Six stages, from the first assessment to a streamlined operation that runs as one.</p>
       </div>
-      <Steps items={howItRuns} />
+      <Steps items={executeSteps} />
     </div>
   </section>
 
@@ -288,7 +293,7 @@ const schema = [
         <h2 id="partnership-title">Viaclin and {partner}</h2>
         <p class="measure">
           Where AI is in scope, we deliver it with {partner}, Viaclin's sister brand for AI products in regulated
-          industries. Viaclin runs the programme and answers for the outcome; {partner} supplies the agents. One
+          industries. Viaclin drives the programme and answers for the outcome; {partner} supplies the agents. One
           contract, one accountable lead.
         </p>
         <ul class="roles" role="list">
@@ -306,7 +311,7 @@ const schema = [
       <div class="pair card" data-reveal="scale">
         <div class="pair__row">
           <strong>{site.name}</strong>
-          <span>Runs the programme and answers for the outcome</span>
+          <span>Drives the programme and answers for the outcome</span>
         </div>
         <div class="pair__row">
           <strong>{partner}</strong>
@@ -607,7 +612,7 @@ const schema = [
     }
   }
 
-  /* what we take on: each group opens with its label and a hairline that runs to the edge */
+  /* pivotal oversight: each group opens with its label and a hairline that runs to the edge */
   .take-group + .take-group {
     margin-top: clamp(44px, 6vw, 72px);
   }
@@ -625,7 +630,7 @@ const schema = [
     background: var(--rule);
   }
 
-  /* how it runs: heading left, steps right */
+  /* how we execute: heading left, steps right */
   .runs {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);

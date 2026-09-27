@@ -13,6 +13,7 @@ export default defineConfig({
   // Static hosts have no server-side redirects, so Astro writes a small redirect page for the old address.
   redirects: {
     '/services/trial-close-out': '/services/supply-chain-consultancy',
+    '/services/operations-excellence': '/services/optimised-operations',
   },
   integrations: [
     sitemap({

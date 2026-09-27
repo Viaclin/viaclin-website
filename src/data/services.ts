@@ -1,5 +1,5 @@
 // Home page copy for the three service areas and the supporting sections.
-// Source: VIACLIN_WEBSITE_SPEC.md section 8.1. Operations Excellence follows the design doc.
+// Source: VIACLIN_WEBSITE_SPEC.md section 8.1. Optimised Operations follows the design doc.
 
 export const serviceCards = [
   {
@@ -15,9 +15,9 @@ export const serviceCards = [
     linkLabel: 'See the service',
   },
   {
-    title: 'Operations Excellence',
-    body: 'Operations rebuilt leaner, faster and stronger: every part of the business linked to one goal, with AI where it earns its place. Next-gen ready, delivered with SupplyAI.',
-    href: '/services/operations-excellence',
+    title: 'Optimised Operations',
+    body: 'Proven technology and AI applied with precision to streamline how the work flows: every part of the business linked to one goal, next-gen ready, delivered with SupplyAI.',
+    href: '/services/optimised-operations',
     linkLabel: 'See the service',
   },
 ];
@@ -39,15 +39,15 @@ export const projectPoints = [
 export const evolutionCards = [
   {
     title: 'One connected operation',
-    body: 'Planning, procurement, manufacturing, quality and logistics linked to one goal, so a decision in one function moves the others with it, not against them.',
+    body: 'Strategic alignment of planning, procurement, manufacturing, quality and logistics behind one goal, so a decision in one function moves the others with it, not against them.',
   },
   {
     title: 'Leaner, faster, stronger',
-    body: 'Processes, capacity and cost rebuilt for the phase ahead and measured against a baseline, so the operation runs with confidence at every stage.',
+    body: 'Process, capacity and cost engineered with precision for the phase ahead and measured against a baseline, so the operation executes with confidence at every stage.',
   },
   {
-    title: 'AI where it earns its place',
-    body: 'Validated in your quality system and in use on the engagement, not just built into the pitch. Your people stay in charge of every decision.',
+    title: 'AI and proven technology',
+    body: 'Accelerating the work with tools that have earned their place: validated in your quality system and in use on the engagement, never just built into the pitch. Your people stay in charge of every decision.',
   },
 ];
 
@@ -70,15 +70,15 @@ export const method = [
 export const principles = [
   {
     title: 'Forecasting',
-    body: 'Future-proof planning. We own S&OP end to end, with forecasting built on SAP and Anaplan, so clinical demand, commercial rollout and manufacturing capacity line up. Buffer stock is sized to risk, overproduction stops, and capital stays where it belongs.',
+    body: 'Strategic, future-proof planning. We own S&OP end to end, with forecasting built on SAP and Anaplan, so clinical demand, commercial rollout and manufacturing capacity line up. Buffer stock is sized to risk, overproduction stops, and capital stays where it belongs.',
   },
   {
     title: 'Owning supply',
-    body: 'Interim, project or full-time S&OE management. Packaging, cross-border logistics, CDMO programmes and site readiness run under one owner. No handoffs between siloed teams. No gaps between functions.',
+    body: 'Executing supply under one owner: interim, project or full-time S&OE management. Packaging, cross-border logistics, CDMO programmes and site readiness run as one. No handoffs between siloed teams. No gaps between functions.',
   },
   {
     title: 'AI',
-    body: 'We build the bridge between now and next. Purpose-built agents watch activity and guide decisions for supply professionals and leaders, validated in your quality system, with your people in charge.',
+    body: 'We build the bridge between now and next. Purpose-built agents watch activity and guide decisions for supply professionals and leaders, accelerating the operation, validated in your quality system, with your people in charge.',
   },
 ];
 

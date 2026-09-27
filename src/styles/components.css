@@ -485,7 +485,32 @@
   }
 }
 
-@media (max-width: 1239px) {
+/* the descriptor docks wherever the full menu shows; the bar tightens so everything fits from 1001 px */
+@media (max-width: 1240px) {
+  .site-header__inner {
+    gap: 10px;
+  }
+
+  .dock-slot {
+    padding-left: 10px;
+  }
+
+  .site-nav__list {
+    gap: 0;
+  }
+
+  .site-nav__link {
+    padding: 0 8px;
+    white-space: nowrap;
+  }
+
+  .site-header__tools .btn {
+    margin-left: 4px;
+    padding-inline: 16px;
+  }
+}
+
+@media (max-width: 1000px) {
   .dock-slot {
     display: none;
   }

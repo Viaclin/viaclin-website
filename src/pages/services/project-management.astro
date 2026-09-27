@@ -1,5 +1,6 @@
 ---
-// Project Management. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.3.
+// Project Management. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.3, recast in the owner's assertive voice
+// of September 2026: a senior team that drives, executes and delivers with precision.
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Section from '../../components/Section.astro';
@@ -11,67 +12,63 @@ import { site } from '../../data/site';
 const path = '/services/project-management';
 const pageName = 'Project Management';
 const description =
-  'End-to-end project management for life sciences: tech transfer, CDMO programmes, serialisation, logistics and launch, with applied AI for full visibility.';
+  'Precision project management for life sciences. A senior team drives tech transfer, CDMO programmes, serialisation and launch, with applied AI.';
 
-const takeOn = [
+const driveSteps = [
   {
-    title: 'Tech transfer, scale-up and PPQ',
-    body: 'Transfer planning, receiving-site readiness, process performance qualification and the handover into routine supply.',
-  },
-  {
-    title: 'CDMO and CMO programmes',
-    body: 'Slot management, batch records, deviations, campaign reports and the commercial terms behind them.',
-  },
-  {
-    title: 'Packaging and serialisation',
-    body: 'Packaging definition, artwork and label drafting, serialisation adoption and packaging line readiness.',
-  },
-  {
-    title: 'Cross-border logistics and launch',
-    body: 'Importer of record, licences, bonds, cold chain routes, depot strategy and launch sequencing by market.',
-  },
-  {
-    title: 'Global site readiness',
-    body: 'Pharmacy manuals, storage capability, IRT integration and first-patient readiness across countries.',
-  },
-  {
-    title: 'Interim leadership',
-    body: 'A senior project owner while you hire, restructure or scale.',
-  },
-];
-
-const runSteps = [
-  {
-    title: 'Scope and charter in week one',
-    body: 'Objectives, boundaries, decision rights and the definition of done, signed off by your sponsor.',
+    title: 'Scope and charter creation',
+    body: 'Objectives, boundaries, decision rights and the definition of done, set in week one and signed off by your sponsor.',
   },
   {
     title: 'One plan',
-    body: 'Budget, schedule, risk register and action log, owned by the Viaclin lead and open to your team at all times.',
+    body: 'Budget, schedule, risk register and action log, owned by the Viaclin lead and open to your team at all times. Every action carries an owner and a date.',
   },
   {
     title: 'Decisions in the open',
-    body: 'A weekly decisions log to your leadership, each item with options and a recommendation.',
+    body: 'A weekly decisions log to your leadership, each item framed with options and a firm recommendation, so decisions close on time and the schedule holds.',
   },
   {
     title: 'Applied AI in the plan',
-    body: 'Project management is on the frontier of applied AI. Our tools read the plan, the risk register and the vendor data together, so you get full visibility and a level of management that a status report cannot give.',
+    body: 'Project management is on the frontier of applied AI. Our tools read the plan, the risk register and the vendor data together, so you get full visibility, sharper risk calls and a level of control that no status report can give.',
   },
   {
     title: 'Handover',
-    body: 'Documentation, trained owners and a closed action log. Your team runs it from here.',
+    body: 'Documentation, trained owners and a closed action log. The capability stays with you, and your team runs it from here.',
+  },
+];
+
+const oversight = [
+  {
+    title: 'Tech transfer, scale-up and PPQ',
+    body: 'Transfer planning and receiving-site readiness, analytical method transfer and laboratory testing oversight, then process performance qualification and a controlled handover into routine supply.',
+  },
+  {
+    title: 'CDMO and CMO programmes',
+    body: 'Your CDMOs and CMOs held to the plan: slot management, batch records, deviations, campaign reports and the commercial terms behind them.',
+  },
+  {
+    title: 'Packaging and serialisation',
+    body: 'Packaging definition, artwork and label drafting, serialisation adoption and packaging line readiness, executed to your launch date.',
+  },
+  {
+    title: 'Cross-border logistics and launch',
+    body: 'Strategic launch sequencing by market, with importer of record, licences, bonds, cold chain routes and depot strategy settled in advance.',
+  },
+  {
+    title: 'Global site readiness',
+    body: 'Pharmacy manuals, storage capability, IRT integration and first-patient readiness, driven to one standard in every country.',
+  },
+  {
+    title: 'Interim leadership',
+    body: 'A senior project owner who steps in and takes charge while you hire, restructure or scale.',
   },
 ];
 
 const engage = [
-  { title: 'Run', body: 'A Viaclin lead owns the project end to end.' },
-  { title: 'Retain', body: 'A fractional project owner across a portfolio, a set number of days each month.' },
-  { title: 'Diagnose', body: 'A project health check: plan, risks, vendor performance and a recovery route, in writing.' },
+  { title: 'Run', body: 'A Viaclin lead takes full ownership and drives the project end to end.' },
+  { title: 'Retain', body: 'Strategic oversight across your portfolio from a fractional project owner, a set number of days each month.' },
+  { title: 'Diagnose', body: 'A project health check that pinpoints where the plan, the risks and vendor performance stand, with a written recovery route.' },
 ];
-
-// Supporting artwork repeats words from the copy beside it, so it stays hidden from assistive tech and search.
-const routeStops = ['Coordinates activity', 'Pushes the project forward', 'Answers for delivery'];
-const routeYs = [30, 110, 190];
 
 const schema = [
   {
@@ -99,57 +96,44 @@ const schema = [
 <Base title="Project Management: Viaclin" description={description} path={path} schema={schema}>
   <PageHero
     title={pageName}
-    lead="End-to-end ownership of the projects that decide your timeline. One owner for scope, schedule, budget, regulatory alignment, risk and operations, from concept to patient delivery."
+    lead="End-to-end ownership of the projects that decide your timeline. We drive scope, schedule, budget, regulatory alignment, risk and operations from concept to patient delivery."
     eyebrow="Service area"
     crumbs={[{ title: 'Services', href: '/#services' }, { title: pageName }]}
     cta={{ label: 'Start a conversation' }}
     video="labelling"
   />
 
-  <!-- intro -->
-  <Section>
-    <div class="lead-split">
-      <div class="lead-split__copy" data-reveal>
-        <p class="eyebrow">Our role</p>
-        <p class="lead lead--intro">
-          We do not administer plans or produce status reports. A Viaclin lead coordinates the activity, pushes the
-          project forward and answers for delivery. Documentation and knowledge transfer come as standard, so the
-          capability stays with you.
-        </p>
-      </div>
-      <div class="route miniroute" data-reveal="fade" aria-hidden="true" data-pagefind-ignore>
-        <svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg" focusable="false">
-          <path class="route__bracket" d="M26 30 h-12 v160 h12"></path>
-          <line class="route__line" x1="56" y1="30" x2="56" y2="190"></line>
-          {routeYs.map((y, i) => <circle class="route__node" cx="56" cy={y} r="9" style={`--i:${i}`}></circle>)}
-          {routeStops.map((stop, i) => (
-            <text class="route__label" x="84" y={routeYs[i]} dominant-baseline="middle" style={`--i:${i}`}>{stop}</text>
-          ))}
-        </svg>
-        <p class="route__caption">The capability stays with you</p>
-      </div>
-    </div>
-  </Section>
-
-  <!-- how we run a project: the heading holds its place while the five steps pass -->
-  <section class="section section--mist" id="how-we-run-a-project" aria-labelledby="how-we-run-a-project-title">
+  <!-- how we drive your project: the heading holds its place while the five steps pass -->
+  <section class="section section--mist" id="how-we-drive" aria-labelledby="how-we-drive-title">
     <div class="container run-split">
       <div class="run-split__head" data-reveal>
-        <p class="eyebrow">Method</p>
-        <h2 id="how-we-run-a-project-title">How we run a project</h2>
+        <p class="eyebrow">Driving delivery</p>
+        <h2 id="how-we-drive-title">How we drive your project</h2>
+        <p class="lead">A senior Viaclin lead owns the plan, drives every decision to a close and answers for delivery.</p>
         <p class="pull">Full oversight, without the overhead.</p>
       </div>
-      <Steps items={runSteps} />
+      <Steps items={driveSteps} />
     </div>
   </section>
 
-  <!-- what we take on -->
-  <Section id="what-we-take-on" eyebrow="Scope" title="What we take on">
-    <div class="rows"><Blocks items={takeOn} cols={2} /></div>
+  <!-- pivotal oversight -->
+  <Section
+    id="pivotal-oversight"
+    eyebrow="Precision"
+    title="Pivotal oversight"
+    intro="The critical path of your programme, owned by a senior lead and executed with precision."
+  >
+    <div class="rows"><Blocks items={oversight} cols={2} /></div>
   </Section>
 
-  <!-- ways to engage -->
-  <Section id="ways-to-engage" tone="mist" eyebrow="Engagement" title="Ways to engage">
+  <!-- your needs, our services -->
+  <Section
+    id="your-needs"
+    tone="mist"
+    eyebrow="Engagement"
+    title="Your needs, our services"
+    intro="Three ways to engage. Each one puts a senior lead in charge of the result."
+  >
     <Blocks items={engage} cols={3} />
   </Section>
 
@@ -157,42 +141,6 @@ const schema = [
 </Base>
 
 <style>
-  /* a single paragraph set as a lead, with a quiet companion beside it */
-  .lead-split {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
-    gap: clamp(32px, 6vw, 88px);
-    align-items: center;
-  }
-
-  .lead-split__copy > * + * {
-    margin-top: var(--space-5);
-  }
-
-  .lead--intro {
-    max-width: 34em;
-    font-size: clamp(1.25rem, 1.9vw, 1.5rem);
-    line-height: 1.45;
-    letter-spacing: -0.005em;
-  }
-
-  /* a short vertical route segment, drawn with the shared route classes */
-  .miniroute {
-    width: 100%;
-    max-width: 340px;
-    justify-self: end;
-  }
-
-  .miniroute .route__label {
-    font-size: 18px;
-  }
-
-  .miniroute .route__caption {
-    margin-top: var(--space-2);
-    padding-left: 14px;
-    text-align: left;
-  }
-
   .run-split {
     display: grid;
     grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
@@ -207,6 +155,12 @@ const schema = [
 
   .run-split__head > * + * {
     margin-top: var(--space-4);
+  }
+
+  /* the lead reads as a section-head lead: quieter than the heading and the pull line */
+  .run-split__head .lead {
+    max-width: 34ch;
+    color: var(--fg-2);
   }
 
   /* the pull line sums up the method beside the steps */
@@ -232,7 +186,6 @@ const schema = [
   }
 
   @media (max-width: 900px) {
-    .lead-split,
     .run-split {
       grid-template-columns: minmax(0, 1fr);
     }
@@ -241,13 +194,12 @@ const schema = [
       position: static;
     }
 
-    .run-split__head .pull {
-      margin-top: var(--space-5);
+    .run-split__head .lead {
+      max-width: 60ch;
     }
 
-    .miniroute {
-      max-width: 300px;
-      justify-self: start;
+    .run-split__head .pull {
+      margin-top: var(--space-5);
     }
   }
 </style>

@@ -1,5 +1,6 @@
 ---
-// Supply Chain Consultancy. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.2, revised with the owner's hero lead.
+// Supply Chain Consultancy. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.2, revised with the owner's hero lead
+// and the owner's direction for a more confident voice: an elite senior team that drives and executes with precision.
 import Base from '../../layouts/Base.astro';
 import PageHero from '../../components/PageHero.astro';
 import Section from '../../components/Section.astro';
@@ -11,24 +12,24 @@ import { site } from '../../data/site';
 const path = '/services/supply-chain-consultancy';
 const pageName = 'Supply Chain Consultancy';
 const description =
-  'Bespoke life sciences supply chain consultancy: planning and forecasting, clinical supply, external manufacturing, procurement and value chain strategy.';
+  'Senior life sciences supply chain consultancy: planning, clinical supply, external manufacturing, laboratory testing, procurement and value chain strategy.';
 
 const technology = [
   {
     title: 'Simplify your supply',
-    body: 'One supply model from development to commercial, with fewer handoffs between functions and partners and one owner for the whole chain.',
+    body: 'One supply model from development to commercial. Fewer handoffs between functions and partners, and one accountable owner for the whole chain.',
   },
   {
     title: 'Secure your supply',
-    body: 'Risk-based safety stock and dual sourcing. Cold chain control and excursion response. Oversight of the suppliers your programme depends on.',
+    body: 'Risk-based safety stock and dual sourcing. Cold chain control and a decisive excursion response. Strategic oversight of every supplier your programme depends on.',
   },
   {
     title: 'Scale operations',
-    body: 'From first-in-human to launch and post-launch: new product introduction, market rollout and life cycle management.',
+    body: 'Accelerating from first-in-human to launch and beyond: new product introduction, market rollout and life cycle management, executed to plan.',
   },
 ];
 
-const takeOn = [
+const oversight = [
   {
     title: 'Planning and forecasting',
     body: 'S&OP ownership and demand planning on SAP and Anaplan. Patient-level modelling: recruitment, dosing intervals, dropout. Risk-based safety stock. Scenario planning and CMO capacity alignment. Launch ramp and market rollout sequencing.',
@@ -43,7 +44,7 @@ const takeOn = [
   },
   {
     title: 'Procurement',
-    body: 'Sourcing, contracting and delivery. Supplier performance, savings and compliance. Public tenders prepared and managed. Tariffs, import duties and customs clearance.',
+    body: 'Strategic sourcing, contracting and delivery. Supplier performance, savings and compliance. Public tenders prepared and managed. Tariffs, import duties and customs clearance.',
   },
   {
     title: 'Supply network and risk',
@@ -53,49 +54,53 @@ const takeOn = [
     title: 'Greenfield operations set-up',
     body: 'New market, new facility or new function, built from a blank page to a licensed, running capability. Licensing pathways with HPRA, MHRA, FDA and EMA. SOP development, quality systems and GMP readiness. ERP selection and implementation. CMO network design and backup site qualification. Serialisation and packaging line adoption.',
   },
+  {
+    title: 'Laboratory testing oversight',
+    body: 'Release and stability testing programmes. Contract laboratory management. Sample logistics and chain of custody. Analytical method transfer. Results expedited when a release date depends on them.',
+  },
+  {
+    title: 'Quality and regulatory alignment',
+    body: 'QP and QPPV coordination. Deviations, change control and licence variations handled with precision, without stalling supply.',
+  },
 ];
 
 const strategy = [
   {
     title: 'Value chain strategy',
-    body: 'Where value is made and lost across development, manufacturing and supply, and the choices that follow: what to keep in house, what to place with partners and where to invest.',
+    body: 'We pinpoint where value is made and lost across development, manufacturing and supply, then set the choices that follow: what stays in house, what goes to partners and where to invest.',
   },
   {
     title: 'Target operating model',
-    body: 'The organisation, processes, systems and partners the supply chain needs for its next phase, set out as one model with clear decision rights.',
+    body: 'The organisation, processes, systems and partners your supply chain needs for its next phase, defined as one model with clear decision rights.',
   },
   {
     title: 'SCM transformation',
-    body: 'Systems, data, roles and partners moved to the target model, with the change managed alongside your team.',
+    body: 'Systems, data, roles and partners moved onto the target model. We drive the change with your team and execute it to plan.',
   },
   {
     title: 'New product introduction and post-launch',
-    body: 'NPI planning and launch readiness, then the steady state and the life cycle changes that follow.',
+    body: 'NPI planning and launch readiness that accelerate the path to market, then the steady state and the life cycle changes that follow.',
   },
 ];
 
 const engage = [
   {
     title: 'Embedded',
-    body: 'A senior operator inside your team for a defined scope and period, in your systems and your meetings.',
+    body: 'A senior operator inside your team for a defined scope and period, executing in your systems and your meetings.',
   },
   {
     title: 'Fractional',
-    body: 'A set number of days each month for programmes that need a steady hand rather than a full-time hire.',
+    body: 'Senior capacity for a set number of days each month, for programmes that need a steady hand rather than a full-time hire.',
   },
   {
     title: 'Projectised',
-    body: 'A defined project with a charter, a plan and an end date, owned by a Viaclin lead.',
+    body: 'A defined project with a charter, a plan and an end date, driven to completion by a Viaclin lead.',
   },
   {
     title: 'Ad hoc consulting',
-    body: 'A question answered, a document reviewed or a decision supported, without a retainer.',
+    body: 'A precise answer when you need one: a question resolved, a document reviewed or a strategic decision supported, without a retainer.',
   },
 ];
-
-// Supporting artwork repeats words from the copy beside it, so it stays hidden from assistive tech and search.
-const routeStops = ['Planning', 'Procurement', 'Manufacturing oversight'];
-const routeYs = [30, 110, 190];
 
 const schema = [
   {
@@ -130,30 +135,7 @@ const schema = [
     video="pumps"
   />
 
-  <!-- intro -->
-  <Section>
-    <div class="lead-split">
-      <div class="lead-split__copy" data-reveal>
-        <p class="eyebrow">Our role</p>
-        <p class="lead lead--intro">
-          We take ownership of planning, procurement and manufacturing oversight. Engagements run inside your quality
-          system and your tools. Specialist questions route across the Viaclin network and come back answered.
-        </p>
-      </div>
-      <div class="route miniroute" data-reveal="fade" aria-hidden="true" data-pagefind-ignore>
-        <svg viewBox="0 0 340 220" xmlns="http://www.w3.org/2000/svg" focusable="false">
-          <path class="route__bracket" d="M26 30 h-12 v160 h12"></path>
-          <line class="route__line" x1="56" y1="30" x2="56" y2="190"></line>
-          {routeYs.map((y, i) => <circle class="route__node" cx="56" cy={y} r="9" style={`--i:${i}`}></circle>)}
-          {routeStops.map((stop, i) => (
-            <text class="route__label" x="84" y={routeYs[i]} dominant-baseline="middle" style={`--i:${i}`}>{stop}</text>
-          ))}
-        </svg>
-      </div>
-    </div>
-  </Section>
-
-  <!-- perspective: linear, network, value -->
+  <!-- perspective: linear, network, value, driven by the scroll -->
   <ArcDiagram />
 
   <!-- technology and expertise -->
@@ -161,14 +143,14 @@ const schema = [
     id="technology"
     eyebrow="Technology and expertise"
     title="Transforming supply chains through technology and expertise"
-    intro="Supply chains for clinical and commercial programmes have to be tailored to the product, the phase and the markets. We build them with senior operators and the newest tools in the field, and we run them with your team."
+    intro="Clinical and commercial programmes demand a supply chain built for the product, the phase and the markets. Our senior operators design it with precision, equip it with the newest tools in the field and drive its execution with your team."
   >
     <div class="rows"><Blocks items={technology} cols={3} /></div>
   </Section>
 
-  <!-- what we take on -->
-  <Section id="what-we-take-on" tone="mist" eyebrow="Scope" title="What we take on">
-    <div class="rows"><Blocks items={takeOn} cols={2} /></div>
+  <!-- pivotal oversight: eight blocks, so the two-column grid closes on a full row -->
+  <Section id="pivotal-oversight" tone="mist" eyebrow="Precision" title="Pivotal oversight">
+    <div class="rows"><Blocks items={oversight} cols={2} /></div>
   </Section>
 
   <!-- strategy -->
@@ -176,13 +158,13 @@ const schema = [
     id="strategy"
     eyebrow="Strategy"
     title="Shape the future of your value chain"
-    intro="Value chain strategy and a target operating model, then the transformation programme that gets you there."
+    intro="Strategic value chain design and a target operating model, then the transformation programme we drive to completion."
   >
     <div class="rows"><Blocks items={strategy} cols={4} /></div>
   </Section>
 
   <!-- ways to engage -->
-  <Section id="ways-to-engage" tone="mist" eyebrow="Engagement" title="Ways to engage">
+  <Section id="ways-to-engage" tone="mist" eyebrow="Engagement" title="Your needs, our services">
     <div class="rows"><Blocks items={engage} cols={2} /></div>
   </Section>
 
@@ -193,9 +175,9 @@ const schema = [
         <p class="eyebrow">First step</p>
         <h2 id="how-it-starts-title">How it starts</h2>
         <p class="lead start__lead">
-          A thirty-minute call. We ask about the programme, the phase, the systems and the deadline. If we can help,
-          you get a written proposal: scope, named lead, network specialists, timeline and fee. If we cannot, we say
-          so and point you to someone who can.
+          A thirty-minute call. We ask about the programme, the phase, the systems and the deadline. If we are the
+          right team, a written proposal follows: scope, network specialists, timeline and fee. If we are not, we say
+          so and point you to someone who is. A named lead, a plan with owners and dates, and delivery we answer for.
         </p>
       </div>
     </div>
@@ -205,36 +187,6 @@ const schema = [
 </Base>
 
 <style>
-  /* a single paragraph set as a lead, with a quiet companion beside it */
-  .lead-split {
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
-    gap: clamp(32px, 6vw, 88px);
-    align-items: center;
-  }
-
-  .lead-split__copy > * + * {
-    margin-top: var(--space-5);
-  }
-
-  .lead--intro {
-    max-width: 34em;
-    font-size: clamp(1.25rem, 1.9vw, 1.5rem);
-    line-height: 1.45;
-    letter-spacing: -0.005em;
-  }
-
-  /* a short vertical route segment, drawn with the shared route classes */
-  .miniroute {
-    width: 100%;
-    max-width: 340px;
-    justify-self: end;
-  }
-
-  .miniroute .route__label {
-    font-size: 18px;
-  }
-
   /* block grids that run to several rows, stacked on a phone or two by two: open the rows up so each rule reads as a new start */
   .rows :global(.grid) {
     row-gap: clamp(36px, 4.4vw, 56px);
@@ -247,16 +199,5 @@ const schema = [
 
   .start__lead {
     max-width: 52ch;
-  }
-
-  @media (max-width: 900px) {
-    .lead-split {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
-    .miniroute {
-      max-width: 300px;
-      justify-self: start;
-    }
   }
 </style>

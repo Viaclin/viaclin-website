@@ -16,9 +16,9 @@ export const services: NavLink[] = [
     summary: 'End-to-end ownership of the projects that decide your timeline.',
   },
   {
-    title: 'Operations Excellence',
-    href: '/services/operations-excellence',
-    summary: 'Leaner, faster, stronger operations, next-gen ready.',
+    title: 'Optimised Operations',
+    href: '/services/optimised-operations',
+    summary: 'Proven technology and AI applied with precision, next-gen ready.',
   },
 ];
 

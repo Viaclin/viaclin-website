@@ -31,11 +31,11 @@ import {
     <div class="container hero__inner">
       <div class="hero__copy">
         <p class="descriptor" id="hero-descriptor"><span class="descriptor__dot"></span>{site.descriptor}</p>
-        <h1 class="display display--hero rise" id="hero-title" style="--d:80ms">Specialist Consulting</h1>
+        <h1 class="display display--hero rise" id="hero-title" style="--d:80ms">Your priorities, our expertise</h1>
         <p class="lead rise" style="--d:180ms">
-          Supporting pharma and biotech from discovery to commercial supply and life cycle management.
-          Trusted by leading organisations to transform supply chains into resilient, integrated value chains, with the
-          newest tools in the field.
+          Elite supply chain consulting for pharma and biotech, from discovery to commercial supply and life cycle
+          management. Trusted by leading organisations to transform supply chains into resilient, integrated value
+          chains, executed with precision and the newest tools in the field.
         </p>
         <div class="actions rise" style="--d:280ms">
           <a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="hero" data-ab="hero-cta" data-ab-operator="Talk to a senior operator">Start a conversation</a>
@@ -89,8 +89,8 @@ import {
         <p class="eyebrow">Service area</p>
         <h2 id="pm-title">Project Management</h2>
         <p class="lead">
-          End-to-end ownership of the projects that decide your timeline. One owner for scope, schedule, budget,
-          regulatory alignment, risk and operations, from concept to patient delivery.
+          End-to-end ownership of the projects that decide your timeline. We drive scope, schedule, budget,
+          regulatory alignment, risk and operations from concept to patient delivery.
         </p>
         <ul class="ticks" role="list">
           {projectPoints.map((point) => <li>{point}</li>)}
@@ -104,19 +104,20 @@ import {
   <!-- statement band: operations, one word at a time -->
   <Rotor />
 
-  <!-- film 4: robot. Operations Excellence -->
+  <!-- film 4: robot. Optimised Operations -->
   <VideoBand video="robot" id="operations" labelledby="ops-title">
     <div class="band-head" data-reveal>
-      <p class="eyebrow eyebrow--on-film">Service area: Operations Excellence</p>
+      <p class="eyebrow eyebrow--on-film">Service area: Optimised Operations</p>
       <h2 id="ops-title">The operations evolution is under way. Be next-gen ready.</h2>
       <p class="lead">
-        Every part of the business linked to one goal, so the operation runs leaner, faster and stronger, with
-        confidence at every stage. AI where it earns its place. Delivered with {site.sisterBrand.name}.
+        Proven technology and AI, applied with precision, streamline how the work flows: every part of the business
+        linked to one goal, driving an operation that runs leaner, faster and stronger. Delivered with{' '}
+        {site.sisterBrand.name}.
       </p>
     </div>
     <Blocks items={evolutionCards} cols={3} glass />
     <div class="actions band-actions" data-reveal>
-      <a class="btn btn--glass" href="/services/operations-excellence">See Operations Excellence</a>
+      <a class="btn btn--glass" href="/services/optimised-operations">See Optimised Operations</a>
     </div>
   </VideoBand>
 

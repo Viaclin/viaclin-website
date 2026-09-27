@@ -12,7 +12,7 @@ export const site = {
   descriptor: 'Life Science Consultancy',
   strapline: 'We push the project.',
   summary:
-    'Life sciences supply chain consultancy: supply chain consultancy, project management and operations excellence, delivered by senior operators with one accountable lead per engagement.',
+    'Life sciences supply chain consultancy: supply chain consultancy, project management and optimised operations, delivered by senior operators with one accountable lead per engagement.',
   // The address on the previous site (supplyai.eu) now serves a parking page, so nothing links until the owner confirms one.
   sisterBrand: { name: 'SupplyAI', url: '' },
   // How long enquiry data is kept, for example '24 months'. Empty renders a neutral sentence on /privacy.

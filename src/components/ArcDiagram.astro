@@ -1,7 +1,9 @@
 ---
 // A different view of the supply chain: one row of nodes, three ways of joining them.
-// The button group switches the view and arcs.ts runs it; the arcs draw and undraw in CSS.
-// The drawing is decorative. The paragraph beside it says what each view means, in words.
+// With motion welcome the section runs tall and its panel pins below the header, so the page scroll
+// drives the drawing: arcs.ts sets the view and a --draw value from 0 to 1 on the root, and the arcs
+// follow it in CSS with no transition. The drawing is decorative. The paragraph says what each view
+// means, in words, and the buttons take a visitor to any view.
 
 type ViewKey = 'linear' | 'network' | 'value';
 
@@ -14,12 +16,12 @@ const views: Array<{ key: ViewKey; label: string; text: string }> = [
   {
     key: 'network',
     label: 'Network',
-    text: 'Model the enterprise as a connected value chain: the relationships, constraints and dependencies that drive performance across functions.',
+    text: 'We model the enterprise as a connected value chain: the relationships, constraints and dependencies that drive performance across functions.',
   },
   {
     key: 'value',
     label: 'Value',
-    text: 'Bring cross-functional trade-offs into one decision framework and reveal the opportunities that stay hidden when each function optimises alone.',
+    text: 'We bring cross-functional trade-offs into one strategic decision framework and expose the value that stays hidden when each function optimises alone.',
   },
 ];
 
@@ -42,7 +44,7 @@ const arcPath = (a: number, b: number, up: boolean) => `M${round(nodes[a])} ${BA
 
 // The pool: each arc is drawn once and every view switches a set of them on.
 // Span-one arcs above the line make the linear view. "n" puts an arc in the network view;
-// "v" makes it one of the long value arcs, which the value view lifts out in green.
+// "v" makes it one of the long value arcs, which the value view draws again in green.
 const pool: Array<[number, number, 'up' | 'down', string]> = [
   [0, 1, 'up', 'n'], [1, 2, 'up', ''], [2, 3, 'up', 'n'], [3, 4, 'up', ''], [4, 5, 'up', ''], [5, 6, 'up', 'n'],
   [6, 7, 'up', ''], [7, 8, 'up', 'n'], [8, 9, 'up', ''], [9, 10, 'up', 'n'], [10, 11, 'up', ''],
@@ -55,16 +57,26 @@ const arcs = pool.map(([a, b, side, tags], i) => {
   const up = side === 'up';
   return { i, a, b, up, d: arcPath(a, b, up), linear: up && b - a === 1, network: tags.includes('n'), value: tags.includes('v') };
 });
+type Arc = (typeof arcs)[number];
 
-// Arrival order in each view, as a delay: left to right along the line, the network from the
-// left and short spans first, the value arcs one after another with the faint trace close behind.
-const byNetwork = arcs.filter((arc) => arc.network).sort((p, q) => p.a - q.a || p.b - p.a - (q.b - q.a));
+// Arrival order in each view, as a start point between 0 and 0.5 on the view's --draw. Each arc
+// then takes half of the draw to complete, so the last to start still ends as the view completes.
+// Linear runs left to right; the network brings in its new arcs from the left, short spans first;
+// the value view traces the rest of the pool from the left and lifts the long arcs one by one.
+const byLinear = arcs.filter((arc) => arc.linear);
+const byNetwork = arcs
+  .filter((arc) => arc.network && !arc.linear)
+  .sort((p, q) => p.a - q.a || p.b - p.a - (q.b - q.a));
+const byTrace = arcs.filter((arc) => !arc.network);
 const byValue = arcs.filter((arc) => arc.value);
-const delays = new Map(
+const spread = (list: Arc[], arc: Arc) => {
+  const at = list.indexOf(arc);
+  return at < 0 || list.length < 2 ? 0 : (at / (list.length - 1)) * 0.5;
+};
+const starts = new Map(
   arcs.map((arc) => {
-    const n = byNetwork.indexOf(arc);
-    const v = byValue.indexOf(arc);
-    return [arc.i, `--dl:${arc.a * 70}ms;--dn:${(n < 0 ? 0 : n) * 45}ms;--dv:${v < 0 ? arc.a * 20 : 120 + v * 160}ms`];
+    const ov = arc.value ? byValue.indexOf(arc) * 0.2 : spread(byTrace, arc);
+    return [arc.i, `--ol:${spread(byLinear, arc).toFixed(3)};--on:${spread(byNetwork, arc).toFixed(3)};--ov:${ov.toFixed(3)}`];
   }),
 );
 const valueNodes = new Set(byValue.flatMap((arc) => [arc.a, arc.b]));
@@ -73,103 +85,114 @@ const valueNodes = new Set(byValue.flatMap((arc) => [arc.a, arc.b]));
 const chain = `M${round(nodes[0])} ${BASE} ${nodes.slice(1).map((_, k) => half(k, k + 1, true)).join(' ')}`;
 const dots: Record<ViewKey, Array<{ d: string; t: number; wait: number; back?: boolean }>> = {
   linear: [
-    { d: chain, t: 8, wait: 1.6 },
-    { d: chain, t: 8, wait: 5.6 },
+    { d: chain, t: 8, wait: 0.6 },
+    { d: chain, t: 8, wait: 4.6 },
   ],
   network: [
-    { d: arcPath(0, 3, true), t: 3.4, wait: 1.4 },
-    { d: arcPath(1, 8, false), t: 4.6, wait: 1.9 },
-    { d: arcPath(4, 6, true), t: 2.8, wait: 2.6, back: true },
-    { d: arcPath(6, 10, false), t: 3.6, wait: 1.6, back: true },
-    { d: arcPath(5, 11, true), t: 4.8, wait: 3.2 },
+    { d: arcPath(0, 3, true), t: 3.4, wait: 0.4 },
+    { d: arcPath(1, 8, false), t: 4.6, wait: 0.9 },
+    { d: arcPath(4, 6, true), t: 2.8, wait: 1.6, back: true },
+    { d: arcPath(6, 10, false), t: 3.6, wait: 0.6, back: true },
+    { d: arcPath(5, 11, true), t: 4.8, wait: 2.2 },
   ],
   value: [
-    { d: arcPath(1, 10, true), t: 5.2, wait: 1.5 },
-    { d: arcPath(2, 11, false), t: 5.6, wait: 2.3, back: true },
-    { d: arcPath(5, 11, true), t: 4.2, wait: 3.1 },
+    { d: arcPath(1, 10, true), t: 5.2, wait: 0.5 },
+    { d: arcPath(2, 11, false), t: 5.6, wait: 1.3, back: true },
+    { d: arcPath(5, 11, true), t: 4.2, wait: 2.1 },
   ],
 };
 ---
 
 <section class="section section--mist persp" id="perspective" aria-labelledby="perspective-title" data-arcs data-state={first}>
-  <div class="container persp__grid">
-    <div class="persp__copy" data-reveal data-arcs-hold>
-      <p class="eyebrow">Perspective</p>
-      <h2 id="perspective-title">A different view of your supply chain</h2>
-      <div class="persp__say">
-        <p class="lead persp__text" id="perspective-text" aria-live="polite" data-arcs-live data-pagefind-ignore>{firstText}</p>
-        {views.map((view) => <p class="lead persp__ghost" data-arcs-text={view.key}>{view.text}</p>)}
+  <div class="persp__pin" data-arcs-pin>
+    <div class="container persp__grid" data-arcs-grid>
+      <div class="persp__copy" data-reveal>
+        <p class="eyebrow">Perspective</p>
+        <h2 id="perspective-title">A different view of your supply chain</h2>
+        <div class="persp__say">
+          <p class="lead persp__text" id="perspective-text" aria-live="polite" data-arcs-live data-pagefind-ignore>{firstText}</p>
+          {views.map((view) => <p class="lead persp__ghost" data-arcs-text={view.key}>{view.text}</p>)}
+        </div>
+        <div class="persp__control" role="group" aria-label="View">
+          {views.map((view, index) => (
+            <>
+              {index > 0 && <span class="persp__join" aria-hidden="true"></span>}
+              <button
+                class="persp__btn"
+                type="button"
+                aria-pressed={view.key === first ? 'true' : 'false'}
+                aria-controls="perspective-text"
+                data-arcs-view={view.key}
+              >
+                {view.label}
+                <span class="persp__bar" aria-hidden="true"></span>
+              </button>
+            </>
+          ))}
+        </div>
       </div>
-      <div class="persp__control" role="group" aria-label="View">
-        {views.map((view, index) => (
-          <>
-            {index > 0 && <span class="persp__join" aria-hidden="true"></span>}
-            <button
-              class="persp__btn"
-              type="button"
-              aria-pressed={view.key === first ? 'true' : 'false'}
-              aria-controls="perspective-text"
-              data-arcs-view={view.key}
-            >
-              {view.label}
-              <span class="persp__bar" aria-hidden="true"></span>
-            </button>
-          </>
-        ))}
-      </div>
-    </div>
 
-    <div class="persp__art" data-reveal="fade" style="--d:120ms" aria-hidden="true" data-arcs-art data-pagefind-ignore>
-      <svg class="arcs" viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" focusable="false">
-        <defs>
-          {arcs.map((arc) => (
-            <mask id={`arcs-mask-${arc.i}`} maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="520">
+      <div class="persp__art" data-reveal="fade" style="--d:120ms" aria-hidden="true" data-arcs-art data-pagefind-ignore>
+        <svg class="arcs" viewBox="0 0 1000 520" xmlns="http://www.w3.org/2000/svg" focusable="false">
+          <defs>
+            {arcs.map((arc) => (
+              <mask id={`arcs-mask-${arc.i}`} maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="520">
+                <path
+                  class="arcs__draw"
+                  d={arc.d}
+                  pathLength="1"
+                  data-l={arc.linear ? '' : undefined}
+                  data-n={arc.network ? '' : undefined}
+                  data-v={arc.value ? '' : undefined}
+                  style={starts.get(arc.i)}
+                ></path>
+              </mask>
+            ))}
+            {byValue.map((arc) => (
+              <mask id={`arcs-lift-mask-${arc.i}`} maskUnits="userSpaceOnUse" x="0" y="0" width="1000" height="520">
+                <path class="arcs__lift-draw" d={arc.d} pathLength="1" style={starts.get(arc.i)}></path>
+              </mask>
+            ))}
+          </defs>
+
+          <line class="arcs__base" x1="24" y1={BASE} x2="976" y2={BASE}></line>
+
+          <g class="arcs__pool">
+            {arcs.map((arc) => (
               <path
-                class="arcs__draw"
+                class="arcs__arc"
                 d={arc.d}
-                pathLength="1"
+                mask={`url(#arcs-mask-${arc.i})`}
                 data-l={arc.linear ? '' : undefined}
                 data-n={arc.network ? '' : undefined}
                 data-v={arc.value ? '' : undefined}
-                style={delays.get(arc.i)}
-              ></path>
-            </mask>
-          ))}
-        </defs>
-
-        <line class="arcs__base" x1="24" y1={BASE} x2="976" y2={BASE}></line>
-
-        <g class="arcs__pool">
-          {arcs.map((arc) => (
-            <path
-              class="arcs__arc"
-              d={arc.d}
-              mask={`url(#arcs-mask-${arc.i})`}
-              data-l={arc.linear ? '' : undefined}
-              data-n={arc.network ? '' : undefined}
-              data-v={arc.value ? '' : undefined}
-              style={delays.get(arc.i)}
-            ></path>
-          ))}
-        </g>
-
-        {(Object.keys(dots) as ViewKey[]).map((key) => (
-          <g class="arcs__dots" data-for={key}>
-            {dots[key].map((dot) => (
-              <path
-                class="arcs__dot"
-                d={dot.d}
-                pathLength="1"
-                style={`--t:${dot.t}s;--wait:${dot.wait}s;--dir:${dot.back ? 'reverse' : 'normal'}`}
+                style={starts.get(arc.i)}
               ></path>
             ))}
           </g>
-        ))}
 
-        {nodes.map((x, i) => (
-          <circle class="arcs__node" cx={round(x)} cy={BASE} r="5.5" data-v={valueNodes.has(i) ? '' : undefined}></circle>
-        ))}
-      </svg>
+          <g class="arcs__lifts">
+            {byValue.map((arc) => <path class="arcs__lift" d={arc.d} mask={`url(#arcs-lift-mask-${arc.i})`}></path>)}
+          </g>
+
+          {(Object.keys(dots) as ViewKey[]).map((key) => (
+            <g class="arcs__dots" data-for={key}>
+              {dots[key].map((dot) => (
+                <path
+                  class="arcs__dot"
+                  d={dot.d}
+                  pathLength="1"
+                  style={`--t:${dot.t}s;--wait:${dot.wait}s;--dir:${dot.back ? 'reverse' : 'normal'}`}
+                ></path>
+              ))}
+            </g>
+          ))}
+
+          {nodes.map((x, i) => (
+            <circle class="arcs__node" cx={round(x)} cy={BASE} r="5.5" data-v={valueNodes.has(i) ? '' : undefined}></circle>
+          ))}
+        </svg>
+      </div>
     </div>
   </div>
 </section>
@@ -260,7 +283,7 @@ const dots: Record<ViewKey, Array<{ d: string; t: number; wait: number; back?: b
     border-radius: var(--radius);
   }
 
-  /* the count to the next view, shown in the pressed button while the views advance on their own */
+  /* how far the view in hand has drawn, shown in its button while the scroll drives the drawing */
   .persp__bar {
     position: absolute;
     left: 12px;
@@ -312,7 +335,14 @@ const dots: Record<ViewKey, Array<{ d: string; t: number; wait: number; back?: b
     stroke-width: 3px;
   }
 
-  /* each arc is a dotted line, uncovered by the solid stroke in its mask: the mask draws and undraws */
+  /* Each arc is a dotted line, uncovered by the solid stroke in its mask. --draw runs from 0 to 1
+     across a view; each arc starts at its own point on it (--ol, --on, --ov) and draws over half
+     of it, so --k is how much of that arc shows. Script sets --draw; without it, it stays at 1. */
+  .persp {
+    --draw: 1;
+    --trace: 0.26;
+  }
+
   .arcs__arc {
     fill: none;
     stroke: var(--fg-3);
@@ -322,39 +352,80 @@ const dots: Record<ViewKey, Array<{ d: string; t: number; wait: number; back?: b
     opacity: 0;
   }
 
-  .arcs__draw {
+  .arcs__draw,
+  .arcs__lift-draw {
+    --k: 0;
     fill: none;
     stroke: var(--white);
     stroke-width: var(--reveal-w);
     stroke-dasharray: 1 2;
-    stroke-dashoffset: 1;
+    stroke-dashoffset: calc(1 - var(--k));
   }
 
-  .persp[data-state='linear'] .arcs__draw[data-l],
-  .persp[data-state='network'] .arcs__draw[data-n],
-  .persp[data-state='value'] .arcs__draw {
-    stroke-dashoffset: 0;
+  /* linear: the steps draw in from the left */
+  .persp[data-state='linear'] .arcs__draw[data-l] {
+    --k: clamp(0, (var(--draw) - var(--ol, 0)) * 2, 1);
   }
 
-  .persp[data-state='linear'] .arcs__arc[data-l],
-  .persp[data-state='network'] .arcs__arc[data-n],
-  .persp[data-state='value'] .arcs__arc[data-v] {
+  .persp[data-state='linear'] .arcs__arc[data-l] {
     opacity: 1;
   }
 
-  /* the value view: a few long arcs in green, the rest of the pool a faint trace */
-  .persp[data-state='value'] .arcs__arc:not([data-v]) {
-    opacity: 0.26;
+  /* network: the shared steps stay, the new arcs draw in and the steps that leave fade out */
+  .persp[data-state='network'] .arcs__draw[data-l] {
+    --k: 1;
+  }
+
+  .persp[data-state='network'] .arcs__draw[data-n]:not([data-l]) {
+    --k: clamp(0, (var(--draw) - var(--on, 0)) * 2, 1);
+  }
+
+  .persp[data-state='network'] .arcs__arc[data-n] {
+    opacity: 1;
+  }
+
+  .persp[data-state='network'] .arcs__arc[data-l]:not([data-n]) {
+    opacity: calc(1 - var(--draw));
+  }
+
+  /* value: the network settles into a faint trace and the rest of the pool joins it, while the long
+     value arcs draw again in green over their own grey lines, which give way beneath them */
+  .persp[data-state='value'] .arcs__draw[data-n] {
+    --k: 1;
+  }
+
+  .persp[data-state='value'] .arcs__draw:not([data-n]),
+  .persp[data-state='value'] .arcs__lift-draw {
+    --k: clamp(0, (var(--draw) - var(--ov, 0)) * 2, 1);
+  }
+
+  .persp[data-state='value'] .arcs__arc {
+    opacity: var(--trace);
+  }
+
+  .persp[data-state='value'] .arcs__arc[data-n] {
+    opacity: calc(1 - (1 - var(--trace)) * var(--draw));
   }
 
   .persp[data-state='value'] .arcs__arc[data-v] {
+    opacity: calc(1 - clamp(0, (var(--draw) - var(--ov, 0)) * 2, 1));
+  }
+
+  .arcs__lift {
+    fill: none;
     stroke: var(--accent);
     stroke-width: var(--arc-w-strong);
+    stroke-linecap: round;
     stroke-dasharray: 0 var(--arc-gap-strong);
+    opacity: 0;
+  }
+
+  .persp[data-state='value'] .arcs__lift {
+    opacity: 1;
   }
 
   .persp[data-state='value'] .arcs__node[data-v] {
-    fill: var(--accent);
+    fill: color-mix(in srgb, var(--accent) calc(var(--draw) * 100%), var(--fg));
   }
 
   /* travelling dots: a single round dot on a dash pattern, moved along the arc by the offset */
@@ -406,58 +477,55 @@ const dots: Record<ViewKey, Array<{ d: string; t: number; wait: number; back?: b
     }
   }
 
+  /* ───────── the pinned scroll sequence ─────────
+     With motion welcome the section runs tall and the panel pins below the header, so it holds
+     still while the page scrolls through and the scroll drives the drawing. arcs.ts sets --pin-top
+     so the pinned panel sits centred between the header and the foot of the viewport; the section
+     keeps its usual padding, so it arrives and leaves like its neighbours. The panel stays inside
+     its own section, so it never rides over the next one. Where the panel is too tall for the
+     viewport, arcs.ts sets .is-flat and the panel scrolls with the page instead. */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    :global(.js:not(.static)) .persp:not(.is-flat) {
+      height: 260vh;
+    }
+
+    :global(.js:not(.static)) .persp:not(.is-flat) .persp__pin {
+      position: sticky;
+      top: var(--pin-top, var(--header-h));
+    }
+  }
+
+  /* a phone held upright: tighter spacing, so copy and drawing fit the pinned panel together */
+  @media screen and (prefers-reduced-motion: no-preference) and (max-width: 640px) {
+    :global(.js:not(.static)) .persp:not(.is-flat) .persp__grid {
+      gap: var(--space-5);
+    }
+
+    :global(.js:not(.static)) .persp:not(.is-flat) .persp__copy > * + * {
+      margin-top: var(--space-3);
+    }
+
+    :global(.js:not(.static)) .persp:not(.is-flat) .persp__copy > .persp__control {
+      margin-top: var(--space-5);
+    }
+  }
+
   @media (prefers-reduced-motion: no-preference) {
-    /* leaving arcs undraw at once; arriving arcs wait a beat, then follow one another */
-    :global(.js:not(.static)) .arcs__draw {
-      transition: stroke-dashoffset 600ms var(--ease-in-out);
-    }
-
-    :global(.js:not(.static)) .arcs__arc {
-      transition: opacity 600ms var(--ease), stroke 600ms var(--ease), stroke-width 600ms var(--ease),
-        stroke-dasharray 600ms var(--ease);
-    }
-
-    :global(.js:not(.static)) .arcs__node {
-      transition: fill 600ms var(--ease);
-    }
-
-    :global(.js:not(.static)) .persp[data-state='linear'] :is(.arcs__draw, .arcs__arc)[data-l] {
-      transition-duration: 900ms;
-      transition-delay: calc(160ms + var(--dl, 0ms));
-    }
-
-    :global(.js:not(.static)) .persp[data-state='network'] :is(.arcs__draw, .arcs__arc)[data-n] {
-      transition-duration: 900ms;
-      transition-delay: calc(160ms + var(--dn, 0ms));
-    }
-
-    :global(.js:not(.static)) .persp[data-state='value'] :is(.arcs__draw, .arcs__arc) {
-      transition-duration: 900ms;
-      transition-delay: calc(160ms + var(--dv, 0ms));
-    }
-
-    :global(.js:not(.static)) .persp[data-state='value'] .arcs__node[data-v] {
-      transition-delay: 400ms;
-    }
-
-    /* the dots of the view in hand join once its arcs are drawn, and rest while the drawing is out of view */
-    :global(.js:not(.static)) .arcs__dots {
+    /* the dots of the view in hand join as its arcs complete, and rest while the drawing is out of view */
+    .persp.is-scrub .arcs__dots {
       display: inline;
       opacity: 0;
-      transition: opacity 300ms var(--ease);
     }
 
-    :global(.js:not(.static)) .persp[data-state='linear'] .arcs__dots[data-for='linear'],
-    :global(.js:not(.static)) .persp[data-state='network'] .arcs__dots[data-for='network'],
-    :global(.js:not(.static)) .persp[data-state='value'] .arcs__dots[data-for='value'] {
-      opacity: 1;
-      transition-duration: 500ms;
-      transition-delay: 900ms;
+    .persp.is-scrub[data-state='linear'] .arcs__dots[data-for='linear'],
+    .persp.is-scrub[data-state='network'] .arcs__dots[data-for='network'],
+    .persp.is-scrub[data-state='value'] .arcs__dots[data-for='value'] {
+      opacity: clamp(0, (var(--draw) - 0.85) * 6.67, 1);
     }
 
-    :global(.js:not(.static)) .persp[data-state='linear'] .arcs__dots[data-for='linear'] .arcs__dot,
-    :global(.js:not(.static)) .persp[data-state='network'] .arcs__dots[data-for='network'] .arcs__dot,
-    :global(.js:not(.static)) .persp[data-state='value'] .arcs__dots[data-for='value'] .arcs__dot {
+    .persp.is-scrub[data-state='linear'] .arcs__dots[data-for='linear'] .arcs__dot,
+    .persp.is-scrub[data-state='network'] .arcs__dots[data-for='network'] .arcs__dot,
+    .persp.is-scrub[data-state='value'] .arcs__dots[data-for='value'] .arcs__dot {
       animation: arcs-travel var(--t, 4s) linear var(--wait, 1s) infinite var(--dir, normal) both;
       animation-play-state: var(--arcs-play, running);
     }
@@ -466,9 +534,11 @@ const dots: Record<ViewKey, Array<{ d: string; t: number; wait: number; back?: b
       --arcs-play: paused;
     }
 
-    :global(.js:not(.static)) .persp.is-counting .persp__btn[aria-pressed='true'] .persp__bar {
+    .persp.is-scrub[data-state='linear'] .persp__btn[data-arcs-view='linear'] .persp__bar,
+    .persp.is-scrub[data-state='network'] .persp__btn[data-arcs-view='network'] .persp__bar,
+    .persp.is-scrub[data-state='value'] .persp__btn[data-arcs-view='value'] .persp__bar {
       opacity: 1;
-      animation: arcs-count var(--arcs-step, 5000ms) linear forwards;
+      transform: scaleX(var(--draw));
     }
 
     :global(.js:not(.static)) .persp__text.is-new {
@@ -490,12 +560,6 @@ const dots: Record<ViewKey, Array<{ d: string; t: number; wait: number; back?: b
     100% {
       stroke-dashoffset: -1;
       opacity: 0;
-    }
-  }
-
-  @keyframes arcs-count {
-    to {
-      transform: scaleX(1);
     }
   }
 
