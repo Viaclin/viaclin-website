@@ -5,6 +5,7 @@ import Section from '../components/Section.astro';
 import Blocks from '../components/Blocks.astro';
 import Steps from '../components/Steps.astro';
 import ProofStrip from '../components/ProofStrip.astro';
+import Mission from '../components/Mission.astro';
 import RouteDiagram from '../components/RouteDiagram.astro';
 import NetworkVisual from '../components/NetworkVisual.astro';
 import VideoBand from '../components/VideoBand.astro';
@@ -21,7 +22,7 @@ import {
 
 <Base
   title="Viaclin: life sciences supply chain consultancy"
-  description="Viaclin takes ownership of clinical and commercial supply outcomes for life sciences companies. Senior operators, one accountable lead, a network behind them."
+  description="Viaclin owns clinical and commercial supply outcomes for life sciences companies, so treatment reaches patients. Senior operators, one accountable lead."
   path="/"
   docks
 >
@@ -53,6 +54,9 @@ import {
 
   <ProofStrip />
 
+  <!-- mission: the tagline and the purpose behind the work -->
+  <Mission />
+
   <!-- film 1: technician. The three service areas -->
   <VideoBand video="technician" id="services" labelledby="services-title">
     <div class="band-head" data-reveal>
@@ -70,8 +74,9 @@ import {
         <p class="eyebrow">Service area</p>
         <h2 id="scc-title">Supply Chain Consultancy</h2>
         <p class="lead">
-          Bespoke supply chain expertise for clinical-phase and pre-launch programmes. Senior operators embedded in
-          your team, or on call when a decision needs to be made well.
+          Bespoke supply chain expertise for clinical-phase and pre-launch programmes, so the dose is at the trial
+          site before the patient arrives. Senior operators embedded in your team, or on call when a decision needs
+          to be made well.
         </p>
         <ul class="ticks" role="list">
           {consultancyPoints.map((point) => <li>{point}</li>)}
@@ -122,9 +127,9 @@ import {
   </VideoBand>
 
   <!-- method -->
-  <Section id="method" eyebrow="Method" title="How we work">
+  <Section id="method" eyebrow="Method" title="Diagnose, Embed, Deliver">
     <Steps items={method} row />
-    <p class="after-grid" data-reveal><a class="text-link" href="/how-we-work">More on how we work</a></p>
+    <p class="after-grid" data-reveal><a class="text-link" href="/our-team">Meet our team</a></p>
   </Section>
 
   <!-- principles -->

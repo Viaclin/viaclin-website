@@ -87,9 +87,13 @@ const next = [
           </div>
         )}
 
+        {/* Two short lines in one block, as the owner laid them out. */}
         <div class="block side-block" data-reveal style="--d:400ms">
-          <h2>Where we work</h2>
-          <p>Remote-first, registered in Ireland, on programmes across the EU, US and UK.</p>
+          <h2>Our team</h2>
+          <p class="side-lines">
+            <span>Remote-first.</span>{' '}
+            <span>Engaged on programmes in the EU, US and UK.</span>
+          </p>
         </div>
       </aside>
     </div>
@@ -153,6 +157,13 @@ const next = [
     font-weight: 600;
     line-height: 1.25;
     letter-spacing: -0.005em;
+  }
+
+  /* each line on its own row; screen readers still hear one paragraph. On a phone the second line breaks
+     into two even halves, with no word left alone. */
+  .side-lines span {
+    display: block;
+    text-wrap: balance;
   }
 
   .side-mail {

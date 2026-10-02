@@ -29,7 +29,7 @@ const VIEW_TIMEOUT_MS = 120000;
 // Routes from the plan, used when dist holds no pages.
 const BUILT_IN_ROUTES = [
   '/', '/services/supply-chain-consultancy', '/services/project-management',
-  '/services/optimised-operations', '/how-we-work', '/contact',
+  '/services/optimised-operations', '/our-team', '/contact',
   '/thanks', '/privacy', '/terms', '/cookies', '/accessibility', '/legal', '/search', '/brand', '/404',
 ];
 

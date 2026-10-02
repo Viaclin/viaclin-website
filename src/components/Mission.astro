@@ -1,0 +1,140 @@
+---
+// Mission band, straight after the proof strip. The tagline is the display line, set as the rotor
+// band sets its line: the first word in ink, the second in the green. The two paragraphs sit beside
+// it on a route line that draws down from a stop. All copy comes from src/data/site.ts.
+import { site } from '../data/site';
+
+const [first = '', ...rest] = site.tagline.split(' ');
+const second = rest.join(' ');
+---
+
+<section class="section section--mist mission" id="mission" aria-labelledby="mission-title">
+  <div class="container mission__grid">
+    <div class="mission__head" data-reveal>
+      <p class="eyebrow">Our mission</p>
+      <h2 class="display display--hero mission__title" id="mission-title">
+        <span class="mission__first">{first}</span> <span class="mission__second">{second}</span>
+      </h2>
+    </div>
+    <div class="mission__copy" data-reveal style="--d:140ms">
+      <p class="lead">{site.mission.lead}</p>
+      <p>{site.mission.support}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mission {
+    padding-block: calc(var(--section-y) * 1.2);
+  }
+
+  .mission__grid {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: clamp(32px, 6vw, 104px);
+    align-items: center;
+  }
+
+  .mission__head > * + * {
+    margin-top: clamp(20px, 2.4vw, 32px);
+  }
+
+  /* hero size, as the H1 and the rotor line. min-content breaks the line at its one space, so the tagline
+     stands as two lines at every width */
+  .mission__title {
+    width: min-content;
+    line-height: 0.98;
+    letter-spacing: var(--tracking-tight);
+    text-wrap: wrap;
+  }
+
+  .mission__first {
+    color: var(--fg);
+  }
+
+  .mission__second {
+    color: var(--link);
+  }
+
+  /* the copy hangs from a route stop, and the line runs down beside it */
+  .mission__copy {
+    --lead-size: clamp(1.1875rem, 1rem + 0.55vw, 1.4375rem);
+    --stop-y: calc(var(--lead-size) * 0.725);
+    position: relative;
+    justify-self: end;
+    max-width: 38rem;
+    padding-left: clamp(28px, 3vw, 44px);
+  }
+
+  .mission__copy::before,
+  .mission__copy::after {
+    content: '';
+    position: absolute;
+    left: 0;
+  }
+
+  /* the stop sits on the middle of the lead's first line */
+  .mission__copy::before {
+    top: var(--stop-y);
+    bottom: 6px;
+    left: 6px;
+    width: 2px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--accent), var(--rule));
+    transform-origin: top center;
+  }
+
+  .mission__copy::after {
+    top: calc(var(--stop-y) - 7px);
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--bg-alt);
+  }
+
+  .mission__copy > * + * {
+    margin-top: var(--space-5);
+  }
+
+  .mission__copy .lead {
+    font-size: var(--lead-size);
+    line-height: 1.45;
+    max-width: none;
+  }
+
+  /* body size on phones, a step under the lead at every width */
+  .mission__copy p:not(.lead) {
+    font-size: clamp(var(--text-base), 0.85rem + 0.45vw, var(--text-lg));
+    line-height: 1.55;
+  }
+
+  @media (max-width: 900px) {
+    .mission__grid {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+
+    .mission__copy {
+      justify-self: start;
+    }
+  }
+
+  /* the line draws down from its stop once the copy is in view */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .mission__copy[data-reveal]::before {
+      transform: scaleY(0);
+      transition: transform 1100ms var(--ease) 380ms;
+    }
+
+    :global(.js) .mission__copy[data-reveal]::after {
+      transform: scale(0);
+      transition: transform 500ms var(--ease) 240ms;
+    }
+
+    :global(.js) .mission__copy[data-reveal].is-in::before,
+    :global(.js) .mission__copy[data-reveal].is-in::after {
+      transform: none;
+    }
+  }
+</style>

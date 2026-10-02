@@ -11,8 +11,16 @@ export const site = {
   country: 'Ireland',
   descriptor: 'Life Science Consultancy',
   strapline: 'We push the project.',
+  // The mission band on the home page reads its heading and both paragraphs from here.
+  tagline: 'Life: Changing',
+  mission: {
+    lead: 'Behind every shipment is a patient waiting for treatment. Our mission is to make sure it reaches them: the right medicine, in the right place, at the right time.',
+    support:
+      'We design the supply chains, drive the projects and optimise the operations that carry a therapy from discovery to the patient. When the chain holds, treatment starts on the day it was promised.',
+  },
+  // Feeds the default meta description and the JSON-LD description, so it stays under 200 characters.
   summary:
-    'Life sciences supply chain consultancy: supply chain consultancy, project management and optimised operations, delivered by senior operators with one accountable lead per engagement.',
+    'Life sciences supply chain consultancy that helps treatments reach patients: supply chain consultancy, project management and optimised operations, run by senior operators with one accountable lead.',
   // The address on the previous site (supplyai.eu) now serves a parking page, so nothing links until the owner confirms one.
   sisterBrand: { name: 'SupplyAI', url: '' },
   // How long enquiry data is kept, for example '24 months'. Empty renders a neutral sentence on /privacy.

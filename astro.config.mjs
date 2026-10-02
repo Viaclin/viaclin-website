@@ -10,10 +10,12 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file' },
   devToolbar: { enabled: false },
-  // Static hosts have no server-side redirects, so Astro writes a small redirect page for the old address.
+  // Static hosts have no server-side redirects, so Astro writes a small redirect page for each old address.
+  // vercel.json carries the same entries as permanent redirects.
   redirects: {
     '/services/trial-close-out': '/services/supply-chain-consultancy',
     '/services/operations-excellence': '/services/optimised-operations',
+    '/how-we-work': '/our-team',
   },
   integrations: [
     sitemap({

@@ -335,7 +335,7 @@ The site is hosted by GitHub Pages from the repository `Viaclin/viaclin-website`
 - HTTPS: under Settings, Pages, keep Enforce HTTPS switched on once the certificate for `viaclin.com` shows as issued.
 - DNS stays as it is. Leave the MX, SPF, DKIM and DMARC records for Google Workspace untouched, or email stops.
 
-GitHub Pages serves static files alone, so the security headers, cache headers and server redirects in `vercel.json` do not apply here; the file stays in the repository for a move to Vercel later. The old address `/services/trial-close-out` redirects through a small page that Astro writes from the `redirects` entry in `astro.config.mjs`.
+GitHub Pages serves static files alone, so the security headers, cache headers and server redirects in `vercel.json` do not apply here; the file stays in the repository for a move to Vercel later. Each old address in the `redirects` entry of `astro.config.mjs`, such as `/services/trial-close-out`, redirects through a small page that Astro writes; `vercel.json` lists the same addresses as permanent redirects. When a page moves, add its old address to both files.
 
 If the site ever moves to Vercel: import the repository there (framework preset Astro, build command `npm run build`, output `dist`), add the same four values as environment variables, point the `viaclin.com` DNS at Vercel, and switch Pages off under Settings, Pages.
 

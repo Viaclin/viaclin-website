@@ -1,6 +1,7 @@
 /* Viaclin design tokens. Components use role tokens; brand tokens stay fixed across themes. */
 :root {
-  color-scheme: light;
+  /* light, and closed to browser auto-darkening on phones; the dark theme declares its own scheme below */
+  color-scheme: only light;
 
   /* brand */
   --navy: #0A2948;

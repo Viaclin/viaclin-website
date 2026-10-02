@@ -60,6 +60,10 @@ const website = {
 };
 
 const graphs = [organisation, website, ...(schema ? (Array.isArray(schema) ? schema : [schema]) : [])];
+
+// One theme colour meta for the browser bar on phones. It starts light, like the page, whatever the device setting.
+// The inline script in Base.astro and theme.ts read the two values below and set the one for the active theme.
+const barColour = { light: '#FFFFFF', dark: '#061A2E' };
 ---
 
 <title>{title}</title>
@@ -87,7 +91,6 @@ const graphs = [organisation, website, ...(schema ? (Array.isArray(schema) ? sch
 <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#061A2E" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content={barColour.light} data-light={barColour.light} data-dark={barColour.dark} />
 
 {graphs.map((graph) => <script type="application/ld+json" is:inline set:html={JSON.stringify(graph)} />)}

@@ -1,5 +1,6 @@
 ---
-// Sticky header: logo, docking descriptor, menu links, primary action. Search and the theme toggle live in the footer.
+// Sticky header: logo, docking descriptor, menu links (Services, Our team), primary action. Search and the theme
+// toggle live in the footer. Contact has no menu link: "Start a conversation" goes to the same page.
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { services, primary, legal } from '../data/nav';
@@ -80,6 +81,7 @@ const inServices = path.startsWith('/services');
         <li><a href={item.href} aria-current={current(item.href)}>{item.title}</a></li>
       ))}
     </ul>
+    {/* Company: Our team and Search. The button under the lists covers contact. */}
     <p class="mobile-menu__label" id="mobile-menu-company">Company</p>
     <ul role="list" aria-labelledby="mobile-menu-company">
       {primary.map((item) => (

@@ -32,19 +32,27 @@ const { title, description, path, noindex = false, schema, docks = false } = Ast
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="format-detection" content="telephone=no" />
+    <Seo title={title} description={description} path={path} noindex={noindex} schema={schema} />
     <script is:inline>
       // Runs before first paint: mark JS as present, pick the theme, honour capture flags.
+      // It sits below the Seo block so that the theme colour meta exists when it runs.
       (function () {
         var root = document.documentElement;
         root.classList.remove('no-js');
         root.classList.add('js');
+        // Light on every device. Dark shows when the visitor has picked it with the footer theme button;
+        // the device setting plays no part.
         var stored = null;
         try { stored = localStorage.getItem('viaclin-theme'); } catch (e) {}
-        var dark = stored ? stored === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
-        root.setAttribute('data-theme', dark ? 'dark' : 'light');
+        var theme = stored === 'dark' ? 'dark' : 'light';
         var query = new URLSearchParams(location.search);
         if (query.get('static')) root.classList.add('static');
-        if (query.get('theme') === 'dark' || query.get('theme') === 'light') root.setAttribute('data-theme', query.get('theme'));
+        if (query.get('theme') === 'dark' || query.get('theme') === 'light') theme = query.get('theme');
+        root.setAttribute('data-theme', theme);
+        // The browser bar on phones takes the page ground of the same theme. theme.ts keeps it in step after a switch.
+        var bar = document.querySelector('meta[name="theme-color"]');
+        var colour = bar && bar.getAttribute(theme === 'dark' ? 'data-dark' : 'data-light');
+        if (colour) bar.setAttribute('content', colour);
         // Failsafe: .js hides every [data-reveal] before paint. If the script bundle never arrives,
         // main.ts never marks the page ready, so fall back to the static rules, which show everything.
         setTimeout(function () {
@@ -52,7 +60,6 @@ const { title, description, path, noindex = false, schema, docks = false } = Ast
         }, 4000);
       })();
     </script>
-    <Seo title={title} description={description} path={path} noindex={noindex} schema={schema} />
     <script>
       // In the head so the browser finds the bundle while it is still parsing the body.
       // A module script is deferred by definition: it runs after parsing, so every init step

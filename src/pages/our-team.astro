@@ -1,5 +1,7 @@
 ---
-// How we work. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.6; shared copy comes from src/data/services.ts.
+// Our team: the network, the method, the pillars and coverage. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.6,
+// renamed at the owner's request; shared copy comes from src/data/services.ts. The old address redirects here
+// (redirects in astro.config.mjs and vercel.json).
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Section from '../components/Section.astro';
@@ -10,14 +12,14 @@ import ContactBand from '../components/ContactBand.astro';
 import { site } from '../data/site';
 import { network, method, principles, coverage } from '../data/services';
 
-const path = '/how-we-work';
+const path = '/our-team';
 const description =
-  'How Viaclin works: one accountable lead, a specialist network, the Diagnose, Embed, Deliver method, three principles and coverage across the EU, US and UK.';
+  'The Viaclin team: one accountable lead, a network of senior consultants, the Diagnose, Embed, Deliver method, three pillars and EU, US and UK coverage.';
 
 const onPage = [
   { id: 'network', label: 'The network' },
   { id: 'method', label: 'The method' },
-  { id: 'principles', label: 'Principles' },
+  { id: 'principles', label: 'Pillars' },
   { id: 'coverage', label: 'Coverage' },
 ];
 
@@ -26,16 +28,16 @@ const schema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'How we work', item: `${site.url}${path}` },
+    { '@type': 'ListItem', position: 2, name: 'Our team', item: `${site.url}${path}` },
   ],
 };
 ---
 
-<Base title="How we work: Viaclin" description={description} path={path} schema={schema}>
+<Base title="Our team: Viaclin" description={description} path={path} schema={schema}>
   <PageHero
-    title="How we work"
+    title="Our team"
     lead="One lead operator. A network behind them."
-    crumbs={[{ title: 'How we work' }]}
+    crumbs={[{ title: 'Our team' }]}
     cta={{ label: 'Start a conversation' }}
   >
     <nav class="onpage" aria-label="On this page" data-reveal style="--d:300ms">
@@ -57,6 +59,7 @@ const schema = {
           <p class="lead">
             Viaclin draws on a bank of senior consultants across the EU, US and UK, each with a distinct specialism and
             their own industry history. Your engagement gets one accountable lead, and the lead gets the whole bench.
+            Every consultant on it works to one aim: getting each therapy to the patients who need it.
           </p>
         </div>
         <NetworkVisual />
@@ -70,13 +73,19 @@ const schema = {
     <Steps items={method} row />
   </Section>
 
-  <!-- principles -->
-  <Section id="principles" eyebrow="Principles" title="Three principles behind every engagement">
+  <!-- pillars (the id stays "principles", the name of the data it shows) -->
+  <Section id="principles" eyebrow="Pillars" title="Three pillars behind every engagement">
     <Blocks items={principles} cols={3} />
   </Section>
 
   <!-- coverage -->
-  <Section id="coverage" tone="mist" eyebrow="Coverage" title="Three regulatory jurisdictions">
+  <Section
+    id="coverage"
+    tone="mist"
+    eyebrow="Coverage"
+    title="Three regulatory jurisdictions"
+    intro="Each sets its own rules for getting a therapy to patients. The network works inside all three."
+  >
     <Blocks items={coverage} cols={3} />
   </Section>
 
@@ -84,14 +93,14 @@ const schema = {
 </Base>
 
 <style>
-  /* hero: numbered jump links to the five parts of the page */
+  /* hero: numbered jump links to the four parts of the page */
   .onpage {
     margin-top: clamp(40px, 6vw, 72px);
   }
 
   .onpage ol {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: clamp(12px, 2vw, 28px);
     margin: 0;
     counter-reset: onpage;

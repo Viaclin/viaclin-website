@@ -215,7 +215,8 @@ export function initConsent(): void {
   // Ask on the first visit, after six months and after a version change.
   // With storage blocked the answer cannot be kept, so the banner stays away and nothing is switched on;
   // the footer button still opens the preferences for this page view.
-  // The banner names Google Analytics and Microsoft Clarity. ConsentBanner.astro sets data-trackers to "true"
+  // The banner asks about the cookies that Google Analytics and Microsoft Clarity set, and the preferences dialog
+  // names the two. ConsentBanner.astro sets data-trackers to "true"
   // when one of the two has an ID in the site config. With neither configured there is nothing to ask about,
   // so the banner stays quiet, nothing is switched on, and [data-consent-open] still opens the preferences.
   const trackers = banner?.dataset.trackers === 'true';

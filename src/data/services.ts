@@ -10,7 +10,7 @@ export const serviceCards = [
   },
   {
     title: 'Project Management',
-    body: 'End-to-end ownership of the projects that decide your timeline: tech transfer, CDMO programmes, serialisation, launch readiness.',
+    body: 'End-to-end ownership of the projects that decide when your therapy reaches patients: tech transfer, CDMO programmes, serialisation, launch readiness.',
     href: '/services/project-management',
     linkLabel: 'See the service',
   },
@@ -23,7 +23,7 @@ export const serviceCards = [
 ];
 
 export const consultancyPoints = [
-  'Planning and forecasting on SAP and Anaplan',
+  'Bespoke planning and forecasting',
   'Clinical trial supply, from IRT set-up to QP release',
   'CMO and CDMO sourcing, contracts and oversight',
   'Greenfield operations set-up, from blank page to licence',
@@ -47,7 +47,7 @@ export const evolutionCards = [
   },
   {
     title: 'AI and proven technology',
-    body: 'Accelerating the work with tools that have earned their place: validated in your quality system and in use on the engagement, never just built into the pitch. Your people stay in charge of every decision.',
+    body: 'Accelerating the work with tools that have earned their place: in use on the engagement, never just built into the pitch, with your people in charge of every decision.',
   },
 ];
 
@@ -70,7 +70,7 @@ export const method = [
 export const principles = [
   {
     title: 'Forecasting',
-    body: 'Strategic, future-proof planning. We own S&OP end to end, with forecasting built on SAP and Anaplan, so clinical demand, commercial rollout and manufacturing capacity line up. Buffer stock is sized to risk, overproduction stops, and capital stays where it belongs.',
+    body: "Strategic, future-proof planning. We own S&OP end to end, with forecasting built on SAP and Anaplan, so clinical demand, commercial rollout and manufacturing capacity line up. Buffer stock is sized to risk, so a disruption upstream is absorbed before it can delay a patient's dose. Overproduction stops, and capital stays where it belongs.",
   },
   {
     title: 'Owning supply',
@@ -78,7 +78,7 @@ export const principles = [
   },
   {
     title: 'AI',
-    body: 'We build the bridge between now and next. Purpose-built agents watch activity and guide decisions for supply professionals and leaders, accelerating the operation, validated in your quality system, with your people in charge.',
+    body: 'We build the bridge between now and next. Purpose-built agents watch activity and guide decisions for supply professionals and leaders, accelerating the operation with your people in charge.',
   },
 ];
 
