@@ -4,7 +4,6 @@
 const stops = ['Discovery', 'Clinical', 'Production', 'Launch', 'S&OP'];
 const xs = [40, 270, 500, 730, 960];
 const ys = [30, 140, 250, 360, 470];
-const last = stops.length - 1;
 ---
 
 <div class="route" data-reveal="fade" data-reveal-at="half">
@@ -16,7 +15,7 @@ const last = stops.length - 1;
     </circle>
     {xs.map((x, i) => <circle class="route__node" cx={x} cy="40" r="9" style={`--i:${i}`}></circle>)}
     {stops.map((stop, i) => (
-      <text class="route__label" x={xs[i]} y="76" text-anchor={i === 0 ? 'start' : i === last ? 'end' : 'middle'} dx={i === 0 ? -9 : i === last ? 9 : 0} style={`--i:${i}`}>{stop}</text>
+      <text class="route__label" x={xs[i]} y="76" text-anchor="middle" style={`--i:${i}`}>{stop}</text>
     ))}
     <path class="route__bracket" d="M40 104 v14 h920 v-14"></path>
   </svg>

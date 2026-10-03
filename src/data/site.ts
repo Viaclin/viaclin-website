@@ -16,7 +16,7 @@ export const site = {
   mission: {
     lead: 'Behind every shipment is a patient waiting for treatment. Our mission is to make sure it reaches them: the right medicine, in the right place, at the right time.',
     support:
-      'We design the supply chains, drive the projects and optimise the operations that carry a therapy from discovery to the patient. When the chain holds, treatment starts on the day it was promised.',
+      'We design and implement supply chains, drive the projects and optimise the operations that support therapies from discovery to the patient.',
   },
   // Feeds the default meta description and the JSON-LD description, so it stays under 200 characters.
   summary:
