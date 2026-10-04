@@ -1,50 +1,96 @@
 ---
-// Our Team hero graphic: the network, narrowed by key criteria to one consultant, who is then joined to the
-// problem. Decorative; the caption beneath says the same in words.
+// Our Team hero graphic: the network, narrowed by four criteria to one consultant, who is then joined to the
+// programme. It turns through a few sample programmes, each matched to a different consultant. Decorative and
+// hidden from assistive technology; the caption beneath says the same in words.
 //
 // Built to survive a browser that darkens the page by itself. Every word is HTML text on an HTML ground,
 // never SVG text, so each word is recoloured with the shape behind it. Marks that must stay light on green
-// (the ticks, the chosen consultant) are SVG strokes, which such a browser leaves as drawn; marks that sit on
-// a light disc (the other consultants) are HTML borders, which it recolours with the disc. The mesh lines
-// use a mid tone that reads on a light ground and on a darkened one.
+// (the ticks, the chosen consultant) and the match line are SVG strokes, which such a browser leaves as drawn;
+// marks that sit on a light disc (the other consultants) are HTML borders, which it recolours with the disc.
+// The mesh lines use a mid tone that reads on a light ground and on a darkened one.
 //
-// On reveal the criteria tick one after another, the consultants who miss a criterion fall back, the chosen
-// one settles and the match line draws up to the problem. It plays once, in under four seconds, then holds.
+// Each programme runs the same way: its line fades in on the card, the criteria tick one after another, the
+// consultants who miss a criterion fall back, the chosen one settles, the match line draws from that consultant
+// to the badge and the badge shows. The finished match holds for about two and a half seconds, then it all
+// clears and the next programme starts. CSS times every part against one clock; the script at the foot swaps
+// the programme, maps the match line in pixels and rewinds the clock. It starts once half of the figure is in
+// view and rests while the figure is out of view, while the tab is hidden and while the visitor has paused it.
+// Reduced motion, a static capture or no script: the first programme's finished match, still, with no button.
+import Icon from './Icon.astro';
+
 const criteria = ['Specialism', 'Phase', 'Region', 'Systems'];
 
-// The pool. x and y are percentages of the pool box. tint is the specialism: "match" is the one the task needs.
-// out is the criterion (1 to 4) that sets a consultant aside; the consultant with no out is the match,
-// and sits on the centre line so the match line can run straight up through the gap in the criteria.
+// The pool. x and y are percentages of the pool box. tint is the consultant's specialism and never changes:
+// green for supply chain, slate for manufacturing and packaging, ink for clinical supply. No legend names them;
+// they let the first criterion do visible work. Four of each, so after specialism three remain beside the match
+// and each later criterion has someone to set aside. Nobody sits in the column a matched consultant's line
+// rises through, even on the narrowest phone.
 const people = [
-  { x: 7, y: 46, tint: 'ink', out: 1 },
-  { x: 20, y: 84, tint: 'slate', out: 1 },
-  { x: 28, y: 28, tint: 'slate', out: 1 },
-  { x: 40, y: 62, tint: 'match', out: 3 },
-  { x: 50, y: 18, tint: 'match', out: 0 },
-  { x: 60, y: 62, tint: 'ink', out: 1 },
-  { x: 72, y: 28, tint: 'match', out: 4 },
-  { x: 80, y: 84, tint: 'match', out: 2 },
-  { x: 50, y: 88, tint: 'slate', out: 1 },
-  { x: 93, y: 46, tint: 'ink', out: 1 },
+  { x: 7, y: 24, tint: 'ink' },
+  { x: 20, y: 84, tint: 'slate' },
+  { x: 31, y: 28, tint: 'slate' },
+  { x: 40, y: 62, tint: 'green' },
+  { x: 50, y: 18, tint: 'green' },
+  { x: 60, y: 62, tint: 'ink' },
+  { x: 69, y: 28, tint: 'green' },
+  { x: 80, y: 84, tint: 'green' },
+  { x: 50, y: 88, tint: 'slate' },
+  { x: 93, y: 24, tint: 'ink' },
+  { x: 7, y: 60, tint: 'slate' },
+  { x: 93, y: 60, tint: 'ink' },
 ];
 
 const links = [
-  [0, 2], [0, 1], [2, 4], [2, 3], [1, 3], [3, 4], [4, 5], [3, 5], [3, 8],
-  [4, 6], [5, 8], [5, 6], [5, 7], [6, 9], [7, 9], [1, 8], [7, 8],
+  [0, 2], [0, 10], [10, 1], [10, 3], [2, 4], [2, 3], [1, 3], [3, 4], [4, 5], [3, 5], [3, 8],
+  [4, 6], [5, 8], [5, 6], [5, 7], [5, 11], [6, 9], [9, 11], [11, 7], [1, 8], [7, 8],
 ];
+
+// The programmes: generic tasks of the kind the service pages describe. lead is the matched consultant; drops
+// lists who falls out on phase, region and systems, at least one on each. Specialism sets aside everyone outside
+// the lead's tint, so the match always carries the specialism the task needs. Each match sits in a new part of
+// the pool, well away from the one before. The first programme is the still view.
+const programmes = [
+  { task: 'Cold chain set-up for a Phase III launch', lead: 4, drops: [[7], [3], [6]] },
+  { task: 'Tech transfer to a new CDMO', lead: 1, drops: [[2], [10], [8]] },
+  { task: 'IRT set-up for a global Phase II trial', lead: 9, drops: [[0], [5], [11]] },
+  { task: 'Serialisation readiness for an EU launch', lead: 2, drops: [[10], [1], [8]] },
+  { task: 'S&OP rollout across three sites', lead: 7, drops: [[4], [6], [3]] },
+];
+
+// For each consultant, the criterion (1 to 4) that sets them aside, or 0 for the match. A criterion that sets
+// nobody aside would stall the narrowing, so the build stops on one.
+const plans = programmes.map(({ task, lead, drops }) => {
+  const out = people.map((person, i) => {
+    if (i === lead) return 0;
+    if (person.tint !== people[lead].tint) return 1;
+    const at = drops.findIndex((list) => list.includes(i));
+    if (at < 0) throw new Error(`TeamMatch: "${task}" leaves consultant ${i} in the running.`);
+    return at + 2;
+  });
+  criteria.forEach((name, c) => {
+    if (!out.includes(c + 1)) throw new Error(`TeamMatch: "${task}" sets nobody aside on ${name}.`);
+  });
+  return { task, out };
+});
+
+const first = plans[0].out;
 ---
 
-<figure class="tm" data-reveal="fade" data-reveal-at="half">
-  <div class="tm__art" aria-hidden="true" data-pagefind-ignore>
+<figure class="tm" data-tm>
+  <div class="tm__art" aria-hidden="true" data-pagefind-ignore data-tm-art>
     <div class="tm__brief-wrap">
       <div class="tm__brief glass">
         <p class="eyebrow">Your programme</p>
-        <p class="tm__task">Cold chain set-up for a Phase III launch</p>
+        <div class="tm__tasks">
+          {plans.map((plan, i) => (
+            <p class:list={['tm__task', i === 0 && 'is-on']} data-tm-task data-out={plan.out.join(',')}>{plan.task}</p>
+          ))}
+        </div>
       </div>
       <span class="tm__pill"><span class="tm__dot"></span>Matched consultant</span>
     </div>
 
-    <div class="tm__criteria">
+    <div class="tm__criteria" data-tm-criteria>
       {criteria.map((name, i) => (
         <span class="tm__crit" style={`--i:${i}`}>
           <span class="tm__tick"><svg viewBox="0 0 12 12" focusable="false"><path d="M2.6 6.3l2.2 2.2 4.7-4.9"></path></svg></span>{name}
@@ -52,20 +98,23 @@ const links = [
       ))}
     </div>
 
-    <div class="tm__pool">
+    <div class="tm__pool" data-tm-pool>
       <svg class="tm__links" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false">
         {links.map(([a, b]) => (
           <line x1={people[a].x} y1={people[a].y} x2={people[b].x} y2={people[b].y} vector-effect="non-scaling-stroke"></line>
         ))}
       </svg>
-      <span class="tm__wire"></span>
-      {people.map((p) => (
+      <svg class="tm__route" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false" data-tm-route>
+        <path d="M50 100V0" pathLength="1" vector-effect="non-scaling-stroke"></path>
+      </svg>
+      {people.map((p, i) => (
         <span
-          class:list={['tm__node', `tm__node--${p.tint}`, p.out ? 'tm__node--out' : 'tm__node--lead']}
-          style={`--x:${p.x}%;--y:${p.y}%;--out:${p.out}`}
+          class:list={['tm__node', `tm__node--${p.tint}`, first[i] ? 'tm__node--out' : 'tm__node--lead']}
+          style={`--x:${p.x}%;--y:${p.y}%;--out:${first[i]}`}
+          data-tm-node
         >
-          {!p.out && (
-            <svg class="tm__me" viewBox="0 0 36 36" focusable="false">
+          {!first[i] && (
+            <svg class="tm__me" viewBox="0 0 36 36" focusable="false" data-tm-me>
               <circle cx="18" cy="13.68" r="5.48"></circle>
               <path d="M7.12 40V34.92a10.88 10.88 0 0 1 21.76 0V40"></path>
             </svg>
@@ -74,15 +123,24 @@ const links = [
       ))}
     </div>
   </div>
-  <figcaption class="tm__caption">Key criteria narrow the network to the consultant who fits the task.</figcaption>
+  <button class="tm__toggle" type="button" aria-pressed="false" aria-label="Pause the matching animation" data-tm-toggle>
+    <Icon name="pause" />
+    <Icon name="play" />
+  </button>
+  <figcaption class="tm__caption">Each task is matched to the consultant whose specialism, phase, region and systems fit it.</figcaption>
 </figure>
 
 <style>
   /* Sizes for a narrow column first; the wide layout follows from the figure's own width, not the screen's.
      It keeps to the content grid: beside the copy its right edge meets the container edge, and once the
-     hero stacks it starts on the copy's left edge. */
+     hero stacks it starts on the copy's left edge. The figure is a grid so the pause button can sit in the
+     caption row, at the left; beside the copy an empty column of the same width on the right keeps the
+     caption on the centre line. */
   .tm {
     container-type: inline-size;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    gap: var(--space-4) 12px;
     width: 100%;
     max-width: 560px;
     margin-inline: auto 0;
@@ -92,12 +150,6 @@ const links = [
     .tm {
       margin-inline: 0;
     }
-  }
-
-  /* The figure shows at once in its start look. The sequence alone waits for half of it to be in view, so
-     a short phone never shows a blank patch under the jump links. */
-  :global(.js) .tm[data-reveal] {
-    opacity: 1;
   }
 
   .tm__art {
@@ -110,10 +162,11 @@ const links = [
     --gap-b: 22px;
     position: relative;
     display: grid;
+    grid-column: 1 / -1;
     grid-template-columns: minmax(0, 1fr);
   }
 
-  /* the problem: a glass card, with the match badge sitting on its lower edge */
+  /* the programme: a glass card, with the match badge sitting on its lower edge */
   .tm__brief-wrap {
     position: relative;
     z-index: 1;
@@ -123,13 +176,23 @@ const links = [
     padding: 18px 22px 26px;
   }
 
-  .tm__task {
+  /* every programme line sits in the same cell, so the card keeps the height of the longest one */
+  .tm__tasks {
+    display: grid;
     margin-top: var(--space-2);
+  }
+
+  .tm__task {
+    grid-area: 1 / 1;
     font-size: var(--text-lg);
     font-weight: 600;
     line-height: 1.3;
     color: var(--fg);
     text-wrap: balance;
+  }
+
+  .tm__task:not(.is-on) {
+    visibility: hidden;
   }
 
   .tm__pill {
@@ -236,17 +299,27 @@ const links = [
     opacity: 0.4;
   }
 
-  /* the match line: from the chosen consultant's centre up to the lower edge of the problem card */
-  .tm__wire {
+  /* The match line, over the mesh and under the discs. Without script it is the first programme's: straight
+     up from the consultant on the centre line to the lower edge of the card. The script then deepens the box
+     to the foot of the pool and draws the route in pixels from whichever consultant is chosen. An SVG box
+     takes its height from its own shape unless it is given one, so the height is set, never top and bottom. */
+  .tm__route {
+    --rise: calc(var(--gap-b) + var(--crit-h) + var(--gap-a));
     position: absolute;
-    left: 50%;
-    bottom: calc(var(--pool-h) * 0.82);
-    width: 2px;
-    height: calc(var(--pool-h) * 0.18 + var(--gap-b) + var(--crit-h) + var(--gap-a));
-    border-radius: 2px;
-    background: var(--accent);
-    transform: translateX(-50%);
-    transform-origin: 50% 100%;
+    top: calc(-1 * var(--rise));
+    left: 0;
+    width: 100%;
+    height: calc(var(--rise) + 18%);
+    overflow: visible;
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .tm.has-route .tm__route {
+    height: calc(var(--rise) + 100%);
   }
 
   /* a consultant: an opaque disc, so the mesh stops at its edge, in the ring and fill of a specialism */
@@ -266,13 +339,13 @@ const links = [
     transform: translate(-50%, -50%);
   }
 
-  /* specialism tints */
+  /* specialism tints; ink is the default above */
   .tm__node--slate {
     --ring: var(--fg-3);
     --fill: var(--diagram-fill);
   }
 
-  .tm__node--match {
+  .tm__node--green {
     --ring: var(--accent);
     --fill: color-mix(in srgb, var(--accent) 14%, var(--bg));
   }
@@ -301,15 +374,18 @@ const links = [
     border-radius: 999px 999px 0 0;
   }
 
-  /* set aside: the disc stays, its colours fall back towards the ground */
+  /* set aside: the disc stays opaque, so the mesh still stops at its edge, and its fill falls back towards the
+     ground. Ring and figure fade by alpha rather than by a mix with the ground: a page the browser darkens
+     turns a pale mix into a light mark, which would make the set-aside stand out over those still in the
+     running, while a faded mark stays faint on the darkened disc. */
   .tm__node--out {
-    border-color: color-mix(in srgb, var(--ring) 30%, var(--bg));
+    border-color: color-mix(in srgb, var(--ring) 30%, transparent);
     background: color-mix(in srgb, var(--fill) 45%, var(--bg));
   }
 
   .tm__node--out::before,
   .tm__node--out::after {
-    border-color: color-mix(in srgb, var(--glyph) 26%, var(--bg));
+    border-color: color-mix(in srgb, var(--glyph) 26%, transparent);
   }
 
   /* the matched consultant: filled in the action green, with the same person drawn in SVG strokes on top */
@@ -336,12 +412,53 @@ const links = [
   }
 
   .tm__caption {
-    margin-top: var(--space-4);
+    grid-row: 2;
+    grid-column: 1 / -1;
     font-size: var(--text-sm);
     line-height: 1.5;
     color: var(--fg-2);
     text-align: center;
     text-wrap: balance;
+  }
+
+  /* pause and play: the banner's toggle, shown while the graphic can move */
+  .tm__toggle {
+    display: none;
+    grid-row: 2;
+    grid-column: 1;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid var(--rule);
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  .tm__toggle:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent);
+  }
+
+  .tm__toggle:focus-visible {
+    border-radius: 50%;
+  }
+
+  .tm__toggle :global(svg) {
+    width: 16px;
+    height: 16px;
+  }
+
+  .tm__toggle :global(.icon-play),
+  .tm__toggle[aria-pressed='true'] :global(.icon-pause) {
+    display: none;
+  }
+
+  .tm__toggle[aria-pressed='true'] :global(.icon-play) {
+    display: block;
   }
 
   /* wide: the four criteria in one row, the gap still on the centre line. It starts at the width where the
@@ -398,63 +515,180 @@ const links = [
     }
   }
 
-  /* The sequence. Each part runs one keyframe from its start look back to its resting style, held paused
-     on that start look until the reveal adds .is-in. Once it has played, the resting style rules, so a
-     theme change later recolours at once. Without script, with reduced motion or in a static capture
-     nothing runs and the finished match shows. */
-  @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .tm .tm__crit {
-      animation: tm-crit 320ms var(--ease) calc(450ms + var(--i) * 600ms) backwards paused;
+  /* The cycle. Each part runs two keyframes from its list: one from its start look back to its resting style,
+     held on that start look until its moment comes, and the same keyframes in reverse at the clear, held on
+     the start look until the clock rewinds. Times from the start of each programme, in ms:
+       programme line fades in        0 (from the second programme on)
+       criteria tick                  450, 1000, 1550, 2100
+       consultants fall back          200 after the criterion that sets them aside
+       chosen consultant settles      2800
+       match line draws               3000 to 3700
+       badge shows                    3450 to 3870
+       all clears                     6350 to 6800
+       clock ends, next programme     7000
+     Everything waits on its start look until the script adds .is-playing, and holds where it is whenever the
+     script takes it away. Without script, with reduced motion or in a static capture nothing runs and the
+     first programme's finished match shows. */
+  @media screen and (prefers-reduced-motion: no-preference) {
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__art {
+      --step: 550ms;
+      --t-crit: 450ms;
+      --t-lead: calc(var(--t-crit) + 4 * var(--step) + 150ms);
+      --t-route: calc(var(--t-lead) + 200ms);
+      --t-pill: calc(var(--t-route) + 450ms);
+      --t-clear: calc(var(--t-pill) + 2900ms);
+      --cycle: calc(var(--t-clear) + 650ms);
+      animation: tm-clock var(--cycle) linear paused;
     }
 
-    :global(.js) .tm .tm__tick {
-      animation: tm-tick 320ms var(--ease) calc(450ms + var(--i) * 600ms) backwards paused;
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__crit {
+      animation:
+        tm-crit 320ms var(--ease) calc(var(--t-crit) + var(--i) * var(--step)) backwards paused,
+        tm-crit 450ms var(--ease-in-out) var(--t-clear) reverse forwards paused;
     }
 
-    :global(.js) .tm .tm__tick svg {
-      animation: tm-check 320ms var(--ease) calc(550ms + var(--i) * 600ms) backwards paused;
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__tick {
+      animation:
+        tm-tick 320ms var(--ease) calc(var(--t-crit) + var(--i) * var(--step)) backwards paused,
+        tm-tick 450ms var(--ease-in-out) var(--t-clear) reverse forwards paused;
     }
 
-    :global(.js) .tm .tm__node--out {
-      animation: tm-out 450ms var(--ease) calc(650ms + (var(--out) - 1) * 600ms) backwards paused;
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__tick svg {
+      animation:
+        tm-check 320ms var(--ease) calc(var(--t-crit) + 100ms + var(--i) * var(--step)) backwards paused,
+        tm-check 450ms var(--ease-in-out) var(--t-clear) reverse forwards paused;
     }
 
-    :global(.js) .tm .tm__node--out::before,
-    :global(.js) .tm .tm__node--out::after {
-      animation: tm-glyph 450ms var(--ease) calc(650ms + (var(--out) - 1) * 600ms) backwards paused;
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__node--out,
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__node--out::before,
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__node--out::after {
+      --at: calc(var(--t-crit) + 200ms + (var(--out) - 1) * var(--step));
     }
 
-    :global(.js) .tm .tm__node--lead {
-      animation: tm-lead 500ms var(--ease) 2750ms backwards paused;
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__node--out {
+      animation:
+        tm-out 450ms var(--ease) var(--at) backwards paused,
+        tm-out 450ms var(--ease-in-out) var(--t-clear) reverse forwards paused;
     }
 
-    :global(.js) .tm .tm__node--lead::before,
-    :global(.js) .tm .tm__node--lead::after {
-      animation: tm-glyph 500ms var(--ease) 2750ms backwards paused;
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__node--out::before,
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__node--out::after {
+      animation:
+        tm-glyph 450ms var(--ease) var(--at) backwards paused,
+        tm-glyph 450ms var(--ease-in-out) var(--t-clear) reverse forwards paused;
     }
 
-    :global(.js) .tm .tm__me {
-      animation: tm-me 500ms var(--ease) 2750ms backwards paused;
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__node--lead {
+      animation:
+        tm-lead 500ms var(--ease) var(--t-lead) backwards paused,
+        tm-lead 450ms var(--ease-in-out) var(--t-clear) reverse forwards paused;
     }
 
-    :global(.js) .tm .tm__wire {
-      animation: tm-wire 600ms var(--ease-in-out) 3000ms backwards paused;
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__node--lead::before,
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__node--lead::after {
+      animation:
+        tm-glyph 500ms var(--ease) var(--t-lead) backwards paused,
+        tm-glyph 450ms var(--ease-in-out) var(--t-clear) reverse forwards paused;
     }
 
-    :global(.js) .tm .tm__pill {
-      animation: tm-pill 420ms var(--ease) 3450ms backwards paused;
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__me {
+      animation:
+        tm-me 500ms var(--ease) var(--t-lead) backwards paused,
+        tm-me 450ms var(--ease-in-out) var(--t-clear) reverse forwards paused;
     }
 
-    :global(.js) .tm.is-in .tm__crit,
-    :global(.js) .tm.is-in .tm__tick,
-    :global(.js) .tm.is-in .tm__tick svg,
-    :global(.js) .tm.is-in .tm__node,
-    :global(.js) .tm.is-in .tm__node::before,
-    :global(.js) .tm.is-in .tm__node::after,
-    :global(.js) .tm.is-in .tm__me,
-    :global(.js) .tm.is-in .tm__wire,
-    :global(.js) .tm.is-in .tm__pill {
+    /* drawn from the consultant to the badge; the path is one unit long whatever its route */
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__route path {
+      stroke-dasharray: 1 2;
+      animation:
+        tm-route 700ms var(--ease-in-out) var(--t-route) backwards paused,
+        tm-fade 450ms var(--ease-in-out) var(--t-clear) forwards paused;
+    }
+
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__pill {
+      animation:
+        tm-pill 420ms var(--ease) var(--t-pill) backwards paused,
+        tm-pill 450ms var(--ease-in-out) var(--t-clear) reverse forwards paused;
+    }
+
+    /* the first programme is on the card from the start; each later one fades in as its cycle begins */
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__task.is-on {
+      animation: tm-task-out 400ms var(--ease-in-out) calc(var(--t-clear) + 50ms) forwards paused;
+    }
+
+    :global(.js:not(.static)) .tm:not(.is-still).is-next .tm__task.is-on {
+      animation:
+        tm-task 450ms var(--ease) backwards paused,
+        tm-task-out 400ms var(--ease-in-out) calc(var(--t-clear) + 50ms) forwards paused;
+    }
+
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__art,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__crit,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__tick,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__tick svg,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__node,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__node::before,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__node::after,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__me,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__route path,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__pill,
+    :global(.js:not(.static)) .tm:not(.is-still).is-playing .tm__task.is-on {
       animation-play-state: running;
+    }
+
+    /* the rewind: for one style pass between programmes every part drops its animations, so they all start
+       again from nothing when the class goes */
+    :global(.js:not(.static)) .tm.is-rewind .tm__art,
+    :global(.js:not(.static)) .tm.is-rewind .tm__art *,
+    :global(.js:not(.static)) .tm.is-rewind .tm__art *::before,
+    :global(.js:not(.static)) .tm.is-rewind .tm__art *::after {
+      animation-name: none !important;
+    }
+
+    /* the button shows while there is something to pause; the caption keeps the centre column */
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__toggle {
+      display: inline-flex;
+      transition: transform var(--dur-1) var(--ease), background-color var(--dur-1) var(--ease),
+        border-color var(--dur-1) var(--ease);
+    }
+
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__toggle:hover {
+      transform: scale(1.06);
+    }
+
+    :global(.js:not(.static)) .tm:not(.is-still) .tm__caption {
+      grid-column: 2;
+    }
+
+    /* once the hero has stacked and runs from the left edge: the caption takes the rest of the row beside the
+       button and sets left, the way the banner's note sits beside its button. Beside the copy it stays centred
+       under the drawing at every width. */
+    @media (max-width: 900px) {
+      :global(.js:not(.static)) .tm:not(.is-still) .tm__caption {
+        grid-column: 2 / -1;
+        text-align: left;
+      }
+    }
+  }
+
+  /* the clock changes nothing on screen; its end tells the script to start the next programme */
+  @keyframes tm-clock {
+    to {
+      --tm-clock: 1;
+    }
+  }
+
+  @keyframes tm-task {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+  }
+
+  @keyframes tm-task-out {
+    to {
+      opacity: 0;
+      transform: translateY(-4px);
     }
   }
 
@@ -507,9 +741,16 @@ const links = [
     }
   }
 
-  @keyframes tm-wire {
+  /* starts a little past one unit, so no round cap shows at the consultant before the line sets off */
+  @keyframes tm-route {
     from {
-      transform: translateX(-50%) scaleY(0);
+      stroke-dashoffset: 1.02;
+    }
+  }
+
+  @keyframes tm-fade {
+    to {
+      opacity: 0;
     }
   }
 
@@ -520,3 +761,170 @@ const links = [
     }
   }
 </style>
+
+<script>
+  // The TeamMatch cycle (see the comment at the top of the file). CSS times every part against one clock on
+  // the drawing; when the clock ends, this swaps in the next programme and starts every animation again.
+  // Pausing is one class, so all the parts stop and resume together and never drift apart.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const still = () => reduce.matches || document.documentElement.classList.contains('static');
+
+  // Two decimals are plenty for a path in pixels.
+  const n = (value: number) => String(Math.round(value * 100) / 100);
+
+  document.querySelectorAll<HTMLElement>('[data-tm]').forEach((fig) => {
+    const art = fig.querySelector<HTMLElement>('[data-tm-art]');
+    const row = fig.querySelector<HTMLElement>('[data-tm-criteria]');
+    const pool = fig.querySelector<HTMLElement>('[data-tm-pool]');
+    const svg = fig.querySelector<SVGSVGElement>('[data-tm-route]');
+    const line = svg?.querySelector('path');
+    const me = fig.querySelector<SVGSVGElement>('[data-tm-me]');
+    const toggle = fig.querySelector<HTMLButtonElement>('[data-tm-toggle]');
+    const tasks = Array.from(fig.querySelectorAll<HTMLElement>('[data-tm-task]'));
+    const nodes = Array.from(fig.querySelectorAll<HTMLElement>('[data-tm-node]'));
+    const plans = tasks.map((task) => (task.dataset.out ?? '').split(',').map(Number));
+    const sound =
+      plans.length > 1 &&
+      plans.every((plan) => plan.length === nodes.length && plan.filter((out) => out === 0).length === 1);
+
+    // Anything missing, or no way to rest the cycle off screen: the first programme stays, still.
+    if (!art || !row || !pool || !svg || !line || !me || !sound || !('IntersectionObserver' in window)) {
+      fig.classList.add('is-still');
+      return;
+    }
+
+    let index = 0;
+    let started = false;
+    let inView = false;
+    let userPaused = false;
+
+    // The match line, in whole screen pixels so the 2px stroke stays crisp: up from the chosen consultant to
+    // a lane halfway between the criteria and the pool, along the lane to the centre line, then up through
+    // the gap in the criteria to the lower edge of the card, under the badge. Each turn is rounded. The lane
+    // and the gap keep it clear of every chip.
+    const route = () => {
+      const lead = nodes[plans[index].indexOf(0)];
+      const box = svg.getBoundingClientRect();
+      if (!lead || !box.width || !box.height) return;
+      const at = lead.getBoundingClientRect();
+      const chips = row.getBoundingClientRect();
+      const top = pool.getBoundingClientRect().top;
+      const x = (value: number) => Math.round(value) - box.left;
+      const y = (value: number) => Math.round(value) - box.top;
+      const x0 = x(at.left + at.width / 2);
+      const y0 = y(at.top + at.height / 2);
+      const mid = x(chips.left + chips.width / 2);
+      const lane = y((chips.bottom + top) / 2);
+      const run = mid - x0;
+      let d = `M${n(mid)} ${n(y0)}V0`;
+      if (Math.abs(run) >= 4) {
+        const r = Math.max(0, Math.min(10, Math.abs(run) / 2, (top - chips.bottom) / 2 - 1));
+        const s = Math.sign(run);
+        const turn = s > 0 ? 1 : 0;
+        d =
+          `M${n(x0)} ${n(y0)}V${n(lane + r)}` +
+          `A${n(r)} ${n(r)} 0 0 ${turn} ${n(x0 + s * r)} ${n(lane)}` +
+          `H${n(mid - s * r)}` +
+          `A${n(r)} ${n(r)} 0 0 ${1 - turn} ${n(mid)} ${n(lane - r)}V0`;
+      }
+      svg.setAttribute('viewBox', `0 0 ${n(box.width)} ${n(box.height)}`);
+      line.setAttribute('d', d);
+    };
+
+    // Puts programme i on the card and in the pool: who is set aside on which criterion, who is matched.
+    const show = (i: number) => {
+      index = i;
+      const plan = plans[i];
+      tasks.forEach((task, t) => task.classList.toggle('is-on', t === i));
+      nodes.forEach((node, k) => {
+        node.classList.toggle('tm__node--lead', plan[k] === 0);
+        node.classList.toggle('tm__node--out', plan[k] !== 0);
+        node.style.setProperty('--out', String(plan[k]));
+      });
+      nodes[plan.indexOf(0)].append(me);
+      route();
+    };
+
+    // Runs while the figure has been half in view, is on screen, the tab is visible and the visitor has not
+    // paused it. Taking the class away holds every part where it is.
+    const sync = () => {
+      fig.classList.toggle('is-playing', started && inView && !userPaused && !document.hidden && !still());
+    };
+
+    art.addEventListener('animationend', (event) => {
+      if (event.target !== art || event.animationName !== 'tm-clock') return;
+      // Every part drops its animations for one style pass and picks them up again from the start. Nothing is
+      // painted in between, so the swap from the cleared look to the next start look never shows.
+      fig.classList.add('is-rewind');
+      show((index + 1) % plans.length);
+      fig.classList.add('is-next');
+      void art.offsetWidth;
+      fig.classList.remove('is-rewind');
+    });
+
+    // From here the route is drawn in pixels, in every mode, so a later switch to reduced motion or to print
+    // still shows the line in the right place.
+    fig.classList.add('has-route');
+    line.removeAttribute('vector-effect');
+    route();
+
+    let frame = 0;
+    const remap = () => {
+      window.cancelAnimationFrame(frame);
+      frame = window.requestAnimationFrame(route);
+    };
+    if (typeof ResizeObserver === 'function') new ResizeObserver(remap).observe(svg);
+    else window.addEventListener('resize', remap, { passive: true });
+
+    // Half in view starts it. A figure too tall to show half of itself starts once an eighth is in view.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          inView = entry.isIntersecting;
+          const tall = entry.boundingClientRect.height > window.innerHeight * 0.9;
+          if (entry.intersectionRatio >= (tall ? 0.12 : 0.5)) started = true;
+        }
+        sync();
+      },
+      { threshold: [0, 0.12, 0.5] },
+    );
+    observer.observe(fig);
+
+    // A pause pressed while the card clears, or while the next programme line is still fading in, would hold an
+    // empty card. Every part starts together at the rewind, so one shared time moves them all: back to the
+    // finished match just before the clear, or on to the moment the new line has faded in.
+    const settle = () => {
+      const parts = art.getAnimations({ subtree: true });
+      const timing = (part: Animation): EffectTiming => part.effect?.getTiming() ?? {};
+      const named = (name: string) => parts.find((part) => (part as CSSAnimation).animationName === name);
+      const clock = named('tm-clock');
+      const fade = named('tm-task');
+      const clear = Math.min(
+        ...parts.filter((part) => timing(part).direction === 'reverse').map((part) => Number(timing(part).delay)),
+      );
+      const at = Number(clock?.currentTime ?? 0);
+      const shown = fade ? Number(timing(fade).duration) : 0;
+      const to = at >= clear ? clear - 50 : at < shown ? shown : null;
+      if (to !== null) parts.forEach((part) => (part.currentTime = to));
+    };
+
+    // The button keeps the name it was given in the markup; aria-pressed carries the state.
+    toggle?.addEventListener('click', () => {
+      userPaused = !userPaused;
+      toggle.setAttribute('aria-pressed', String(userPaused));
+      sync();
+      if (userPaused) settle();
+    });
+
+    document.addEventListener('visibilitychange', sync);
+
+    // Motion switched off part way through: back to the first programme's finished match.
+    reduce.addEventListener('change', () => {
+      if (reduce.matches) {
+        fig.classList.remove('is-next');
+        show(0);
+      }
+      sync();
+    });
+  });
+</script>

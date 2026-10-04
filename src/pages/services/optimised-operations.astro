@@ -24,7 +24,7 @@ const partner = site.sisterBrand.name;
 const shifts = [
   {
     title: 'From silos to one connected operation',
-    body: 'Planning, procurement, manufacturing, quality, logistics and finance work to one plan and one set of numbers. A change in patient demand reaches the plant, the warehouse and the budget on the same day.',
+    body: 'Planning, procurement, manufacturing, quality, logistics and finance work to one plan and one set of numbers. Centralising operational information ensures alignment, flexibility and agility.',
   },
   {
     title: 'From periodic reports to live oversight',
@@ -153,33 +153,12 @@ const schema = [
 <Base title={title} description={description} path={path} schema={schema}>
   <PageHero
     title={pageName}
-    lead="Decades of experience, proven technology, and advanced AI, applied with precision to streamline how your operation runs. Every function linked to one goal, rebuilt leaner, faster and stronger, and next-gen ready."
+    lead="Scale, streamline and strengthen your operations. Viaclin brings decades of experience, proven technology and advanced AI, applied with precision to make your operation next-gen ready."
     eyebrow="Service area"
     crumbs={[{ title: 'Services', href: '/#services' }, { title: pageName }]}
     cta={{ label: 'Start a Conversation' }}
     video="robot"
   />
-
-  <!-- intro: the observation, then the answer beside it -->
-  <Section tight>
-    <div class="intro" data-reveal>
-      <p class="intro__statement">
-        Operations are grown, not designed. Each function was built for the moment it faced, with its own plan, its
-        own data and its own measure of success. Together they set a ceiling on efficiency, scale and cost.
-      </p>
-      <div class="intro__body">
-        <p>
-          We link planning, procurement, manufacturing, quality, logistics and finance into one operation with one
-          goal, then apply proven technology with precision to streamline how the work flows and rebuild capacity and
-          cost for the phase ahead.
-        </p>
-        <p>
-          The field has moved on. Analytics drive action, oversight runs live across the whole operation, and our
-          tools are in use on every engagement, not built into the pitch.
-        </p>
-      </div>
-    </div>
-  </Section>
 
   <!-- film: warehouse. The operations evolution -->
   <VideoBand video="warehouse" id="operations-evolution" height="mid" labelledby="evolution-title">
@@ -324,36 +303,6 @@ const schema = [
 </Base>
 
 <style>
-  /* intro */
-  .intro {
-    display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-    gap: clamp(24px, 6vw, 88px);
-    align-items: end;
-  }
-
-  .intro__statement {
-    font-size: var(--text-2xl);
-    font-weight: 600;
-    line-height: 1.3;
-    letter-spacing: var(--tracking-heading);
-    color: var(--fg);
-  }
-
-  .intro__body {
-    padding-left: var(--space-5);
-    border-left: 2px solid var(--accent);
-  }
-
-  .intro__body p {
-    font-size: var(--text-lg);
-    line-height: 1.55;
-  }
-
-  .intro__body > * + * {
-    margin-top: var(--space-4);
-  }
-
   /* band heading: the home page pattern, restated here because those styles are scoped to the home page */
   .band-head {
     max-width: 780px;
@@ -725,10 +674,6 @@ const schema = [
   }
 
   @media (max-width: 900px) {
-    .intro {
-      grid-template-columns: minmax(0, 1fr);
-    }
-
     .runs {
       grid-template-columns: minmax(0, 1fr);
       gap: 0;
