@@ -1,6 +1,9 @@
 /* Viaclin design tokens. Components use role tokens; brand tokens stay fixed across themes. */
 :root {
-  /* light, and closed to browser auto-darkening on phones; the dark theme declares its own scheme below */
+  /* light, and closed to browser auto-darkening on phones; the dark theme declares its own scheme below.
+     The colour scheme meta in Seo.astro repeats this in the head, and theme.ts keeps it in step with the theme.
+     Samsung Internet's dark mode recolours every page whatever these say: grounds turn dark grey, text and SVG
+     paint turn light. So a label never relies on a halo, and light text never sits on a light chip. */
   color-scheme: only light;
 
   /* brand */

@@ -1,6 +1,7 @@
 ---
-// Head metadata: title, description, canonical, Open Graph, Twitter card, icons, JSON-LD.
+// Head metadata: title, description, canonical, Open Graph, Twitter card, icons, colour scheme, JSON-LD.
 import { site } from '../data/site';
+import { schemes } from '../scripts/theme';
 
 interface Props {
   title: string;
@@ -64,6 +65,8 @@ const graphs = [organisation, website, ...(schema ? (Array.isArray(schema) ? sch
 // One theme colour meta for the browser bar on phones. It starts light, like the page, whatever the device setting.
 // The inline script in Base.astro and theme.ts read the two values below and set the one for the active theme.
 const barColour = { light: '#FFFFFF', dark: '#061A2E' };
+// The colour scheme meta works the same way. It repeats the root rule in tokens.css in the head, where a browser
+// reads it before any stylesheet arrives, so the page is closed to automatic darkening from the first paint.
 ---
 
 <title>{title}</title>
@@ -92,5 +95,6 @@ const barColour = { light: '#FFFFFF', dark: '#061A2E' };
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
 <meta name="theme-color" content={barColour.light} data-light={barColour.light} data-dark={barColour.dark} />
+<meta name="color-scheme" content={schemes.light} data-light={schemes.light} data-dark={schemes.dark} />
 
 {graphs.map((graph) => <script type="application/ld+json" is:inline set:html={JSON.stringify(graph)} />)}

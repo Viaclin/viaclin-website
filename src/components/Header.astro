@@ -1,6 +1,6 @@
 ---
-// Sticky header: logo, docking descriptor, menu links (Services, Our team), primary action. Search and the theme
-// toggle live in the footer. Contact has no menu link: "Start a conversation" goes to the same page.
+// Sticky header: logo, docking descriptor, menu links (Services, Our Team), primary action. Search and the theme
+// toggle live in the footer. Contact has no menu link: "Start a Conversation" goes to the same page.
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
 import { services, primary, legal } from '../data/nav';
@@ -61,7 +61,7 @@ const inServices = path.startsWith('/services');
 
     <div class="site-header__tools">
       <a class="btn btn--primary btn--sm js-convo" href="/contact" data-track="cta_click" data-track-place="header">
-        Start a conversation
+        Start a Conversation
       </a>
       <button class="icon-btn menu-btn" type="button" id="menu-btn" aria-expanded="false" aria-controls="mobile-menu">
         <Icon name="menu" class="menu-btn__open" />
@@ -81,7 +81,7 @@ const inServices = path.startsWith('/services');
         <li><a href={item.href} aria-current={current(item.href)}>{item.title}</a></li>
       ))}
     </ul>
-    {/* Company: Our team and Search. The button under the lists covers contact. */}
+    {/* Company: Our Team and Search. The button under the lists covers contact. */}
     <p class="mobile-menu__label" id="mobile-menu-company">Company</p>
     <ul role="list" aria-labelledby="mobile-menu-company">
       {primary.map((item) => (
@@ -97,7 +97,7 @@ const inServices = path.startsWith('/services');
     </ul>
   </nav>
   <a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="mobile-menu">
-    Start a conversation
+    Start a Conversation
   </a>
 </div>
 

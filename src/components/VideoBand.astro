@@ -1,5 +1,8 @@
 ---
 // Full-bleed footage band. The slot sits over the film; give text surfaces `.glass glass--film`.
+// `plainOnMobile`: from 641 px up the band runs its film; at 640 px and below it drops the film and sits on a
+// light ground with ink text and plain cards. The poster resolves to an empty pixel there and video.ts leaves
+// the film unloaded, so a phone fetches neither.
 import Icon from './Icon.astro';
 import { videos, type VideoKey } from '../data/videos';
 
@@ -9,20 +12,25 @@ interface Props {
   height?: 'tall' | 'mid';
   /** id of the heading inside the slot, so the band is a named region. */
   labelledby?: string;
+  /** No film at 640 px and below: a light band with ink text and plain cards. */
+  plainOnMobile?: boolean;
 }
 
-const { video, id, height = 'tall', labelledby } = Astro.props;
+const { video, id, height = 'tall', labelledby, plainOnMobile = false } = Astro.props;
 const film = videos[video];
+const emptyPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 ---
 
 <section
   id={id}
-  class:list={['vband', height === 'mid' && 'vband--mid']}
+  class:list={['vband', height === 'mid' && 'vband--mid', plainOnMobile && 'vband--plain-sm']}
   aria-labelledby={labelledby}
   data-film
+  data-film-when={plainOnMobile ? '(min-width: 641px)' : undefined}
 >
   <div class="vband__media" aria-hidden="true">
     <picture>
+      {plainOnMobile && <source media="(max-width: 640px)" srcset={emptyPixel} />}
       <source srcset={`${film.base}.webp`} type="image/webp" />
       <img src={`${film.base}.jpg`} alt="" width="1280" height="720" loading="lazy" decoding="async" />
     </picture>

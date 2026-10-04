@@ -93,9 +93,9 @@ for (const file of walkHtml(dist)) {
       if (URL_ATTRS.has(attr)) links.push({ tag: name, attr, value });
     }
     if (attrs.srcset) {
-      for (const part of attrs.srcset.split(',')) {
-        const url = part.trim().split(/\s+/)[0];
-        if (url) links.push({ tag: name, attr: 'srcset', value: url });
+      // As browsers read it: each URL is a run with no spaces, so a comma inside a data URL stays in the URL.
+      for (const [, url] of attrs.srcset.matchAll(/(?:^|,)\s*(\S+?)(?=,*(?:\s|$))/g)) {
+        links.push({ tag: name, attr: 'srcset', value: url });
       }
     }
     if (name === 'meta' && /^(og:image|og:url|twitter:image)$/i.test(attrs.property || attrs.name || '') && attrs.content) {

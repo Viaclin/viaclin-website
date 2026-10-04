@@ -25,7 +25,7 @@ export function initReveal(): void {
   };
 
   const observer = new IntersectionObserver(seen, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-  // Tall drawings, such as the route in its mobile column, wait until half of the shape is in view.
+  // Tall drawings wait until half of the shape is in view.
   // Starting at the first edge would leave the drawing finished before the reader reaches it.
   const halfway = new IntersectionObserver(seen, { threshold: 0.5 });
 

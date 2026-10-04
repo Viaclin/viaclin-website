@@ -1,31 +1,49 @@
 ---
 // One lead, six specialisms. Decorative; the network section's copy says the same in words.
+// The labels are HTML text laid over the drawing, not SVG text. A browser that darkens the page by itself
+// recolours HTML text with its ground, so the words stay readable in light, dark and darkened rendering;
+// SVG text was left with a light halo behind recoloured words. Each label hangs a fixed distance above or
+// below its node, so the gap holds as the drawing scales.
+const W = 480;
+const H = 384;
 const spokes = [
-  { x: 240, y: 52, label: 'IRT', lx: 240, ly: 28 },
-  { x: 398, y: 118, label: 'QP release', lx: 398, ly: 94 },
-  { x: 398, y: 266, label: 'Cold chain', lx: 398, ly: 298 },
-  { x: 240, y: 330, label: 'Forecasting', lx: 240, ly: 362 },
-  { x: 82, y: 266, label: 'Packaging', lx: 82, ly: 298 },
-  { x: 82, y: 118, label: 'Regulatory', lx: 82, ly: 94 },
+  { x: 240, y: 52, label: 'IRT', side: 'above' },
+  { x: 398, y: 118, label: 'QP release', side: 'above' },
+  { x: 398, y: 266, label: 'Cold chain', side: 'below' },
+  { x: 240, y: 330, label: 'Forecasting', side: 'below' },
+  { x: 82, y: 266, label: 'Packaging', side: 'below' },
+  { x: 82, y: 118, label: 'Regulatory', side: 'above' },
 ];
+const R = 9;
+const pct = (value: number, of: number) => `${((value / of) * 100).toFixed(3)}%`;
 ---
 
 <div class="netviz" data-reveal="scale" aria-hidden="true">
-  <svg viewBox="0 0 480 384" xmlns="http://www.w3.org/2000/svg" focusable="false">
+  <svg viewBox={`0 0 ${W} ${H}`} xmlns="http://www.w3.org/2000/svg" focusable="false">
     <circle class="netviz__orbit" cx="240" cy="190" r="158"></circle>
     {spokes.map((s, i) => <line class="netviz__spoke" x1="240" y1="190" x2={s.x} y2={s.y} pathLength="180" style={`--i:${i}`}></line>)}
-    {spokes.map((s, i) => <circle class="netviz__node" cx={s.x} cy={s.y} r="9" style={`--i:${i}`}></circle>)}
+    {spokes.map((s, i) => <circle class="netviz__node" cx={s.x} cy={s.y} r={R} style={`--i:${i}`}></circle>)}
     <circle class="netviz__ring" cx="240" cy="190" r="10">
       <animate attributeName="r" values="10;36" dur="2.8s" repeatCount="indefinite"></animate>
       <animate attributeName="opacity" values="0.7;0" dur="2.8s" repeatCount="indefinite"></animate>
     </circle>
     <circle class="netviz__lead" cx="240" cy="190" r="12"></circle>
-    {spokes.map((s) => <text class="netviz__label" x={s.lx} y={s.ly} text-anchor="middle">{s.label}</text>)}
-    <text class="netviz__label netviz__label--lead" x="280" y="195" text-anchor="start">Your lead</text>
   </svg>
+  {spokes.map((s) => (
+    <span
+      class:list={['netviz__label', `netviz__label--${s.side}`]}
+      style={`left:${pct(s.x, W)};top:${pct(s.side === 'above' ? s.y - R : s.y + R, H)}`}
+    >{s.label}</span>
+  ))}
+  <!-- in the wedge between the two right-hand spokes, clear of both and of the pulse ring -->
+  <span class="netviz__label netviz__label--lead" style={`left:${pct(282, W)};top:${pct(190, H)}`}>Your lead</span>
 </div>
 
 <style>
+  .netviz {
+    position: relative;
+  }
+
   .netviz svg {
     width: 100%;
     height: auto;
@@ -39,11 +57,12 @@ const spokes = [
     stroke-dasharray: 3 7;
   }
 
+  /* the mid tone reads as before on both themes and stays visible when a browser darkens the page */
   .netviz__spoke {
-    stroke: var(--fg);
+    stroke: var(--fg-3);
     stroke-width: 2;
     stroke-linecap: round;
-    opacity: 0.55;
+    opacity: 0.85;
   }
 
   .netviz__node {
@@ -53,7 +72,7 @@ const spokes = [
     transition: fill var(--dur-2) var(--ease);
   }
 
-  .section--mist .netviz__node {
+  :global(.section--mist) .netviz__node {
     fill: var(--bg-alt);
   }
 
@@ -67,24 +86,38 @@ const spokes = [
     stroke-width: 2;
   }
 
+  /* a fill in the ground colour knocks the dotted orbit out behind each word. It is an HTML fill, so a browser
+     that darkens the page darkens it with the ground, and the words keep their contrast */
   .netviz__label {
-    font-family: var(--font-sans);
+    position: absolute;
+    padding-inline: 6px;
+    border-radius: var(--radius-sm);
+    background: var(--bg);
     font-size: 15px;
     font-weight: 600;
-    fill: var(--fg-2);
+    line-height: 1.2;
+    color: var(--fg-2);
+    white-space: nowrap;
+    pointer-events: none;
   }
 
-  /* the label sits to the right of the hub, clear of the ring; the halo keeps it clear of the spokes it crosses */
+  :global(.section--mist) .netviz__label {
+    background: var(--bg-alt);
+  }
+
+  .netviz__label--above {
+    transform: translate(-50%, calc(-100% - 7px));
+  }
+
+  .netviz__label--below {
+    transform: translate(-50%, 7px);
+  }
+
+  /* link green on the same ground fill: no halo, and never light text on a light chip */
   .netviz__label--lead {
-    fill: var(--link);
-    paint-order: stroke;
-    stroke: var(--bg);
-    stroke-width: 8px;
-    stroke-linejoin: round;
-  }
-
-  :global(.section--mist) .netviz__label--lead {
-    stroke: var(--bg-alt);
+    font-weight: 700;
+    color: var(--link);
+    transform: translateY(-50%);
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -114,13 +147,6 @@ const spokes = [
       width: 100%;
       max-width: 440px;
       margin-inline: auto;
-    }
-  }
-
-  /* the labels scale with the drawing, so they grow on a narrow screen to stay readable */
-  @media (max-width: 520px) {
-    .netviz__label {
-      font-size: 20px;
     }
   }
 </style>

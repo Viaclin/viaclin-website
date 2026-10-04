@@ -1,4 +1,4 @@
-// Contact: the start-a-conversation popup and every contact form on the page.
+// Contact: the "Start a Conversation" popup and every contact form on the page.
 // States: empty (hints), error (per field and summary), sending, success, failure, email fallback.
 import { openDialog } from './dialog';
 import { track } from './analytics';

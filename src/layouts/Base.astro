@@ -35,7 +35,7 @@ const { title, description, path, noindex = false, schema, docks = false } = Ast
     <Seo title={title} description={description} path={path} noindex={noindex} schema={schema} />
     <script is:inline>
       // Runs before first paint: mark JS as present, pick the theme, honour capture flags.
-      // It sits below the Seo block so that the theme colour meta exists when it runs.
+      // It sits below the Seo block so that the theme colour and colour scheme metas exist when it runs.
       (function () {
         var root = document.documentElement;
         root.classList.remove('no-js');
@@ -49,10 +49,14 @@ const { title, description, path, noindex = false, schema, docks = false } = Ast
         if (query.get('static')) root.classList.add('static');
         if (query.get('theme') === 'dark' || query.get('theme') === 'light') theme = query.get('theme');
         root.setAttribute('data-theme', theme);
-        // The browser bar on phones takes the page ground of the same theme. theme.ts keeps it in step after a switch.
+        // The browser bar on phones takes the page ground of the same theme, and the colour scheme meta declares
+        // that theme. theme.ts keeps both in step after a switch.
         var bar = document.querySelector('meta[name="theme-color"]');
         var colour = bar && bar.getAttribute(theme === 'dark' ? 'data-dark' : 'data-light');
         if (colour) bar.setAttribute('content', colour);
+        var scheme = document.querySelector('meta[name="color-scheme"]');
+        var declared = scheme && scheme.getAttribute(theme === 'dark' ? 'data-dark' : 'data-light');
+        if (declared) scheme.setAttribute('content', declared);
         // Failsafe: .js hides every [data-reveal] before paint. If the script bundle never arrives,
         // main.ts never marks the page ready, so fall back to the static rules, which show everything.
         setTimeout(function () {
@@ -83,8 +87,8 @@ const { title, description, path, noindex = false, schema, docks = false } = Ast
       <Icon name="arrow-up" />
     </button>
 
-    <aside class="mobile-cta glass" id="mobile-cta" aria-label="Start a conversation">
-      <a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="mobile-bar">Start a conversation</a>
+    <aside class="mobile-cta glass" id="mobile-cta" aria-label="Start a Conversation">
+      <a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="mobile-bar">Start a Conversation</a>
     </aside>
 
     <ContactModal />

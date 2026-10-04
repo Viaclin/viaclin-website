@@ -1,6 +1,8 @@
 // Background films. A film loads when its band nears the viewport, plays while in view,
 // pauses out of view and always offers a pause button (WCAG 2.2.2).
 // Reduced motion or Save-Data: the poster stays and the button offers "play" instead.
+// A host may carry data-film-when, a media query: outside it the film is not drawn, so it never
+// loads there and pauses if the window is resized across the line.
 import { track } from './analytics';
 
 interface Film {
@@ -10,6 +12,7 @@ interface Film {
   name: string;
   userPaused: boolean;
   inView: boolean;
+  when: MediaQueryList | null;
 }
 
 export function initVideos(): void {
@@ -41,7 +44,8 @@ export function initVideos(): void {
   };
 
   const sync = (film: Film) => {
-    const shouldPlay = film.inView && !film.userPaused && !document.hidden;
+    const drawn = !film.when || film.when.matches;
+    const shouldPlay = drawn && film.inView && !film.userPaused && !document.hidden;
     if (shouldPlay) {
       load(film);
       film.video.play().catch((error: DOMException) => {
@@ -80,11 +84,13 @@ export function initVideos(): void {
       name: toggle?.dataset.filmName ?? 'film',
       userPaused: calm(),
       inView: false,
+      when: host.dataset.filmWhen ? window.matchMedia(host.dataset.filmWhen) : null,
     };
     films.set(host, film);
     label(film, film.userPaused);
 
     video.addEventListener('playing', () => video.classList.add('is-playing'));
+    film.when?.addEventListener('change', () => sync(film));
 
     toggle?.addEventListener('click', () => {
       film.userPaused = !film.userPaused;

@@ -22,12 +22,12 @@ export const services: NavLink[] = [
   },
 ];
 
-// The header menu. Contact has no entry here: the header's "Start a conversation" button goes to the same page.
-export const primary: NavLink[] = [{ title: 'Our team', href: '/our-team' }];
+// The header menu. Contact has no entry here: the header's "Start a Conversation" button goes to the same page.
+export const primary: NavLink[] = [{ title: 'Our Team', href: '/our-team' }];
 
 // The footer's company list keeps Contact.
 export const company: NavLink[] = [
-  { title: 'Our team', href: '/our-team' },
+  { title: 'Our Team', href: '/our-team' },
   { title: 'Contact', href: '/contact' },
   { title: 'Search', href: '/search' },
 ];

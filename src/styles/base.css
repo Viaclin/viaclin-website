@@ -156,13 +156,15 @@ a:hover {
   color: var(--link-hover);
 }
 
-/* focus */
+/* focus. The ring is a box shadow. The transparent outline under it is invisible in both themes, but a system
+   contrast theme drops shadows and paints that outline in its own colour, so the focused element stays marked. */
 :focus {
   outline: none;
 }
 
 :focus-visible {
-  outline: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
   box-shadow: var(--focus-ring);
   border-radius: var(--radius-sm);
 }

@@ -1,25 +1,27 @@
 ---
-// Our team: the network, the method, the pillars and coverage. Copy source: VIACLIN_WEBSITE_SPEC.md section 8.6,
-// renamed at the owner's request; shared copy comes from src/data/services.ts. The old address redirects here
-// (redirects in astro.config.mjs and vercel.json).
+// Our Team: the network, the method and coverage. The hero graphic shows the idea behind the page: a
+// network of consultants to draw from, and the one who fits matched to the task. Copy source:
+// VIACLIN_WEBSITE_SPEC.md section 8.6, renamed at the owner's request; shared copy comes from
+// src/data/services.ts. The old address redirects here (redirects in astro.config.mjs and vercel.json).
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Section from '../components/Section.astro';
 import Blocks from '../components/Blocks.astro';
 import Steps from '../components/Steps.astro';
 import NetworkVisual from '../components/NetworkVisual.astro';
+import TeamMatch from '../components/TeamMatch.astro';
 import ContactBand from '../components/ContactBand.astro';
 import { site } from '../data/site';
-import { network, method, principles, coverage } from '../data/services';
+import { network, method, coverage } from '../data/services';
 
 const path = '/our-team';
+const pageName = 'Our Team';
 const description =
-  'The Viaclin team: one accountable lead, a network of senior consultants, the Diagnose, Embed, Deliver method, three pillars and EU, US and UK coverage.';
+  'The Viaclin team: one accountable lead, a network of senior consultants matched to each task, the Diagnose, Embed, Deliver method and EU, US and UK coverage.';
 
 const onPage = [
   { id: 'network', label: 'The network' },
   { id: 'method', label: 'The method' },
-  { id: 'principles', label: 'Pillars' },
   { id: 'coverage', label: 'Coverage' },
 ];
 
@@ -28,17 +30,17 @@ const schema = {
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: `${site.url}/` },
-    { '@type': 'ListItem', position: 2, name: 'Our team', item: `${site.url}${path}` },
+    { '@type': 'ListItem', position: 2, name: pageName, item: `${site.url}${path}` },
   ],
 };
 ---
 
-<Base title="Our team: Viaclin" description={description} path={path} schema={schema}>
+<Base title="Our Team: Viaclin" description={description} path={path} schema={schema}>
   <PageHero
-    title="Our team"
+    title={pageName}
     lead="One lead operator. A network behind them."
-    crumbs={[{ title: 'Our team' }]}
-    cta={{ label: 'Start a conversation' }}
+    crumbs={[{ title: pageName }]}
+    cta={{ label: 'Start a Conversation' }}
   >
     <nav class="onpage" aria-label="On this page" data-reveal style="--d:300ms">
       <ol role="list">
@@ -47,6 +49,7 @@ const schema = {
         ))}
       </ol>
     </nav>
+    <TeamMatch slot="media" />
   </PageHero>
 
   <!-- the network -->
@@ -73,15 +76,9 @@ const schema = {
     <Steps items={method} row />
   </Section>
 
-  <!-- pillars (the id stays "principles", the name of the data it shows) -->
-  <Section id="principles" eyebrow="Pillars" title="Three pillars behind every engagement">
-    <Blocks items={principles} cols={3} />
-  </Section>
-
-  <!-- coverage -->
+  <!-- coverage: on the white ground, so the grounds keep alternating from the method band to the contact band -->
   <Section
     id="coverage"
-    tone="mist"
     eyebrow="Coverage"
     title="Three regulatory jurisdictions"
     intro="Each sets its own rules for getting a therapy to patients. The network works inside all three."
@@ -93,14 +90,14 @@ const schema = {
 </Base>
 
 <style>
-  /* hero: numbered jump links to the four parts of the page */
+  /* hero: numbered jump links to the three parts of the page */
   .onpage {
     margin-top: clamp(40px, 6vw, 72px);
   }
 
   .onpage ol {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(12px, 2vw, 28px);
     margin: 0;
     counter-reset: onpage;
@@ -178,78 +175,10 @@ const schema = {
     justify-self: center;
   }
 
-  /* a single paragraph set as a lead, with a quiet companion beside it */
-  .lead-split {
-    display: grid;
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
-    gap: clamp(32px, 6vw, 88px);
-    align-items: center;
-  }
-
-  .lead-split__copy > * + * {
-    margin-top: var(--space-5);
-  }
-
-  .lead--measure {
-    max-width: 56ch;
-    color: var(--fg-2);
-  }
-
-  .nots {
-    display: grid;
-    gap: var(--space-6);
-  }
-
-  .nots__label {
-    padding-bottom: var(--space-3);
-    border-bottom: 2px solid var(--rule);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    color: var(--link);
-    letter-spacing: 0.01em;
-  }
-
-  .nots ul {
-    margin: 0;
-  }
-
-  .nots li {
-    position: relative;
-    padding: 12px 0 12px 34px;
-    border-bottom: 1px solid var(--rule);
-    color: var(--fg);
-    font-weight: 600;
-  }
-
-  /* a small cross: two strokes in the ink colour */
-  .nots li::before,
-  .nots li::after {
-    content: '';
-    position: absolute;
-    left: 2px;
-    top: calc(12px + 0.8em);
-    width: 16px;
-    height: 2px;
-    border-radius: 2px;
-    background: var(--fg-3);
-  }
-
-  .nots li::before {
-    transform: rotate(45deg);
-  }
-
-  .nots li::after {
-    transform: rotate(-45deg);
-  }
-
+  /* the three links keep one row down to the phone; the gap tightens so each label has room */
   @media (max-width: 900px) {
     .onpage ol {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px 20px;
-    }
-
-    .lead-split {
-      grid-template-columns: minmax(0, 1fr);
+      gap: 8px 16px;
     }
   }
 

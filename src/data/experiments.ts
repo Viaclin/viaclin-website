@@ -1,5 +1,5 @@
 // A/B experiments. An experiment runs when `active` is true and the visitor has granted insights consent.
-// Markup contract: <a data-ab="hero-cta" data-ab-operator="Talk to a senior operator">Start a conversation</a>
+// Markup contract: <a data-ab="hero-cta" data-ab-operator="Talk to a senior operator">Start a Conversation</a>
 // The first variant is the control: it is the text already in the markup.
 export interface Experiment {
   /** Matches the data-ab attribute in the markup. */

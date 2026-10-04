@@ -176,7 +176,7 @@ Every event goes to GA4 when Analytics consent exists. Clarity receives the even
 To track a new element, add two attributes. Any `data-track-*` attribute becomes an event parameter:
 
 ```html
-<a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="method-band">Start a conversation</a>
+<a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="method-band">Start a Conversation</a>
 ```
 
 From script, import the helper:
@@ -216,7 +216,7 @@ The helper swaps the text of an element. It suits headlines, button labels and s
 2. In the markup, mark the element with the experiment key and give each variant its text. The text already in the markup is the control:
 
    ```html
-   <a class="btn btn--primary js-convo" href="/contact" data-ab="hero-cta" data-ab-operator="Talk to a senior operator">Start a conversation</a>
+   <a class="btn btn--primary js-convo" href="/contact" data-ab="hero-cta" data-ab-operator="Talk to a senior operator">Start a Conversation</a>
    ```
 
 3. In `src/data/experiments.ts`, add the experiment or switch it on. The first variant is the control. `weights` is optional; leave it out for an even split:

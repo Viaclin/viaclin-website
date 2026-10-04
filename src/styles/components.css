@@ -44,6 +44,11 @@
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 14px 28px -12px rgba(37, 130, 83, 0.85);
 }
 
+/* the button's own shadow would replace the focus ring, so focus puts the ring back, on hover too */
+.btn--primary:focus-visible {
+  box-shadow: var(--focus-ring);
+}
+
 .btn--secondary {
   background: transparent;
   color: var(--fg);
@@ -821,7 +826,12 @@
   inset: 9%;
   border-style: dashed;
   border-color: color-mix(in srgb, var(--fg) 12%, transparent);
-  animation: orbit 60s linear infinite;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero__sphere::after {
+    animation: orbit 60s linear infinite;
+  }
 }
 
 @keyframes orbit {
@@ -872,6 +882,68 @@
   }
 }
 
+/* The phone hero runs the technician film, in the services band's markup (.vband__media, .vband__shade,
+   .vband__meta). From 641 px up those parts are not drawn and the sphere and the route hold the hero. */
+@media (min-width: 641px) {
+  .hero .hero__film,
+  .hero .hero__shade,
+  .hero .hero__meta {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  /* the film starts under the header bar, so the logo and the menu button keep the page ground behind them
+     at the top of the page, the same as on every other page */
+  .hero {
+    margin-top: var(--header-h);
+    padding-top: clamp(44px, 12vw, 64px);
+    padding-bottom: 104px;
+    background: var(--night);
+    color: var(--on-film-2);
+  }
+
+  .hero__bg,
+  .hero__sphere,
+  .hero__route {
+    display: none;
+  }
+
+  /* the copy spans the full width here, so the shade holds an even depth across it rather than lifting to the right */
+  .hero .hero__shade {
+    background: linear-gradient(180deg, rgba(var(--film-shade), 0.72) 0%, rgba(var(--film-shade), 0.78) 60%, rgba(var(--film-shade), 0.9) 100%);
+  }
+
+  .hero__copy h1,
+  .hero__copy .lead {
+    color: var(--on-film);
+  }
+
+  .hero .descriptor {
+    color: var(--on-film-2);
+  }
+
+  .hero .descriptor__dot {
+    background: var(--green-light);
+    box-shadow: 0 0 0 4px rgba(110, 203, 147, 0.25);
+  }
+
+  /* the secondary action takes the glass button's colours, as the actions in the film bands do */
+  .hero .btn--secondary {
+    color: var(--on-film);
+    background: rgba(255, 255, 255, 0.08);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+    border-color: rgba(255, 255, 255, 0.42);
+  }
+
+  .hero .btn--secondary:hover {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.8);
+    color: var(--on-film);
+  }
+}
+
 /* route diagram */
 .route svg {
   width: 100%;
@@ -918,28 +990,10 @@
   color: var(--link);
 }
 
-.route--mobile {
-  display: none;
-}
-
-@media (max-width: 640px) {
-  .route--desktop {
-    display: none;
-  }
-
-  .route--mobile {
-    display: block;
-    max-width: 320px;
-  }
-
-  .route__caption {
-    text-align: left;
-  }
-}
-
-/* the horizontal artboard shrinks to fit a tablet, so the labels are sized back up to stay readable */
-@media (min-width: 641px) and (max-width: 900px) {
-  .route--desktop .route__label {
+/* the artboard shrinks to fit a tablet, so the labels are sized back up to stay readable;
+   at 640 px and below the hero hides the route */
+@media (max-width: 900px) {
+  .route .route__label {
     font-size: 21px;
   }
 }
@@ -1002,6 +1056,23 @@
 .proof {
   border-block: 1px solid var(--rule);
   background: var(--bg);
+}
+
+/* Under a film band the footage edge is the line, so the strip drops its top rule and the dividers hang
+   straight from the film. Dark keeps the rule as a seam between two near-night grounds, and so does a band
+   that turns plain on a phone, where mist meets white. */
+.vband + .proof {
+  border-top-color: transparent;
+}
+
+:root[data-theme='dark'] .vband + .proof {
+  border-top-color: var(--rule);
+}
+
+@media (max-width: 640px) {
+  .vband--plain-sm + .proof {
+    border-top-color: var(--rule);
+  }
 }
 
 .proof__grid {
@@ -1208,6 +1279,78 @@
         transform: translate3d(0, 5%, 0);
       }
     }
+  }
+}
+
+/* A band marked plainOnMobile: at 640 px and below its film runs behind the hero instead, so the band drops
+   the footage and sits on the mist ground (white would run straight into the white proof strip below).
+   Ink text, and the glass cards become the site's light cards. */
+@media (max-width: 640px) {
+  .vband--plain-sm {
+    min-height: 0;
+    padding-block: var(--section-y);
+    background: var(--bg-alt);
+    color: var(--fg-2);
+  }
+
+  .vband--plain-sm .vband__media,
+  .vband--plain-sm .vband__shade,
+  .vband--plain-sm .vband__meta {
+    display: none;
+  }
+
+  .vband--plain-sm h2,
+  .vband--plain-sm h3 {
+    color: var(--fg);
+  }
+
+  .vband--plain-sm .lead {
+    color: var(--fg-2);
+  }
+
+  .vband--plain-sm .eyebrow--on-film {
+    color: var(--link);
+  }
+
+  .vband--plain-sm .eyebrow--on-film::before {
+    background: linear-gradient(90deg, var(--fg) 0 60%, var(--accent) 60% 100%);
+  }
+
+  .vband--plain-sm .block--glass {
+    padding: clamp(24px, 3vw, 36px);
+    background: var(--bg-raised);
+    border: 1px solid var(--rule);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+    color: var(--fg-2);
+  }
+
+  .vband--plain-sm .block--glass::before {
+    display: none;
+  }
+
+  .vband--plain-sm .block--glass:hover {
+    border-color: color-mix(in srgb, var(--accent) 55%, var(--rule));
+    box-shadow: var(--shadow-card);
+  }
+
+  .vband--plain-sm .block--glass h3 {
+    color: var(--fg);
+  }
+
+  .vband--plain-sm .block--glass p {
+    color: var(--fg-2);
+  }
+
+  .vband--plain-sm .text-link--on-film {
+    color: var(--link);
+    text-decoration-color: color-mix(in srgb, var(--link) 40%, transparent);
+  }
+
+  .vband--plain-sm .text-link--on-film:hover {
+    color: var(--link);
+    text-decoration-color: currentColor;
   }
 }
 
@@ -2030,7 +2173,7 @@ dialog.dialog::backdrop {
   width: 100%;
 }
 
-/* Same breakpoint as the header, where the "Start a conversation" button gives way to the menu button. */
+/* Same breakpoint as the header, where the "Start a Conversation" button gives way to the menu button. */
 @media (max-width: 1000px) {
   .mobile-cta {
     display: block;

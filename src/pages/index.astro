@@ -1,5 +1,7 @@
 ---
-// Home. The six films follow the product down the page: cleanroom, fill, label, pack, depot, doorstep.
+// Home. The six films follow the product down the page: technician, pumps, labelling, robot, warehouse, driver
+// (cleanroom, fill, label, pack, depot, doorstep). The technician film runs in the services band from 641 px up
+// and behind the hero at 640 px and below, so the order holds at every width and never repeats back to back.
 import Base from '../layouts/Base.astro';
 import Section from '../components/Section.astro';
 import Blocks from '../components/Blocks.astro';
@@ -15,9 +17,15 @@ import ContactBand from '../components/ContactBand.astro';
 import Rotor from '../components/Rotor.astro';
 import Icon from '../components/Icon.astro';
 import { site } from '../data/site';
+import { videos } from '../data/videos';
 import {
   serviceCards, consultancyPoints, projectPoints, evolutionCards, method, principles, network, coverage,
 } from '../data/services';
+
+// The phone hero borrows the services band's film. Its poster is picked by media query: from 641 px up the
+// picture resolves to an empty pixel, so neither poster nor film is fetched where the hero shows the sphere.
+const heroFilm = videos.technician;
+const emptyPixel = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 ---
 
 <Base
@@ -26,9 +34,27 @@ import {
   path="/"
   docks
 >
-  <!-- hero -->
-  <section class="hero" aria-labelledby="hero-title">
+  <!-- hero. From 641 px up: the sphere and the route. At 640 px and below: film 1, technician, behind the copy -->
+  <section class="hero" aria-labelledby="hero-title" data-film data-film-when="(max-width: 640px)">
     <div class="hero__bg" aria-hidden="true"></div>
+    <div class="vband__media hero__film" aria-hidden="true">
+      <picture>
+        <source media="(min-width: 641px)" srcset={emptyPixel} />
+        <source srcset={`${heroFilm.base}.webp`} type="image/webp" />
+        <img src={`${heroFilm.base}.jpg`} alt="" width="1280" height="720" fetchpriority="high" decoding="async" />
+      </picture>
+      <video
+        muted
+        loop
+        playsinline
+        preload="none"
+        tabindex="-1"
+        disablepictureinpicture
+        data-src-lg={`${heroFilm.base}-1280.mp4`}
+        data-src-sm={`${heroFilm.base}-720.mp4`}
+      ></video>
+    </div>
+    <div class="vband__shade hero__shade" aria-hidden="true"></div>
     <div class="container hero__inner">
       <div class="hero__copy">
         <p class="descriptor" id="hero-descriptor"><span class="descriptor__dot"></span>{site.descriptor}</p>
@@ -39,7 +65,7 @@ import {
           chains, executed with precision and the newest tools in the field.
         </p>
         <div class="actions rise" style="--d:280ms">
-          <a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="hero" data-ab="hero-cta" data-ab-operator="Talk to a senior operator">Start a conversation</a>
+          <a class="btn btn--primary js-convo" href="/contact" data-track="cta_click" data-track-place="hero" data-ab="hero-cta" data-ab-operator="Talk to a senior operator">Start a Conversation</a>
           <a class="btn btn--secondary" href="#services" data-track="cta_click" data-track-place="hero-secondary">Services</a>
         </div>
       </div>
@@ -50,15 +76,24 @@ import {
     <div class="container hero__route">
       <RouteDiagram />
     </div>
+    <div class="vband__meta hero__meta">
+      <button
+        class="vtoggle glass glass--clear"
+        type="button"
+        aria-pressed="false"
+        aria-label={`Pause background film: ${heroFilm.chip}`}
+        data-film-toggle
+        data-film-name={heroFilm.chip}
+      >
+        <Icon name="pause" class="icon-pause" />
+        <Icon name="play" class="icon-play" />
+      </button>
+    </div>
   </section>
 
-  <ProofStrip />
-
-  <!-- mission: the tagline and the purpose behind the work -->
-  <Mission />
-
-  <!-- film 1: technician. The three service areas -->
-  <VideoBand video="technician" id="services" labelledby="services-title">
+  <!-- film 1: technician, from 641 px up. The three service areas, straight after the hero. At 640 px and below
+       the film runs behind the hero instead, and this band sits on the mist ground with ink text and plain cards -->
+  <VideoBand video="technician" id="services" labelledby="services-title" plainOnMobile>
     <div class="band-head" data-reveal>
       <p class="eyebrow eyebrow--on-film">What we do</p>
       <h2 id="services-title">Three service areas</h2>
@@ -66,6 +101,11 @@ import {
     </div>
     <Blocks items={serviceCards} cols={3} glass />
   </VideoBand>
+
+  <ProofStrip />
+
+  <!-- mission: the tagline and the purpose behind the work -->
+  <Mission />
 
   <!-- film 2: pumps. Supply Chain Consultancy -->
   <section class="section" aria-labelledby="scc-title">
@@ -129,7 +169,7 @@ import {
   <!-- method -->
   <Section id="method" eyebrow="Method" title="Diagnose, Embed, Deliver">
     <Steps items={method} row />
-    <p class="after-grid" data-reveal><a class="text-link" href="/our-team">Meet our team</a></p>
+    <p class="after-grid" data-reveal><a class="text-link" href="/our-team">Meet Our Team</a></p>
   </Section>
 
   <!-- principles -->

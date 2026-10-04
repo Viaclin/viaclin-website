@@ -1,5 +1,8 @@
 ---
-// Inner page hero: breadcrumb, H1, lead, optional action and optional framed film.
+// Inner page hero: breadcrumb, H1, lead, optional action and an optional right-hand column. That column
+// holds a framed film when the page passes `video`, or the page's own graphic when it fills the "media"
+// slot (<TeamMatch slot="media" />, for example). Either one gives the hero the split layout; on narrow
+// screens the column stacks under the copy. `video` wins when a page passes both.
 // title is the plain-text heading and is always required. titleHtml is optional: when set, the H1 renders
 // that markup instead (a line break or an emphasised word, for example). The markup must come from the
 // page author, never from user input, because it is placed in the page as written.
@@ -25,6 +28,7 @@ interface Props {
 
 const { title, titleHtml, lead, eyebrow, crumbs, cta, video } = Astro.props;
 const href = cta?.topic ? `/contact?topic=${cta.topic}` : '/contact';
+const media = !video && Astro.slots.has('media');
 ---
 
 <section class="page-hero">
@@ -40,7 +44,7 @@ const href = cta?.topic ? `/contact?topic=${cta.topic}` : '/contact';
         </ol>
       </nav>
     )}
-    <div class:list={[video && 'split']}>
+    <div class:list={[(video || media) && 'split']}>
       <div class="page-hero__copy">
         {eyebrow && <p class="eyebrow rise">{eyebrow}</p>}
         {titleHtml ? <h1 class="rise" style="--d:60ms" set:html={titleHtml} /> : <h1 class="rise" style="--d:60ms">{title}</h1>}
@@ -55,6 +59,11 @@ const href = cta?.topic ? `/contact?topic=${cta.topic}` : '/contact';
         <slot />
       </div>
       {video && <VideoFrame video={video} eager />}
+      {media && (
+        <div class="page-hero__media">
+          <slot name="media" />
+        </div>
+      )}
     </div>
   </div>
 </section>
